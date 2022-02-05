@@ -97,8 +97,8 @@ jobs:
         run: npm run ci:backend:test
         continue-on-error: true
       - name: 'TESTS: start docker dependencies'
-        run: npm run docker:others:up
-      - name: 'TESTS: build application package'
         run: npm run ci:e2e:prepare
+      - name: 'TESTS: build application package'
+        run: npm run ci:e2e:package
       - name: 'TESTS: run e2e'
         run: npm run ci:e2e:run --if-present
