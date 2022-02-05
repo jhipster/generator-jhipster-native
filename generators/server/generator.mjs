@@ -45,11 +45,12 @@ export default class extends GeneratorBaseEntities {
   get [POST_WRITING_PRIORITY]() {
     return {
       async packageJson() {
-        this.packageJson.merge({
-          scripts: {
-            'package-native': './mvnw package -Pnative,prod -DskipTests',
-          },
-        });
+        const filePath = 'package.json';
+        let content = this.readDestination(filePath);
+
+        content = content.replace('-Pprod', '-Pnative,prod').replace('-Pdev', '-Pnative,dev');
+
+        this.writeDestination(filePath, content);
       },
 
       async removeFiles() {
