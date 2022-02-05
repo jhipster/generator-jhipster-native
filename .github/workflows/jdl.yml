@@ -102,4 +102,4 @@ jobs:
       - name: 'TESTS: start docker image'
         run: npm run docker:app:up
       - name: 'TESTS: run e2e'
-        run: npm run ci:e2e:run --if-present
+        run: npm run e2e:headless --if-present
