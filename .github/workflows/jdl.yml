@@ -92,8 +92,10 @@ jobs:
       - name: 'PROJECT: generate'
         run: 'jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies'
       - name: 'TESTS: backend tests'
-        #run: npm run ci:backend:test
-        run: npm run ci:unit:test
+        run: npm run ci:backend:test
+        continue-on-error: true
+      - name: 'TESTS: backend unit tests'
+        run: npm run backend:unit:test
         continue-on-error: true
       - name: 'TESTS: build docker image'
         run: npm run java:docker:prod
