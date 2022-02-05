@@ -1,0 +1,103 @@
+#
+# Copyright 2013-2022 the original author or authors from the JHipster project.
+#
+# This file is part of the JHipster project, see https://www.jhipster.tech/
+# for more information.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: JDL tests
+concurrency:
+  # Group PRs by head_ref, push to main branch by commit id, and others branch by ref.
+  group: ${{ github.workflow }}-${{ github.head_ref || (github.ref == 'refs/heads/main' && github.sha) || github.ref }}
+  cancel-in-progress: true
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    types: [closed, opened, synchronize, reopened]
+    branches:
+      - '*'
+jobs:
+  applications:
+    name: ${{ matrix.suite }}
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/app
+    if: github.event.action != 'closed'
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        suite:
+          - postgresql-mvc
+        include:
+          - suite: postgresql-mvc
+    steps:
+      #----------------------------------------------------------------------
+      # Install all tools and check configuration
+      #----------------------------------------------------------------------
+      - name: 'SETUP: create app folder'
+        run: 'mkdir app'
+        working-directory: ${{ github.workspace }}
+      - name: 'SETUP: setup node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: 'SETUP: checkout generator-jhipster-native'
+        uses: actions/checkout@v2
+        with:
+          path: generator-jhipster-native
+          fetch-depth: 2
+      - name: 'SETUP: install generator-jhister-native'
+        run: |
+          npm ci --prod
+          npm link
+        working-directory: ${{ github.workspace }}/generator-jhipster-native
+      - name: 'SETUP: setup graalvm'
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: '11'
+          components: 'native-image'
+      - name: 'SETUP: load npm cache'
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/Cypress/
+          key: ${{ runner.os }}-npm-${{ matrix.suite }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
+      - name: 'SETUP: load maven cache'
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ matrix.suite }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
+      #----------------------------------------------------------------------
+      # Install JHipster and generate project+entities
+      #----------------------------------------------------------------------
+      - name: 'PROJECT: generate'
+        run: 'jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies'
+      - name: 'TESTS: backend tests'
+        #run: npm run ci:backend:test
+        run: npm run ci:unit:test
+        continue-on-error: true
+      - name: 'TESTS: build docker image'
+        run: npm run java:docker:prod
+      - name: 'TESTS: start docker image'
+        run: npm run docker:app:up
+      - name: 'TESTS: run e2e'
+        run: npm run ci:e2e:run --if-present
