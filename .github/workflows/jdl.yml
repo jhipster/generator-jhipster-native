@@ -52,7 +52,9 @@ jobs:
       # Install all tools and check configuration
       #----------------------------------------------------------------------
       - name: 'SETUP: create app folder'
-        run: 'mkdir app'
+        run: |
+          mkdir app
+          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
         working-directory: ${{ github.workspace }}
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v2
