@@ -1,0 +1,18 @@
+{
+  "generator-jhipster": {
+    "baseName": "native",
+    "cli": true,
+    "generators": {
+      "server": {
+        "command": false,
+        "priorities": ["writing", "postWriting", "end"],
+        "sbs": true,
+        "written": true
+      }
+    },
+    "jhipsterVersion": "7.6.0",
+    "prettierDefaultIndent": 2,
+    "projectName": "JHipster SpringBoot Native Blueprint",
+    "subGenerators": ["server"]
+  }
+}
