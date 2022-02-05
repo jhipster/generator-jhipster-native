@@ -1,6 +1,12 @@
 import chalk from 'chalk';
 import { GeneratorBaseEntities, constants } from 'generator-jhipster';
-import { PRIORITY_PREFIX, WRITING_PRIORITY, POST_WRITING_PRIORITY, END_PRIORITY } from 'generator-jhipster/esm/priorities';
+import {
+  PRIORITY_PREFIX,
+  WRITING_PRIORITY,
+  POST_WRITING_PRIORITY,
+  POST_WRITING_ENTITIES_PRIORITY,
+  END_PRIORITY,
+} from 'generator-jhipster/esm/priorities';
 
 const { SERVER_MAIN_SRC_DIR } = constants;
 
@@ -45,7 +51,13 @@ export default class extends GeneratorBaseEntities {
           },
         });
       },
-      async customizePom({ application }) {
+
+      async removeFiles() {
+        this.deleteDestination('src/main/resources/logback-spring.xml');
+        this.deleteDestination('src/test/resources/logback.xml');
+      },
+
+      async pomXml({ application }) {
         if (!application.buildToolMaven) return;
 
         this.addMavenRepository(
@@ -72,38 +84,46 @@ export default class extends GeneratorBaseEntities {
         this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.5');
 
         this.addMavenPlugin(
-          'org.springframework.boot',
-          'spring-boot-maven-plugin',
-          undefined,
-          `    <configuration>
-        <classifier>\${repackage.classifier}</classifier>
-        <image>
-            <builder>paketobuildpacks/builder:tiny</builder>
-            <env>
-                <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-            </env>
-        </image>
-    </configuration>`
-        );
-        this.addMavenPlugin(
           'org.springframework.experimental',
           'spring-aot-maven-plugin',
           '${spring-native.version}',
-          `    <executions>
-        <execution>
-            <id>test-generate</id>
-            <goals>
-                <goal>test-generate</goal>
-            </goals>
-        </execution>
-        <execution>
-            <id>generate</id>
-            <goals>
-                <goal>generate</goal>
-            </goals>
-        </execution>
-    </executions>`
+          `                <executions>
+                    <execution>
+                        <id>test-generate</id>
+                        <goals>
+                            <goal>test-generate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>`
         );
+
+        if (application.databaseTypeSql && !application.reactive) {
+          this.addMavenPlugin(
+            'org.hibernate.orm.tooling',
+            'hibernate-enhance-maven-plugin',
+            '${hibernate.version}',
+            `                <executions>
+                    <execution>
+                        <configuration>
+                            <failOnError>true</failOnError>
+                            <enableLazyInitialization>true</enableLazyInitialization>
+                            <enableDirtyTracking>true</enableDirtyTracking>
+                            <enableAssociationManagement>true</enableAssociationManagement>
+                            <enableExtendedEnhancement>false</enableExtendedEnhancement>
+                        </configuration>
+                        <goals>
+                            <goal>enhance</goal>
+                        </goals>
+                    </execution>
+                </executions>`
+          );
+        }
 
         this.addMavenProfile(
           'native',
@@ -146,13 +166,34 @@ export default class extends GeneratorBaseEntities {
             </build>`
         );
         let pomXml = this.readDestination('pom.xml');
-        pomXml = pomXml.replaceAll('undertow', 'tomcat');
+        if (!application.reactive) {
+          pomXml = pomXml.replaceAll('undertow', 'tomcat');
+        }
+        pomXml = pomXml
+          .replace(
+            `
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative-boringssl-static</artifactId>
+        </dependency>`,
+            ''
+          )
+          .replace(
+            `
+                <artifactId>spring-boot-maven-plugin</artifactId>`,
+            `
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>\${repackage.classifier}</classifier>
+                    <image>
+                        <builder>paketobuildpacks/builder:tiny</builder>
+                        <env>
+                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                        </env>
+                    </image>
+                </configuration>`
+          );
         this.writeDestination('pom.xml', pomXml);
-      },
-
-      async removeFiles() {
-        this.deleteDestination('src/main/resources/logback-spring.xml');
-        this.deleteDestination('src/test/resources/logback.xml');
       },
 
       async customizeConfig() {
@@ -170,7 +211,7 @@ logging:
       },
 
       async liquibase({ application }) {
-        if (!application.databaseTypeSql) return;
+        if (!application.databaseTypeSql || application.reactive) return;
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
           'src/main/resources/META-INF/native-image/liquibase/reflect-config.json'
@@ -197,17 +238,18 @@ spring:
         );
       },
 
-      async main({ application: { baseName, packageFolder, databaseTypeSql } }) {
+      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
-        const liquibase = databaseTypeSql
-          ? `liquibase.configuration.LiquibaseConfiguration.class,
+        const liquibase =
+          databaseTypeSql && !reactive
+            ? `liquibase.configuration.LiquibaseConfiguration.class,
         com.zaxxer.hikari.HikariDataSource.class,
         liquibase.change.core.LoadDataColumnConfig.class,
         tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         org.hibernate.type.TextType.class,
         `
-          : '';
+            : '';
         content = content.replace(
           '@SpringBootApplication',
           `@org.springframework.nativex.hint.TypeHint(
@@ -240,6 +282,32 @@ spring:
     OidcIdToken idToken = oidcUser.getIdToken();`
           );
         this.writeDestination(filePath, content);
+      },
+    };
+  }
+
+  get [POST_WRITING_ENTITIES_PRIORITY]() {
+    return {
+      async entities({ entities }) {
+        for (const { name } of entities.filter(({ builtIn }) => !builtIn)) {
+          // Use entity from old location for more complete data.
+          const entity = this.configOptions.sharedEntities[name];
+          const resourcePath = `${SERVER_MAIN_SRC_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`;
+          let content = this.readDestination(resourcePath);
+
+          content = content
+            .replaceAll(
+              `@PathVariable(value = "id", required = false) final ${entity.primaryKey.type} id`,
+              `@PathVariable(name = "id", value = "id", required = false) final ${entity.primaryKey.type} id`
+            )
+            .replaceAll(`@PathVariable ${entity.primaryKey.type} id`, `@PathVariable("id") ${entity.primaryKey.type} id`)
+            .replaceAll(
+              `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
+              `@RequestParam(name = "eagerload",required = false, defaultValue = "false") boolean eagerload`
+            );
+
+          this.writeDestination(resourcePath, content);
+        }
       },
     };
   }
