@@ -273,14 +273,22 @@ spring:
       async logoutResource({ application: { packageFolder, authenticationTypeOauth2 } }) {
         if (!authenticationTypeOauth2) return;
         const filePath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/web/rest/LogoutResource.java`;
+
         let content = this.readDestination(filePath);
         content = content
           .replace('@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken', '@AuthenticationPrincipal OidcUser oidcUser')
+          .replace(
+            'import org.springframework.security.oauth2.core.oidc.OidcIdToken;',
+            `import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
+          )
+          .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.')
           .replace(
             'StringBuilder logoutUrl = new StringBuilder();',
             `StringBuilder logoutUrl = new StringBuilder();
     OidcIdToken idToken = oidcUser.getIdToken();`
           );
+
         this.writeDestination(filePath, content);
       },
     };
