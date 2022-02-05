@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "generator-jhipster": "github:jhipster/generator-jhipster#main"
+    "generator-jhipster": "github:mshima/generator-jhipster#skip_ci-generate_blueprint"
   },
   "devDependencies": {
     "ejs-lint": "1.2.1",
