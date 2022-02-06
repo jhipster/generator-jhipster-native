@@ -143,6 +143,10 @@ export default class extends GeneratorBaseEntities {
                         </executions>
                         <configuration>
                             <imageName>native-executable</imageName>
+                            <buildArgs>
+                                <buildArg>--no-fallback</buildArg>
+                                <buildArg>--verbose</buildArg>
+                            </buildArgs>
                         </configuration>
                     </plugin>
                 </plugins>
