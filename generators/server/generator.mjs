@@ -242,7 +242,7 @@ spring:
         );
       },
 
-      async mainClass({ application: { baseName, packageFolder, databaseTypeSql } }) {
+      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
         const liquibase = databaseTypeSql
@@ -251,6 +251,7 @@ spring:
         liquibase.change.core.LoadDataColumnConfig.class,
         tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         org.hibernate.type.TextType.class,
+        ${(reactive && databaseTypeSql ? 'org.springframework.data.r2dbc.repository.support.SimpleR2dbcRepository.class' : '')}
         `
             : '';
         content = content.replace(
@@ -259,7 +260,7 @@ spring:
     types = {
         ${liquibase}org.HdrHistogram.Histogram.class,
         org.HdrHistogram.ConcurrentHistogram.class
-    }
+    }${(reactive && databaseTypeSql ? ', typeNames = {"com.zaxxer.hikari.util.ConcurrentBag$IConcurrentBagEntry[]"}' : '')}
 )
 @SpringBootApplication`
         );
