@@ -286,6 +286,27 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
 
         this.writeDestination(filePath, content);
       },
+
+      userRepository({ application: { packageFolder, reactive, databaseTypeSql } }) {
+        if (reactive && databaseTypeSql) {
+          this.editFile(
+            `${SERVER_MAIN_SRC_DIR}${packageFolder}/repository/UserRepository.java`,
+            contents =>
+              contents.replace(
+                'import reactor.core.publisher.Flux;',
+                `import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;`
+              ),
+            contents =>
+              contents.replace(
+                '\nclass ',
+                `
+@Component
+class `
+              )
+          );
+        }
+      },
     };
   }
 
