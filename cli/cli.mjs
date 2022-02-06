@@ -22,7 +22,7 @@ const packageFolderName = basename(packagePath);
       [packageFolderName]: version,
     },
     printBlueprintLogo: () => {
-      console.log('===================== JHipster native =====================');
+      console.log('===================== JHipster Native =====================');
       console.log('');
     },
     lookups: [{ packagePaths: [packagePath], lookups: ['generators'] }],
