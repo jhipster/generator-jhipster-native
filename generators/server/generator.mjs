@@ -209,7 +209,7 @@ logging:
   level:
     root: ERROR
     io.netty: ERROR
-    org.springframework: INFO
+    org.springframework: WARN
 `
         );
       },
@@ -335,8 +335,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
   get [END_PRIORITY]() {
     return {
       async endTemplateTask() {
-        this.warning(
-          `You can see some tips about running SpringBoot with GraalVM at https://github.com/mraible/spring-native-examples#readme.`
+        this.info(
+          `You can see some tips about running Spring Boot with GraalVM at https://github.com/mraible/spring-native-examples#readme.`
         );
       },
     };
