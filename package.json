@@ -18,7 +18,10 @@
   },
   "files": [
     "cli",
-    "generators"
+    "generators",
+    "!**/__*",
+    "!**/*.snap",
+    "!**/*.spec.?(c|m)js"
   ],
   "scripts": {
     "ejslint": "ejslint generators/**/*.ejs && ejslint generators/**/*.ejs -d '&'",
