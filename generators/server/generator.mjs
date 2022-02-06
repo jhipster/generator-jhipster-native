@@ -216,24 +216,38 @@ spring:
         );
       },
 
-      async mainClass({ application: { baseName, packageFolder, databaseTypeSql } }) {
+      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
-        const liquibase = databaseTypeSql
-          ? `liquibase.configuration.LiquibaseConfiguration.class,
-        com.zaxxer.hikari.HikariDataSource.class,
-        liquibase.change.core.LoadDataColumnConfig.class,
-        tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
-        org.hibernate.type.TextType.class,
-        `
-          : '';
+        const types = ['org.HdrHistogram.Histogram.class', 'org.HdrHistogram.ConcurrentHistogram.class'];
+        const typeNames = [];
+        if (databaseTypeSql) {
+          types.push(
+            'liquibase.configuration.LiquibaseConfiguration.class',
+            'com.zaxxer.hikari.HikariDataSource.class',
+            'liquibase.change.core.LoadDataColumnConfig.class',
+            'tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class',
+            'org.hibernate.type.TextType.class'
+          );
+          if (reactive) {
+            types.push('org.springframework.data.r2dbc.repository.support.SimpleR2dbcRepository.class');
+            typeNames.push('"com.zaxxer.hikari.util.ConcurrentBag$IConcurrentBagEntry[]"');
+          }
+        }
+
+        const typeNamesContent =
+          typeNames.length > 0
+            ? `,
+    typeNames = {
+${typeNames.join('        ,\n')}
+    }`
+            : '';
         content = content.replace(
           '@SpringBootApplication',
           `@org.springframework.nativex.hint.TypeHint(
     types = {
-        ${liquibase}org.HdrHistogram.Histogram.class,
-        org.HdrHistogram.ConcurrentHistogram.class
-    }
+${types.join('        ,\n')}
+    }${typeNamesContent}
 )
 @SpringBootApplication`
         );
