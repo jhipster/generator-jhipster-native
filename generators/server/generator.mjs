@@ -162,6 +162,9 @@ export default class extends GeneratorBaseEntities {
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <imageName>native-executable</imageName>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>`
