@@ -277,8 +277,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
 
   get [POST_WRITING_ENTITIES_PRIORITY]() {
     return {
-      async entities({ entities }) {
-        for (const { name } of entities.filter(({ builtIn }) => !builtIn)) {
+      async entities({ application: { reactive, databaseTypeSql }, entities }) {
+        for (const { name } of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
           // Use entity from old location for more complete data.
           const entity = this.configOptions.sharedEntities[name];
           if (!entity) {
@@ -303,6 +303,25 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
             );
 
           this.writeDestination(resourcePath, content);
+
+          if (reactive && databaseTypeSql) {
+            this.editFile(
+              `${SERVER_MAIN_SRC_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
+              contents =>
+                contents.replace(
+                  'import reactor.core.publisher.Flux;',
+                  `import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;`
+                ),
+              contents =>
+                contents.replace(
+                  '\nclass ',
+                  `
+@Component
+class `
+                )
+            );
+          }
         }
       },
     };
@@ -316,5 +335,13 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
         );
       },
     };
+  }
+
+  editFile(filePath, ...transformCallbacks) {
+    let content = this.readDestination(filePath);
+    for (const cb of transformCallbacks) {
+      content = cb(content);
+    }
+    this.writeDestination(filePath, content);
   }
 }
