@@ -242,7 +242,7 @@ spring:
         );
       },
 
-      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
+      async mainClass({ application: { baseName, packageFolder, databaseTypeSql } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
         const liquibase = databaseTypeSql
