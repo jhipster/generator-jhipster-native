@@ -193,8 +193,8 @@ logging:
         );
       },
 
-      async liquibase({ application }) {
-        if (!application.databaseTypeSql || application.reactive) return;
+      async liquibase({ application: { databaseTypeSql } }) {
+        if (!databaseTypeSql) return;
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
           'src/main/resources/META-INF/native-image/liquibase/reflect-config.json'
@@ -203,12 +203,7 @@ logging:
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json'
         );
-        /*
-@TypeHint(
-    types = {
-        ...
-    })
-        */
+
         this.fs.append(
           this.destinationPath('src/main/resources/config/application.yml'),
           `
@@ -221,18 +216,17 @@ spring:
         );
       },
 
-      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
+      async mainClass({ application: { baseName, packageFolder, databaseTypeSql } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
-        const liquibase =
-          databaseTypeSql && !reactive
-            ? `liquibase.configuration.LiquibaseConfiguration.class,
+        const liquibase = databaseTypeSql
+          ? `liquibase.configuration.LiquibaseConfiguration.class,
         com.zaxxer.hikari.HikariDataSource.class,
         liquibase.change.core.LoadDataColumnConfig.class,
         tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         org.hibernate.type.TextType.class,
         `
-            : '';
+          : '';
         content = content.replace(
           '@SpringBootApplication',
           `@org.springframework.nativex.hint.TypeHint(
