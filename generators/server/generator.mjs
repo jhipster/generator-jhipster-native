@@ -271,7 +271,7 @@ spring:
         this.writeDestination(filePath, content);
       },
 
-      async logoutResource({ application: { packageFolder, authenticationTypeOauth2 } }) {
+      async logoutResource({ application: { packageFolder, authenticationTypeOauth2, reactive } }) {
         if (!authenticationTypeOauth2) return;
         const filePath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/web/rest/LogoutResource.java`;
 
@@ -283,12 +283,16 @@ spring:
             `import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
           )
-          .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.')
-          .replace(
-            'StringBuilder logoutUrl = new StringBuilder();',
-            `StringBuilder logoutUrl = new StringBuilder();
-    OidcIdToken idToken = oidcUser.getIdToken();`
+          .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.');
+        if (reactive) {
+          content = content.replace(', idToken)', ', oidcUser.getIdToken())');
+        } else {
+          content = content.replace(
+            '// Okta',
+            `// Okta
+        OidcIdToken idToken = oidcUser.getIdToken();`
           );
+        }
 
         this.writeDestination(filePath, content);
       },
@@ -301,15 +305,19 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
         for (const { name } of entities.filter(({ builtIn }) => !builtIn)) {
           // Use entity from old location for more complete data.
           const entity = this.configOptions.sharedEntities[name];
+          if (!entity) {
+            this.warning(`Skipping entity generation, use '--with-entities' flag`);
+            continue;
+          }
           const resourcePath = `${SERVER_MAIN_SRC_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`;
           let content = this.readDestination(resourcePath);
 
           content = content
             .replaceAll(
-              `@PathVariable(value = "id", required = false) final ${entity.primaryKey.type} id`,
-              `@PathVariable(name = "id", value = "id", required = false) final ${entity.primaryKey.type} id`
+              `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+              `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`
             )
-            .replaceAll(`@PathVariable ${entity.primaryKey.type} id`, `@PathVariable("id") ${entity.primaryKey.type} id`)
+            .replaceAll(`@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`, `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`)
             .replaceAll(
               `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
               `@RequestParam(name = "eagerload",required = false, defaultValue = "false") boolean eagerload`
