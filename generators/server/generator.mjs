@@ -111,6 +111,10 @@ export default class extends GeneratorBaseEntities {
           );
         }
 
+        const buildArgs = ['--no-fallback'];
+        if (process.env.GITHUB_ACTIONS) {
+          buildArgs.push('--verbose', '-J-Xmx7g');
+        }
         this.addMavenProfile(
           'native',
           `            <properties>
@@ -150,8 +154,7 @@ export default class extends GeneratorBaseEntities {
                         <configuration>
                             <imageName>native-executable</imageName>
                             <buildArgs>
-                                <buildArg>--no-fallback</buildArg>
-                                <buildArg>--verbose</buildArg>
+${buildArgs.map(buildArg => `                                <buildArg>${buildArg}</buildArg>`).join('/n')}
                             </buildArgs>
                         </configuration>
                     </plugin>
