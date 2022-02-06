@@ -293,12 +293,6 @@ Object {
   "src/main/resources/.h2.server.properties": Object {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": Object {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": Object {
-    "stateCleared": "modified",
-  },
   "src/main/resources/banner.txt": Object {
     "stateCleared": "modified",
   },

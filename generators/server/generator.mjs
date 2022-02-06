@@ -215,7 +215,7 @@ logging:
       },
 
       async liquibase({ application }) {
-        if (!application.databaseTypeSql || application.reactive) return;
+        if (application.databaseTypeSql) return;
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
           'src/main/resources/META-INF/native-image/liquibase/reflect-config.json'
@@ -245,8 +245,7 @@ spring:
       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
-        const liquibase =
-          databaseTypeSql && !reactive
+        const liquibase = databaseTypeSql
             ? `liquibase.configuration.LiquibaseConfiguration.class,
         com.zaxxer.hikari.HikariDataSource.class,
         liquibase.change.core.LoadDataColumnConfig.class,
