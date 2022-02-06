@@ -98,8 +98,8 @@ jobs:
         continue-on-error: true
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
-        run: npm run ci:e2e:package
+        run: npm run native-package
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
       - name: 'TESTS: run e2e'
-        run: npm run ci:e2e:run --if-present
+        run: ./native-executable

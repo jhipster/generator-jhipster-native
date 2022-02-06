@@ -30,6 +30,12 @@ export default class extends GeneratorBaseEntities {
         content = content.replaceAll('-Pprod', '-Pnative,prod');
 
         this.writeDestination(filePath, content);
+
+        this.packageJson.merge({
+          scripts: {
+            'native-package': './mvnw package -Pnative,prod -DskipTests',
+          },
+        });
       },
 
       async removeFiles() {
