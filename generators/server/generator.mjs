@@ -1,12 +1,6 @@
 import chalk from 'chalk';
 import { GeneratorBaseEntities, constants } from 'generator-jhipster';
-import {
-  PRIORITY_PREFIX,
-  WRITING_PRIORITY,
-  POST_WRITING_PRIORITY,
-  POST_WRITING_ENTITIES_PRIORITY,
-  END_PRIORITY,
-} from 'generator-jhipster/esm/priorities';
+import { PRIORITY_PREFIX, POST_WRITING_PRIORITY, POST_WRITING_ENTITIES_PRIORITY, END_PRIORITY } from 'generator-jhipster/esm/priorities';
 
 const { SERVER_MAIN_SRC_DIR } = constants;
 
@@ -25,21 +19,6 @@ export default class extends GeneratorBaseEntities {
 
   async _postConstruct() {
     await this.dependsOnJHipster('bootstrap-application');
-  }
-
-  get [WRITING_PRIORITY]() {
-    return {
-      async writingTemplateTask() {
-        /*
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-server'] }],
-          },
-          context: this,
-        });
-        */
-      },
-    };
   }
 
   get [POST_WRITING_PRIORITY]() {
