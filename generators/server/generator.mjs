@@ -293,7 +293,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
               `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
               `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`
             )
-            .replaceAll(`@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`, `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`)
+            .replaceAll(
+              `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+              `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`
+            )
             .replaceAll(
               `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
               `@RequestParam(name = "eagerload",required = false, defaultValue = "false") boolean eagerload`
