@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-20.04, macos-11]
         suite:
           - postgresql-mvc
         include:
@@ -102,4 +102,4 @@ jobs:
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
       - name: 'TESTS: run e2e'
-        run: ./native-executable
+        run: ./target/native-executable
