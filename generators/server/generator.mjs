@@ -27,7 +27,7 @@ export default class extends GeneratorBaseEntities {
         const filePath = 'package.json';
         let content = this.readDestination(filePath);
 
-        content = content.replaceAll('-Pprod', '-Pnative,prod').replaceAll('-Pdev', '-Pnative,dev');
+        content = content.replaceAll('-Pprod', '-Pnative,prod');
 
         this.writeDestination(filePath, content);
       },
