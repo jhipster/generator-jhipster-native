@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { GeneratorBaseEntities, constants } from 'generator-jhipster';
 import { PRIORITY_PREFIX, POST_WRITING_PRIORITY, POST_WRITING_ENTITIES_PRIORITY, END_PRIORITY } from 'generator-jhipster/esm/priorities';
 
-const { SERVER_MAIN_SRC_DIR } = constants;
+const { SERVER_MAIN_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
 
 export default class extends GeneratorBaseEntities {
   constructor(args, opts, features) {
@@ -322,6 +322,16 @@ class `
               )
           );
         }
+      },
+
+      cypress({ application: { cypressTests } }) {
+        if (!cypressTests) return;
+        this.editFile(`${CLIENT_TEST_SRC_DIR}/cypress/integration/administration/administration.spec.ts`, contents =>
+          contents
+            .replace("describe('/metrics'", "describe.skip('/metrics'")
+            .replace("describe('/logs'", "describe.skip('/logs'")
+            .replace("describe('/configuration'", "describe.skip('/configuration'")
+        );
       },
     };
   }
