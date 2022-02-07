@@ -32,7 +32,7 @@ on:
       - '*'
 jobs:
   applications:
-    name: ${{ matrix.suite }}
+    name: ${{ matrix.suite }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     defaults:
       run:
