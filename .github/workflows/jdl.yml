@@ -76,6 +76,9 @@ jobs:
           version: 'latest'
           java-version: '11'
           components: 'native-image'
+      - name: 'SETUP: docker'
+        uses: docker-practice/actions-setup-docker@v1
+        if: matrix.os == 'macos-11'
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v2
         with:
