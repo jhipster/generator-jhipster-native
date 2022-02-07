@@ -45,8 +45,10 @@ jobs:
         os: [ubuntu-20.04, macos-11]
         suite:
           - postgresql-mvc
+          - postgresql-webflux
         include:
           - suite: postgresql-mvc
+          - suite: postgresql-webflux
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
