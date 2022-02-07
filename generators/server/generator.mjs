@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { GeneratorBaseEntities, constants } from 'generator-jhipster';
 import { PRIORITY_PREFIX, POST_WRITING_PRIORITY, POST_WRITING_ENTITIES_PRIORITY, END_PRIORITY } from 'generator-jhipster/esm/priorities';
 
-const { SERVER_MAIN_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
+const { SERVER_MAIN_SRC_DIR, SERVER_TEST_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
 
 export default class extends GeneratorBaseEntities {
   constructor(args, opts, features) {
@@ -159,9 +159,6 @@ ${buildArgs.map(buildArg => `                                <buildArg>${buildAr
             </build>`
         );
         let pomXml = this.readDestination('pom.xml');
-        if (!reactive) {
-          pomXml = pomXml.replaceAll('undertow', 'tomcat');
-        }
         pomXml = pomXml
           .replace(
             `
@@ -314,6 +311,18 @@ import reactor.core.publisher.Flux;`
 @Component
 class `
               )
+          );
+        }
+      },
+
+      replaceUndertowWithTomcat({ application: { reactive, packageFolder } }) {
+        if (!reactive) {
+          this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
+
+          this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
+            contents
+              .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
+              .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
           );
         }
       },

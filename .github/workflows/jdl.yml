@@ -116,7 +116,6 @@ jobs:
         run: 'jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies'
       - name: 'TESTS: backend tests'
         run: npm run ci:backend:test
-        continue-on-error: true
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
         run: npm run ci:e2e:package
