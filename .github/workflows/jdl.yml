@@ -110,5 +110,8 @@ jobs:
         run: npm run ci:e2e:package
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
+      - name: 'TESTS: wait'
+        run: sleep 20
+        if: matrix.os == 'macos-11'
       - name: 'TESTS: run e2e'
         run: npm run ci:e2e:run --if-present
