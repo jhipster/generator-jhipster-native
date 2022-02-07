@@ -46,8 +46,8 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async pomXml({ application }) {
-        if (!application.buildToolMaven) return;
+      async pomXml({ application: { buildToolMaven, databaseTypeSql, reactive } }) {
+        if (!buildToolMaven) return;
 
         this.addMavenRepository(
           'spring-releases',
@@ -72,46 +72,28 @@ export default class extends GeneratorBaseEntities {
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
         this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.5');
 
-        this.addMavenPlugin(
-          'org.springframework.experimental',
-          'spring-aot-maven-plugin',
-          '${spring-native.version}',
-          `                <executions>
-                    <execution>
-                        <id>test-generate</id>
-                        <goals>
-                            <goal>test-generate</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>`
-        );
-
-        if (application.databaseTypeSql && !application.reactive) {
-          this.addMavenPlugin(
-            'org.hibernate.orm.tooling',
-            'hibernate-enhance-maven-plugin',
-            '${hibernate.version}',
-            `                <executions>
-                    <execution>
-                        <configuration>
-                            <failOnError>true</failOnError>
-                            <enableLazyInitialization>true</enableLazyInitialization>
-                            <enableDirtyTracking>true</enableDirtyTracking>
-                            <enableAssociationManagement>true</enableAssociationManagement>
-                            <enableExtendedEnhancement>false</enableExtendedEnhancement>
-                        </configuration>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                    </execution>
-                </executions>`
-          );
+        const plugins = [];
+        if (databaseTypeSql && !reactive) {
+          plugins.push(`
+                    <plugin>
+                        <groupId>org.hibernate.orm.tooling</groupId>
+                        <artifactId>hibernate-enhance-maven-plugin</artifactId>
+                        <version>\${hibernate.version}</version>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <failOnError>true</failOnError>
+                                    <enableLazyInitialization>true</enableLazyInitialization>
+                                    <enableDirtyTracking>true</enableDirtyTracking>
+                                    <enableAssociationManagement>true</enableAssociationManagement>
+                                    <enableExtendedEnhancement>false</enableExtendedEnhancement>
+                                </configuration>
+                                <goals>
+                                    <goal>enhance</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>`);
         }
 
         const buildArgs = ['--no-fallback'];
@@ -133,6 +115,25 @@ export default class extends GeneratorBaseEntities {
             </dependencies>
             <build>
                 <plugins>
+                    <plugin>${plugins.join('')}
+                        <groupId>org.springframework.experimental</groupId>
+                        <artifactId>spring-aot-maven-plugin</artifactId>
+                        <version>\${spring-native.version}</version>
+                        <executions>
+                            <execution>
+                                <id>test-generate</id>
+                                <goals>
+                                    <goal>test-generate</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>generate</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
@@ -165,7 +166,7 @@ ${buildArgs.map(buildArg => `                                <buildArg>${buildAr
             </build>`
         );
         let pomXml = this.readDestination('pom.xml');
-        if (!application.reactive) {
+        if (!reactive) {
           pomXml = pomXml.replaceAll('undertow', 'tomcat');
         }
         pomXml = pomXml
