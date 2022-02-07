@@ -107,8 +107,8 @@ export default class extends GeneratorBaseEntities {
                 </dependency>
             </dependencies>
             <build>
-                <plugins>
-                    <plugin>${plugins.join('')}
+                <plugins>${plugins.join('')}
+                    <plugin>
                         <groupId>org.springframework.experimental</groupId>
                         <artifactId>spring-aot-maven-plugin</artifactId>
                         <version>\${spring-native.version}</version>
