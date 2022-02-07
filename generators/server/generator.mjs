@@ -24,13 +24,6 @@ export default class extends GeneratorBaseEntities {
   get [POST_WRITING_PRIORITY]() {
     return {
       async packageJson() {
-        const filePath = 'package.json';
-        let content = this.readDestination(filePath);
-
-        content = content.replaceAll('-Pprod', '-Pnative,prod');
-
-        this.writeDestination(filePath, content);
-
         this.packageJson.merge({
           scripts: {
             'native-package': './mvnw package -Pnative,prod -DskipTests',
