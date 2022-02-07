@@ -113,7 +113,7 @@ export default class extends GeneratorBaseEntities {
 
         const buildArgs = ['--no-fallback'];
         if (process.env.GITHUB_ACTIONS) {
-          buildArgs.push('--verbose', '-J-Xmx7g');
+          buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
         }
         this.addMavenProfile(
           'native',
