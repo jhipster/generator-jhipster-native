@@ -34,6 +34,9 @@ export default class extends GeneratorBaseEntities {
         this.packageJson.merge({
           scripts: {
             'native-package': './mvnw package -Pnative,prod -DskipTests',
+            'native-start': './target/native-executable',
+            'ci:e2e:package': 'npm run native-package',
+            'ci:e2e:server:start': 'npm run native-start',
           },
         });
       },
