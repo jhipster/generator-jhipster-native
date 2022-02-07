@@ -85,8 +85,8 @@ jobs:
         if: matrix.os == 'macos-11'
         with:
           path: |
-            ~/Library/Caches/Homebrew/foo--*
-            ~/Library/Caches/Homebrew/downloads/*--foo-*
+            ~/Library/Caches/Homebrew/docker--*
+            ~/Library/Caches/Homebrew/downloads/
           key: brew-${{ steps.get-date.outputs.date }}
           restore-keys: brew-
       - name: 'SETUP: docker'
