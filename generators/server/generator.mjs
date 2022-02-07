@@ -393,6 +393,40 @@ class `
 
   get [END_PRIORITY]() {
     return {
+      async checkCompatibility({
+        application: {
+          reactive,
+          buildToolMaven,
+          databaseTypeNo,
+          prodDatabaseTypePostgres,
+          cacheProviderNo,
+          enableHibernateCache,
+          websocket,
+          searchEngine,
+        },
+      }) {
+        if (!buildToolMaven) {
+          this.warning('JHipster Native is only tested with Maven build tool');
+        }
+        if (!databaseTypeNo && !prodDatabaseTypePostgres) {
+          this.warning('JHipster Native is only tested with PostgreSQL database');
+        }
+        if (searchEngine) {
+          this.warning('JHipster Native is only tested without a search engine');
+        }
+        if (!reactive) {
+          if (!cacheProviderNo) {
+            this.warning('JHipster Native is only tested without a cache provider');
+          }
+          if (enableHibernateCache) {
+            this.warning('JHipster Native is only tested without Hibernate second level cache');
+          }
+          if (websocket) {
+            this.warning('JHipster Native is only tested without WebSocket support');
+          }
+        }
+      },
+
       async endTemplateTask() {
         this.info(
           `You can see some tips about running Spring Boot with GraalVM at https://github.com/mraible/spring-native-examples#readme.`
