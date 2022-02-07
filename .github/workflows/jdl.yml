@@ -80,15 +80,6 @@ jobs:
       - name: 'SETUP: get date'
         id: get-date
         run: echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-      - name: 'SETUP: load homebrew cache'
-        uses: actions/cache@v2
-        if: matrix.os == 'macos-11'
-        with:
-          path: |
-            ~/Library/Caches/Homebrew/docker--*
-            ~/Library/Caches/Homebrew/downloads/
-          key: brew-${{ steps.get-date.outputs.date }}
-          restore-keys: brew-
       - name: 'SETUP: docker'
         run: |
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
