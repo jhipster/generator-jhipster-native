@@ -205,7 +205,7 @@ spring:
         );
       },
 
-      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgresq, reactive } }) {
+      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
         const types = [
@@ -222,7 +222,7 @@ spring:
             'liquibase.change.core.LoadDataColumnConfig.class',
             'org.hibernate.type.TextType.class'
           );
-          if (prodDatabaseTypePostgresq) {
+          if (prodDatabaseTypePostgres && !reactive) {
             types.push('tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class');
           }
           if (reactive) {
