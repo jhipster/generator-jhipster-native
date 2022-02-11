@@ -26,7 +26,7 @@
   "scripts": {
     "ejslint": "ejslint generators/**/*.ejs && ejslint generators/**/*.ejs -d '&'",
     "lint": "eslint .",
-    "lint-fix": "npm run ejslint && npm run lint -- --fix",
+    "lint-fix": "npm run lint -- --fix",
     "mocha": "mocha generators --no-insight --forbid-only",
     "prettier-format": "prettier --write \"{,**/}*.{js,cjs,mjs,json,md,yml}\"",
     "prettier:check": "prettier --check \"{,src/**/}*.{md,json,yml,html,js,ts,tsx,css,scss,vue,java}\"",
