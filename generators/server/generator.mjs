@@ -208,7 +208,12 @@ spring:
       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         let content = this.readDestination(mainClassPath);
-        const types = ['org.HdrHistogram.Histogram.class', 'org.HdrHistogram.ConcurrentHistogram.class'];
+        const types = [
+          'org.HdrHistogram.Histogram.class',
+          'org.HdrHistogram.ConcurrentHistogram.class',
+          // Required by *ToMany relationships
+          'java.util.HashSet.class',
+        ];
         const typeNames = [];
         if (databaseTypeSql) {
           types.push(
