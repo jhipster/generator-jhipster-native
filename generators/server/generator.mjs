@@ -39,7 +39,7 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async pomXml({ application: { buildToolMaven, databaseTypeSql, reactive } }) {
+      async pomXml({ application: { buildToolMaven } }) {
         if (!buildToolMaven) return;
 
         this.addMavenRepository(
@@ -65,30 +65,6 @@ export default class extends GeneratorBaseEntities {
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
         this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.5');
 
-        const plugins = [];
-        if (databaseTypeSql && !reactive) {
-          plugins.push(`
-                    <plugin>
-                        <groupId>org.hibernate.orm.tooling</groupId>
-                        <artifactId>hibernate-enhance-maven-plugin</artifactId>
-                        <version>\${hibernate.version}</version>
-                        <executions>
-                            <execution>
-                                <configuration>
-                                    <failOnError>true</failOnError>
-                                    <enableLazyInitialization>true</enableLazyInitialization>
-                                    <enableDirtyTracking>true</enableDirtyTracking>
-                                    <enableAssociationManagement>true</enableAssociationManagement>
-                                    <enableExtendedEnhancement>false</enableExtendedEnhancement>
-                                </configuration>
-                                <goals>
-                                    <goal>enhance</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>`);
-        }
-
         const buildArgs = ['--no-fallback'];
         if (process.env.GITHUB_ACTIONS) {
           buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
@@ -107,7 +83,7 @@ export default class extends GeneratorBaseEntities {
                 </dependency>
             </dependencies>
             <build>
-                <plugins>${plugins.join('')}
+                <plugins>
                     <plugin>
                         <groupId>org.springframework.experimental</groupId>
                         <artifactId>spring-aot-maven-plugin</artifactId>
