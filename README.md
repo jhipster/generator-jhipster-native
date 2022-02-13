@@ -9,7 +9,7 @@
 # Introduction
 
 This is a [JHipster](https://www.jhipster.tech/) blueprint.
-For simplicity, it provides an embed generator-jhipster and a cli.
+For simplicity, it provides an embedded generator-jhipster and a CLI.
 
 # Installation
 
