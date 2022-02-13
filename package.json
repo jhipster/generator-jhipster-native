@@ -1,14 +1,24 @@
 {
   "name": "generator-jhipster-native",
   "version": "0.0.0",
-  "private": true,
   "description": "JHipster SpringBoot Native Blueprint",
   "keywords": [
     "yeoman-generator",
     "jhipster-blueprint",
     "jhipster-7"
   ],
-  "license": "UNLICENSED",
+  "homepage": "https://github.com/jhipster/generator-jhipster-native",
+  "bugs": "https://github.com/jhipster/generator-jhipster-native/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jhipster/generator-jhipster-native.git"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/generator-jhipster"
+  },
+  "license": "Apache-2.0",
+  "author": "Marcelo Shima <marceloshima@gmail.com> (https://github.com/mshima)",
   "type": "module",
   "imports": {
     "#test-utils": "./test/utils.mjs"
@@ -62,5 +72,10 @@
   },
   "cacheDirectories": [
     "node_modules"
-  ]
+  ],
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/generator-jhipster",
+    "logo": "https://opencollective.com/opencollective/logo.txt"
+  }
 }
