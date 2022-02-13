@@ -219,11 +219,10 @@ spring:
           types.push(
             'liquibase.configuration.LiquibaseConfiguration.class',
             'com.zaxxer.hikari.HikariDataSource.class',
-            'liquibase.change.core.LoadDataColumnConfig.class',
-            'org.hibernate.type.TextType.class'
+            'liquibase.change.core.LoadDataColumnConfig.class'
           );
           if (prodDatabaseTypePostgres && !reactive) {
-            types.push('tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class');
+            types.push('org.hibernate.type.TextType.class', 'tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class');
           }
           if (reactive) {
             types.push('org.springframework.data.r2dbc.repository.support.SimpleR2dbcRepository.class');
