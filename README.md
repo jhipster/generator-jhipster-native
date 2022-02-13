@@ -8,7 +8,7 @@
 
 # Introduction
 
-This is a [JHipster](https://www.jhipster.tech/) blueprint.
+This is a [JHipster](https://www.jhipster.tech/) blueprint based on the work done by @mraible and @joshlong at https://github.com/mraible/spring-native-examples.
 For simplicity, it provides an embedded generator-jhipster and a CLI.
 
 # Installation
