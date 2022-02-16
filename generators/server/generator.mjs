@@ -131,7 +131,7 @@ export default class extends GeneratorBaseEntities {
                             </execution>
                         </executions>
                         <configuration>
-                            <imageName>native-executable</imageName>
+                            <imageName>\${project.artifactId}-\${project.version}</imageName>
                             <buildArgs>
 ${buildArgs.map(buildArg => `                                <buildArg>${buildArg}</buildArg>`).join('/n')}
                             </buildArgs>
