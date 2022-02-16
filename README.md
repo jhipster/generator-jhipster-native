@@ -1,6 +1,6 @@
 # generator-jhipster-native
 
-> JHipster blueprint, native blueprint for JHipster
+> JHipster blueprint, Spring Boot Native blueprint for JHipster
 
 [![NPM version][npm-image]][npm-url]
 [![Generator][github-generator-image]][github-generator-url]
@@ -8,13 +8,8 @@
 
 # Introduction
 
-This is a [JHipster](https://www.jhipster.tech/) blueprint, that is meant to be used in a JHipster application.
-
-# Prerequisites
-
-As this is a [JHipster](https://www.jhipster.tech/) blueprint, we expect you have JHipster and its related tools already installed:
-
-- [Installing JHipster](https://www.jhipster.tech/installation/)
+This is a [JHipster](https://www.jhipster.tech/) blueprint based on the work done by @mraible and @joshlong at https://github.com/mraible/spring-native-examples.
+For simplicity, it provides an embedded generator-jhipster and a CLI.
 
 # Installation
 
@@ -29,24 +24,31 @@ npm install -g generator-jhipster-native
 To use this blueprint, run the below command
 
 ```bash
-jhipster --blueprints native
+jhipster-native
 ```
 
-You can look for updated native blueprint specific options by running
+For available options, you can run
 
 ```bash
-jhipster app --blueprints native --help
+jhipster-native app --help
 ```
 
-And looking for `(blueprint option: native)` like
+# Pre-release
 
-## Pre-release
-
-To use an unreleased version, install it using git.
+To use an unreleased version, install it using npm + git repository.
 
 ```bash
 npm install -g jhipster/generator-jhipster-native#main
-jhipster --blueprints native --skip-jhipster-dependencies
+jhipster-native --skip-jhipster-dependencies
+```
+
+# Updated (or pre-release) generator-jhipster
+
+This blueprint embeds a compatible generator-jhipster version, but it's possible to use an updated generator-jhipster by running the `jhipster` cli with `blueprints` option instead of the builtin `jhipster-native`, like:
+
+```bash
+npm install -g jhipster@latest
+jhipster --blueprints native
 ```
 
 [npm-image]: https://img.shields.io/npm/v/generator-jhipster-native.svg
@@ -54,4 +56,4 @@ jhipster --blueprints native --skip-jhipster-dependencies
 [github-generator-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/generator.yml/badge.svg
 [github-generator-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/generator.yml
 [github-integration-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/integration.yml/badge.svg
-[github-integration-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/integration.yml
+[github-integration-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/jdl.yml
