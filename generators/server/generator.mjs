@@ -69,7 +69,7 @@ export default class extends GeneratorBaseEntities {
         this.addMavenProperty('spring-native.version', '0.11.2');
 
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
-        this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.5');
+        this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.6');
 
         const buildArgs = ['--no-fallback'];
         if (process.env.GITHUB_ACTIONS) {
