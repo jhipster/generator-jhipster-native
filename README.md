@@ -38,7 +38,7 @@ jhipster-native app --help
 To use an unreleased version, install it using npm + git repository.
 
 ```bash
-npm install -g jhipster/generator-jhipster-native#main
+npm install -g jhipster/generator-jhipster-native
 jhipster-native --skip-jhipster-dependencies
 ```
 
