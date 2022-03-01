@@ -66,7 +66,7 @@ export default class extends GeneratorBaseEntities {
         );
 
         this.addMavenProperty('repackage.classifier');
-        this.addMavenProperty('spring-native.version', '0.11.2');
+        this.addMavenProperty('spring-native.version', '0.11.3');
 
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
         this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.6');
