@@ -355,6 +355,17 @@ class `
             );
 
           this.writeDestination(resourcePath, content);
+          if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
+            this.editFile(
+              `${SERVER_MAIN_SRC_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
+              contents =>
+                contents.replace(
+                  'import org.springframework.beans.factory.annotation.Autowired;',
+                  'import javax.persistence.PersistenceContext;'
+                ),
+              contents => contents.replace('@Autowired', '@PersistenceContext')
+            );
+          }
 
           if (reactive && databaseTypeSql) {
             this.editFile(

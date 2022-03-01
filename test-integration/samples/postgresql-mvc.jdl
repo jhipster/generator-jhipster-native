@@ -32,9 +32,6 @@ relationship ManyToOne {
   Post{blog(name)} to Blog
 }
 
-/*
 relationship ManyToMany {
   Post{tag(name)} to Tag{entry}
 }
-*/
-
