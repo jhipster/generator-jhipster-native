@@ -351,7 +351,7 @@ class `
             )
             .replaceAll(
               `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
-              `@RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload`
+              `@RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload`
             )
             .replaceAll(
               `@RequestParam(required = false, defaultValue = "true") boolean eagerload`,
