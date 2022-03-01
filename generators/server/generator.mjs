@@ -79,7 +79,7 @@ export default class extends GeneratorBaseEntities {
           'native',
           `            <properties>
                 <repackage.classifier>exec</repackage.classifier>
-                <native-buildtools.version>0.9.9</native-buildtools.version>
+                <native-buildtools.version>0.9.10</native-buildtools.version>
             </properties>
             <dependencies>
                 <dependency>
@@ -351,10 +351,25 @@ class `
             )
             .replaceAll(
               `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
-              `@RequestParam(name = "eagerload",required = false, defaultValue = "false") boolean eagerload`
+              `@RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload`
+            )
+            .replaceAll(
+              `@RequestParam(required = false, defaultValue = "true") boolean eagerload`,
+              `@RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload`
             );
 
           this.writeDestination(resourcePath, content);
+          if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
+            this.editFile(
+              `${SERVER_MAIN_SRC_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
+              contents =>
+                contents.replace(
+                  'import org.springframework.beans.factory.annotation.Autowired;',
+                  'import javax.persistence.PersistenceContext;'
+                ),
+              contents => contents.replace('@Autowired', '@PersistenceContext')
+            );
+          }
 
           if (reactive && databaseTypeSql) {
             this.editFile(
