@@ -79,7 +79,7 @@ export default class extends GeneratorBaseEntities {
           'native',
           `            <properties>
                 <repackage.classifier>exec</repackage.classifier>
-                <native-buildtools.version>0.9.9</native-buildtools.version>
+                <native-buildtools.version>0.9.10</native-buildtools.version>
             </properties>
             <dependencies>
                 <dependency>
