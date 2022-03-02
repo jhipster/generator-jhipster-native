@@ -201,6 +201,17 @@ logging:
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json'
         );
+
+        this.fs.append(
+          this.destinationPath('src/main/resources/config/application.yml'),
+          `
+---
+spring:
+  sql:
+    init:
+      mode: never
+`
+        );
       },
 
       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
