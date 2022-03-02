@@ -55,5 +55,5 @@ jhipster --blueprints native
 [npm-url]: https://npmjs.org/package/generator-jhipster-native
 [github-generator-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/generator.yml/badge.svg
 [github-generator-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/generator.yml
-[github-integration-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/integration.yml/badge.svg
+[github-integration-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/jdl.yml/badge.svg
 [github-integration-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/jdl.yml
