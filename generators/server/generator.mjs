@@ -171,7 +171,16 @@ logging:
   level:
     root: ERROR
     io.netty: ERROR
-    org.springframework: WARN
+    liquibase: ERROR
+    org.hibernate: ERROR
+    org.springframework: ERROR
+    com.zaxxer.hikari: ERROR
+    org.apache.catalina: ERROR
+    org.apache.tomcat: ERROR
+    tech.jhipster.config: ERROR
+    jdk.event.security: ERROR
+    java.net: ERROR
+    sun.net.www: ERROR
 `
         );
       },
