@@ -177,7 +177,16 @@ logging:
   level:
     root: ERROR
     io.netty: ERROR
-    org.springframework: WARN
+    liquibase: ERROR
+    org.hibernate: ERROR
+    org.springframework: ERROR
+    com.zaxxer.hikari: ERROR
+    org.apache.catalina: ERROR
+    org.apache.tomcat: ERROR
+    tech.jhipster.config: ERROR
+    jdk.event.security: ERROR
+    java.net: ERROR
+    sun.net.www: ERROR
 `
         );
       },
@@ -191,17 +200,6 @@ logging:
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json'
-        );
-
-        this.fs.append(
-          this.destinationPath('src/main/resources/config/application.yml'),
-          `
----
-spring:
-  sql:
-    init:
-      mode: never
-`
         );
       },
 
