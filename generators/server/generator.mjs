@@ -14,12 +14,6 @@ export default class extends GeneratorBaseEntities {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
     }
 
-    // Cache provider and enableHibernateCache are not known to fail. Set default values to no/false.
-    this.config.defaults({
-      cacheProvider: 'no',
-      enableHibernateCache: false,
-    });
-
     this.sbsBlueprint = true;
   }
 
