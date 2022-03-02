@@ -6,6 +6,16 @@ export default class extends GeneratorBaseEntities {
   constructor(args, opts, features) {
     super(args, opts, { taskPrefix: PRIORITY_PREFIX, ...features });
 
+    this.option('cache-provider', {
+      desc: 'Cache provider',
+      type: String,
+    });
+
+    this.option('enable-hibernate-cache', {
+      desc: 'Enable hibernate cache',
+      type: Boolean,
+    });
+
     if (this.options.help) return;
 
     if (!this.options.jhipsterContext) {
@@ -18,6 +28,14 @@ export default class extends GeneratorBaseEntities {
         cacheProvider: 'no',
         enableHibernateCache: false,
       });
+    }
+
+    if (this.options.cacheProvider !== undefined) {
+      this.jhipsterConfig.cacheProvider = this.options.cacheProvider;
+    }
+
+    if (this.options.enableHibernateCache !== undefined) {
+      this.jhipsterConfig.enableHibernateCache = this.options.enableHibernateCache;
     }
 
     this.sbsBlueprint = true;
