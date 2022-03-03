@@ -8,8 +8,9 @@
 
 # Introduction
 
-This is a [JHipster](https://www.jhipster.tech/) blueprint based on the work done by @mraible and @joshlong at https://github.com/mraible/spring-native-examples.
-For simplicity, it provides an embedded generator-jhipster and a CLI.
+This is a [JHipster](https://www.jhipster.tech/) blueprint based on the research done by [@mraible](https://github.com/mraible) and [@joshlong](https://github.com/joshlong) in their [spring-native-examples repository](https://github.com/mraible/spring-native-examples).
+
+For simplicity, it provides an embedded generator-jhipster and a CLI. To learn more, please read [Introducing Spring Native for JHipster: Serverless Full-Stack Made Easy](https://developer.okta.com/blog/2022/03/03/spring-native-jhipster). 
 
 # Installation
 
