@@ -38,10 +38,9 @@
     "lint": "eslint .",
     "lint-fix": "npm run lint -- --fix",
     "mocha": "mocha generators --no-insight --forbid-only",
-    "prettier-format": "prettier --write \"{,**/}*.{js,cjs,mjs,json,md,yml}\"",
-    "prettier:check": "prettier --check \"{,src/**/}*.{md,json,yml,html,js,ts,tsx,css,scss,vue,java}\"",
-    "prettier:format": "prettier --write \"{,src/**/}*.{md,json,yml,html,js,ts,tsx,css,scss,vue,java}\"",
-    "pretest": "npm run lint",
+    "prettier-check": "prettier --check \"{,**/}*.{md,json,yml,html,js,cjs,mjs,ts,tsx,css,scss,vue,java}\"",
+    "prettier-format": "prettier --write \"{,**/}*.{md,json,yml,html,js,cjs,mjs,ts,tsx,css,scss,vue,java}\"",
+    "pretest": "npm run prettier-check && npm run lint",
     "test": "npm run mocha --",
     "update-snapshot": "npm run mocha -- --no-parallel --updateSnapshot"
   },
