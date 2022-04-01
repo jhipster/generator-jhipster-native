@@ -2,6 +2,12 @@
 
 exports[`SubGenerator server of native JHipster blueprint run should succeed 1`] = `
 Object {
+  ".devcontainer/Dockerfile": Object {
+    "stateCleared": "modified",
+  },
+  ".devcontainer/devcontainer.json": Object {
+    "stateCleared": "modified",
+  },
   ".editorconfig": Object {
     "stateCleared": "modified",
   },
@@ -17,7 +23,7 @@ Object {
   ".lintstagedrc.js": Object {
     "stateCleared": "modified",
   },
-  ".mvn/wrapper/MavenWrapperDownloader.java": Object {
+  ".mvn/jvm.config": Object {
     "stateCleared": "modified",
   },
   ".mvn/wrapper/maven-wrapper.jar": Object {
