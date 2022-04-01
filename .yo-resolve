@@ -1,0 +1,3 @@
+cli/cli.mjs skip
+generators/server/generator.mjs skip
+README.md skip
