@@ -138,20 +138,21 @@ ${buildArgs.map(buildArg => `                                <buildArg>${buildAr
                 </plugins>
             </build>`
         );
-        let pomXml = this.readDestination('pom.xml');
-        pomXml = pomXml
-          .replace(
-            `
+
+        this.editFile('pom.xml', content =>
+          content
+            .replace(
+              `
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative-boringssl-static</artifactId>
         </dependency>`,
-            ''
-          )
-          .replace(
-            `
+              ''
+            )
+            .replace(
+              `
                 <artifactId>spring-boot-maven-plugin</artifactId>`,
-            `
+              `
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <classifier>\${repackage.classifier}</classifier>
@@ -162,8 +163,8 @@ ${buildArgs.map(buildArg => `                                <buildArg>${buildAr
                         </env>
                     </image>
                 </configuration>`
-          );
-        this.writeDestination('pom.xml', pomXml);
+            )
+        );
       },
 
       async customizeConfig() {
@@ -214,7 +215,6 @@ spring:
 
       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
         const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
-        let content = this.readDestination(mainClassPath);
         const types = [
           'org.HdrHistogram.Histogram.class',
           'org.HdrHistogram.ConcurrentHistogram.class',
@@ -244,49 +244,51 @@ spring:
 ${typeNames.join('        ,\n')}
     }`
             : '';
-        content = content.replace(
-          '@SpringBootApplication',
-          `@org.springframework.nativex.hint.TypeHint(
+
+        this.editFile(mainClassPath, content =>
+          content.replace(
+            '@SpringBootApplication',
+            `@org.springframework.nativex.hint.TypeHint(
     types = {
 ${types.join('        ,\n')}
     }${typeNamesContent}
 )
 @SpringBootApplication`
+          )
         );
-        this.writeDestination(mainClassPath, content);
       },
 
       async webConfigurer({ application: { packageFolder } }) {
-        const filePath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/config/WebConfigurer.java`;
-        let content = this.readDestination(filePath);
-        content = content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)');
-        this.writeDestination(filePath, content);
+        this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
+          content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
+        );
       },
 
       async logoutResource({ application: { packageFolder, authenticationTypeOauth2, reactive } }) {
         if (!authenticationTypeOauth2) return;
         const filePath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/web/rest/LogoutResource.java`;
 
-        let content = this.readDestination(filePath);
-        content = content
-          .replace('@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken', '@AuthenticationPrincipal OidcUser oidcUser')
-          .replace(
-            'import org.springframework.security.oauth2.core.oidc.OidcIdToken;',
-            `import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+        this.editFile(filePath, content =>
+          content
+            .replace('@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken', '@AuthenticationPrincipal OidcUser oidcUser')
+            .replace(
+              'import org.springframework.security.oauth2.core.oidc.OidcIdToken;',
+              `import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
-          )
-          .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.');
+            )
+            .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.')
+        );
         if (reactive) {
-          content = content.replace(', idToken)', ', oidcUser.getIdToken())');
+          this.editFile(filePath, content => content.replace(', idToken)', ', oidcUser.getIdToken())'));
         } else {
-          content = content.replace(
-            '// Okta',
-            `// Okta
+          this.editFile(filePath, content =>
+            content.replace(
+              '// Okta',
+              `// Okta
         OidcIdToken idToken = oidcUser.getIdToken();`
+            )
           );
         }
-
-        this.writeDestination(filePath, content);
       },
 
       userRepository({ application: { packageFolder, reactive, databaseTypeSql } }) {
@@ -344,28 +346,26 @@ class `
             this.warning(`Skipping entity generation, use '--with-entities' flag`);
             continue;
           }
-          const resourcePath = `${SERVER_MAIN_SRC_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`;
-          let content = this.readDestination(resourcePath);
+          this.editFile(`${SERVER_MAIN_SRC_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
+            content
+              .replaceAll(
+                `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`
+              )
+              .replaceAll(
+                `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`
+              )
+              .replaceAll(
+                `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
+                `@RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload`
+              )
+              .replaceAll(
+                `@RequestParam(required = false, defaultValue = "true") boolean eagerload`,
+                `@RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload`
+              )
+          );
 
-          content = content
-            .replaceAll(
-              `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-              `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`
-            )
-            .replaceAll(
-              `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-              `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`
-            )
-            .replaceAll(
-              `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
-              `@RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload`
-            )
-            .replaceAll(
-              `@RequestParam(required = false, defaultValue = "true") boolean eagerload`,
-              `@RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload`
-            );
-
-          this.writeDestination(resourcePath, content);
           if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
             this.editFile(
               `${SERVER_MAIN_SRC_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
