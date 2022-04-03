@@ -30,6 +30,8 @@ on:
     types: [closed, opened, synchronize, reopened]
     branches:
       - '*'
+permissions:
+  contents: read
 jobs:
   applications:
     name: ${{ matrix.suite }} (${{ matrix.os }})
