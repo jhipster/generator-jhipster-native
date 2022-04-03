@@ -4,6 +4,10 @@ import { PRIORITY_PREFIX, POST_WRITING_PRIORITY, POST_WRITING_ENTITIES_PRIORITY,
 
 const { SERVER_MAIN_SRC_DIR, SERVER_TEST_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
 
+const SPRING_NATIVE_VERSION = '0.11.3';
+const NATIVE_BUILDTOOLS_VERSION = '0.9.11';
+const SPRINGDOC_VERSION = '1.6.6';
+
 export default class extends GeneratorBaseEntities {
   constructor(args, opts, features) {
     super(args, opts, { taskPrefix: PRIORITY_PREFIX, ...features });
@@ -60,10 +64,10 @@ export default class extends GeneratorBaseEntities {
         );
 
         this.addMavenProperty('repackage.classifier');
-        this.addMavenProperty('spring-native.version', '0.11.3');
+        this.addMavenProperty('spring-native.version', SPRING_NATIVE_VERSION);
 
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
-        this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', '1.6.6');
+        this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', SPRINGDOC_VERSION);
 
         const buildArgs = ['--no-fallback'];
         if (process.env.GITHUB_ACTIONS) {
@@ -73,7 +77,7 @@ export default class extends GeneratorBaseEntities {
           'native',
           `            <properties>
                 <repackage.classifier>exec</repackage.classifier>
-                <native-buildtools.version>0.9.11</native-buildtools.version>
+                <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
             </properties>
             <dependencies>
                 <dependency>
