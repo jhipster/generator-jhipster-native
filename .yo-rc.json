@@ -3,6 +3,12 @@
     "baseName": "native",
     "cli": true,
     "generators": {
+      "ci-cd": {
+        "command": false,
+        "priorities": ["initializing", "configuring", "composing", "loading", "preparing", "default", "writing"],
+        "sbs": true,
+        "written": true
+      },
       "server": {
         "command": false,
         "priorities": ["writing", "postWriting", "end"],
@@ -13,6 +19,6 @@
     "jhipsterVersion": "7.6.0",
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",
-    "subGenerators": ["server"]
+    "subGenerators": ["ci-cd", "server"]
   }
 }
