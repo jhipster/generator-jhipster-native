@@ -26,10 +26,14 @@ on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - 'generators/ci-cd/**'
   pull_request:
     types: [closed, opened, synchronize, reopened]
     branches:
       - '*'
+    paths-ignore:
+      - 'generators/ci-cd/**'
 permissions:
   contents: read
 jobs:
