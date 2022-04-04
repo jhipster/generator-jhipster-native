@@ -65,11 +65,11 @@ jobs:
           echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
         working-directory: ${{ github.workspace }}
       - name: 'SETUP: setup node'
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: 'SETUP: checkout generator-jhipster-native'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: generator-jhipster-native
           fetch-depth: 2
@@ -97,14 +97,14 @@ jobs:
           #while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
         if: matrix.os == 'macos-11'
       - name: 'SETUP: load npm cache'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.npm
             ~/.cache/Cypress/
           key: ${{ runner.os }}-npm-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
       - name: 'SETUP: load maven cache'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
