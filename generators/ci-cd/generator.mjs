@@ -2,8 +2,17 @@ import chalk from 'chalk';
 import CiCdGenerator from 'generator-jhipster/esm/generators/ci-cd';
 import { constants } from 'generator-jhipster';
 import { PRIORITY_PREFIX, WRITING_PRIORITY } from 'generator-jhipster/esm/priorities';
+import { GRAALVM_VERSION } from '../../lib/constants.mjs';
 
 const { NODE_VERSION, JAVA_VERSION } = constants;
+
+const githubActions = {
+  'actions/checkout': 'actions/checkout@v3',
+  'actions/cache': 'actions/cache@v3',
+  'actions/upload-artifact': 'actions/upload-artifact@v3',
+  'graalvm/setup-graalvm': 'graalvm/setup-graalvm@v1',
+  'actions/setup-node': 'actions/setup-node@v3',
+};
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
@@ -34,6 +43,8 @@ export default class extends CiCdGenerator {
             ...application,
             NODE_VERSION,
             JAVA_VERSION,
+            GRAALVM_VERSION,
+            githubActions,
           },
         });
       },

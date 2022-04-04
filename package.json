@@ -29,6 +29,7 @@
   "files": [
     "cli",
     "generators",
+    "lib",
     "!**/__*",
     "!**/*.snap",
     "!**/*.spec.?(c|m)js"

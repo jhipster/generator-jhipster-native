@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import { GeneratorBaseEntities, constants } from 'generator-jhipster';
 import { PRIORITY_PREFIX, POST_WRITING_PRIORITY, POST_WRITING_ENTITIES_PRIORITY, END_PRIORITY } from 'generator-jhipster/esm/priorities';
+import { SPRING_NATIVE_VERSION, NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
 const { SERVER_MAIN_SRC_DIR, SERVER_TEST_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
 
-const SPRING_NATIVE_VERSION = '0.11.3';
-const NATIVE_BUILDTOOLS_VERSION = '0.9.11';
+// Drop after https://github.com/jhipster/jhipster-bom/pull/734 is released
 const SPRINGDOC_VERSION = '1.6.6';
 
 export default class extends GeneratorBaseEntities {
