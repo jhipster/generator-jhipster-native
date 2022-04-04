@@ -39,27 +39,25 @@ jobs:
       NG_CLI_ANALYTICS: false
 <%_ } _%>
     steps:
-      - uses: actions/checkout@v3
-<%_ if (!skipClient) { _%>
-      - uses: actions/setup-node@v3
+      - uses: <%= githubActions['actions/checkout'] %>
+      - uses: <%= githubActions['actions/setup-node'] %>
         with:
           node-version: <%= NODE_VERSION %>
-<%_ } _%>
       - name: 'SETUP: setup graalvm'
-        uses: graalvm/setup-graalvm@v1
+        uses: <%= githubActions['graalvm/setup-graalvm'] %>
         with:
-          version: 'latest'
+          version: '<%= GRAALVM_VERSION %>'
           java-version: '<%= JAVA_VERSION %>'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install node.js packages
-        run: <%= clientPackageManager %> install
+        run: npm install
       - name: 'E2E: Package'
-        run: <%= clientPackageManager %> run native-package
+        run: npm run native-package
 <%_ if (cypressTests) { _%>
   <%_ const commented = applicationTypeGateway ? '# ' : ''; _%>
       <%= commented %>- name: 'E2E: Prepare'
-      <%= commented %>  run: <%= clientPackageManager %> run ci:e2e:prepare
+      <%= commented %>  run: npm run ci:e2e:prepare
       <%= commented %>- name: 'E2E: Run'
-      <%= commented %>  run: <%= clientPackageManager %> run native-e2e
+      <%= commented %>  run: npm run native-e2e
 <%_ } _%>
