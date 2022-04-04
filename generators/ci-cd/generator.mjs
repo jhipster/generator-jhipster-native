@@ -37,7 +37,14 @@ export default class extends CiCdGenerator {
         if (this.options.jhipsterContext.pipeline !== 'github') return;
         await this.writeFiles({
           sections: {
-            files: [{ templates: [{ file: 'github-native.yml', renameTo: '.github/workflows/native.yml' }] }],
+            files: [
+              {
+                templates: [
+                  { file: 'github-native.yml', renameTo: '.github/workflows/native.yml' },
+                  { file: 'github-artifact.yml', renameTo: '.github/workflows/native-artifact.yml' },
+                ],
+              },
+            ],
           },
           context: {
             ...application,

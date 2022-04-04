@@ -1,0 +1,97 @@
+<%#
+ Copyright 2013-2022 the original author or authors from the JHipster project.
+
+ This file is part of the JHipster project, see https://www.jhipster.tech/
+ for more information.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-%>
+name: Generate Executables
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  build:
+    name: GraalVM - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-2019]
+        graalvm-version: ['<%= GRAALVM_VERSION %>']
+        java-version: ['<%= JAVA_VERSION %>']
+        include:
+        - os: ubuntu-latest
+          executable-suffix: ''
+        - os: macos-latest
+          executable-suffix: ''
+        - os: windows-2019
+          executable-suffix: '.exe'
+    steps:
+      # OS customizations that should improve the build time, disabled due to non official sources.
+      #- name: Set up swap space
+      #  if: runner.os == 'Linux'
+      #  uses: pierotofy/set-swap-space@v1.0
+      #  with:
+      #    swap-size-gb: 10
+      #- name: Configure pagefile
+      #  uses: al-cheb/configure-pagefile-action@v1.2
+      #  if: runner.os == 'Windows'
+      #  with:
+      #    minimum-size: 10GB
+      #    maximum-size: 12GB
+      #- name: Set up pagefile
+      #  if: runner.os == 'Windows'
+      #  run: |
+      #    (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
+
+      - uses: <%= githubActions['actions/checkout'] %>
+      - id: executable
+        run: echo "::set-output name=name::<%= baseName %>-${{ runner.os }}-${{ github.event.release.tag_name || 'snapshot' }}-x86_64"
+      - uses: <%= githubActions['actions/setup-node'] %>
+        with:
+          node-version: <%= NODE_VERSION %>
+      - name: Set up GraalVM (Java ${{ matrix.java-version }})
+        uses: <%= githubActions['graalvm/setup-graalvm'] %>
+        with:
+          version: '${{ matrix.graalvm-version }}'
+          java-version: '${{ matrix.java-version }}'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cache Maven dependencies
+        uses: <%= githubActions['actions/cache'] %>
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+      - name: Cache npm dependencies
+        uses: <%= githubActions['actions/cache'] %>
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - name: Build ${{ steps.executable.outputs.name }} native image
+        run: npm run native-package -- -B -ntp "-Dnative-image-name=${{ steps.executable.outputs.name }}"
+      - name: Archive binary
+        uses: <%= githubActions['actions/upload-artifact'] %>
+        with:
+          name: ${{ steps.executable.outputs.name }}
+          path: target/${{ steps.executable.outputs.name }}${{ matrix.executable-suffix }}
+      - name: Upload release
+        if: github.event.release.tag_name
+        run: gh release upload ${{ github.event.release.tag_name }} target/${{ steps.executable.outputs.name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
