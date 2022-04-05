@@ -22,8 +22,16 @@ describe('SubGenerator ci-cd of native JHipster blueprint', () => {
         .run();
     });
 
-    it('should match snapshot', () => {
+    it('native.yml should match snapshot', () => {
       expect(result.getSnapshot('**/.github/workflows/native.yml')).toMatchSnapshot();
+    });
+
+    it('native-artifact.yml should match snapshot', () => {
+      expect(result.getSnapshot('**/.github/workflows/native-artifact.yml')).toMatchSnapshot();
+    });
+
+    it('generated files should match snapshot', () => {
+      expect(result.getStateSnapshot()).toMatchSnapshot();
     });
   });
 });
