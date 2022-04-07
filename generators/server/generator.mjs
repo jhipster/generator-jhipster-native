@@ -43,7 +43,35 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async pomXml({ application: { buildToolMaven } }) {
+      async customizeGradle({ application: { buildToolGradle } }) {
+        if (!buildToolGradle) return;
+
+        this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
+        this.addGradleMavenRepository('https://repo.spring.io/release');
+        this.addGradlePluginManagementRepository('https://repo.spring.io/release');
+        this.addGradleDependency('implementation', 'org.springdoc', 'springdoc-openapi-native', SPRINGDOC_VERSION);
+
+        const buildArgs = ['--no-fallback'];
+        if (process.env.GITHUB_ACTIONS) {
+          buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
+        }
+
+        let buildGradle = this.readDestination('build.gradle');
+        buildGradle = buildGradle.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
+          'processResources.dependsOn bootBuildInfo',
+          `
+processResources.dependsOn bootBuildInfo
+bootBuildImage {
+  builder = "paketobuildpacks/builder:tiny"
+  environment = [
+    "BP_NATIVE_IMAGE" : "true",
+    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs}"
+  ]
+}`
+        );
+        this.writeDestination('build.gradle', buildGradle);
+      },
+      async customizeMaven({ application: { buildToolMaven } }) {
         if (!buildToolMaven) return;
 
         this.addMavenRepository(
@@ -309,15 +337,33 @@ class `
         }
       },
 
-      replaceUndertowWithTomcat({ application: { reactive, packageFolder } }) {
+      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
         if (!reactive) {
-          this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
+          if (buildToolMaven) {
+            this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
 
-          this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
-            contents
-              .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
-              .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
-          );
+            this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
+              contents
+                .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
+                .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
+            );
+          } else {
+            this.editFile('build.gradle', contents =>
+              contents.replaceAll(
+                ' implementation.exclude module: "spring-boot-starter-tomcat"',
+                ' implementation.exclude module: "spring-boot-starter-undertow"'
+              )
+            );
+            this.editFile('build.gradle', contents =>
+              contents.replaceAll('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
+            );
+            this.editFile('build.gradle', contents =>
+              contents.replaceAll(
+                'implementation "org.springframework.boot:spring-boot-starter-undertow"',
+                ' implementation "org.springframework.boot:spring-boot-starter-tomcat"'
+              )
+            );
+          }
         }
       },
 
@@ -401,20 +447,8 @@ class `
   get [END_PRIORITY]() {
     return {
       async checkCompatibility({
-        application: {
-          reactive,
-          buildToolMaven,
-          databaseTypeNo,
-          prodDatabaseTypePostgres,
-          cacheProviderNo,
-          enableHibernateCache,
-          websocket,
-          searchEngine,
-        },
+        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngine },
       }) {
-        if (!buildToolMaven) {
-          this.warning('JHipster Native is only tested with Maven build tool');
-        }
         if (!databaseTypeNo && !prodDatabaseTypePostgres) {
           this.warning('JHipster Native is only tested with PostgreSQL database');
         }
