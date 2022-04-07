@@ -19,6 +19,7 @@
     "jhipsterVersion": "7.6.0",
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",
+    "skipCommitHook": true,
     "subGenerators": ["ci-cd", "server"]
   }
 }
