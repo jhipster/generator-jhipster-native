@@ -48,7 +48,7 @@ jhipster-native --skip-jhipster-dependencies
 This blueprint embeds a compatible generator-jhipster version, but it's possible to use an updated generator-jhipster by running the `jhipster` cli with `blueprints` option instead of the builtin `jhipster-native`, like:
 
 ```bash
-npm install -g jhipster@latest
+npm install -g generator-jhipster@latest
 jhipster --blueprints native
 ```
 
