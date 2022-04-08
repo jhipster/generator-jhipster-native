@@ -5,9 +5,6 @@ import { SPRING_NATIVE_VERSION, NATIVE_BUILDTOOLS_VERSION } from '../../lib/cons
 
 const { SERVER_MAIN_SRC_DIR, SERVER_TEST_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
 
-// Drop after https://github.com/jhipster/jhipster-bom/pull/734 is released
-const SPRINGDOC_VERSION = '1.6.6';
-
 export default class extends GeneratorBaseEntities {
   constructor(args, opts, features) {
     super(args, opts, { taskPrefix: PRIORITY_PREFIX, ...features });
@@ -68,7 +65,6 @@ export default class extends GeneratorBaseEntities {
         this.addMavenProperty('native-image-name', 'native-executable');
 
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
-        this.addMavenDependency('org.springdoc', 'springdoc-openapi-native', SPRINGDOC_VERSION);
 
         const buildArgs = ['--no-fallback'];
         if (process.env.GITHUB_ACTIONS) {
