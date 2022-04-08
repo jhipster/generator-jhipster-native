@@ -24,6 +24,7 @@ export default class extends GeneratorBaseEntities {
 
   get [POST_WRITING_PRIORITY]() {
     return {
+<<<<<<< HEAD
       async packageJson() {
         this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
 
@@ -34,8 +35,31 @@ export default class extends GeneratorBaseEntities {
             'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
             'native-start': './target/native-executable',
             prepare: 'ln -fs ../../mvnw node_modules/.bin',
+=======
+      async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
+        this.packageJson.merge({
+          scripts: {
+            'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
+            'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
+>>>>>>> b9c079e (Add gradle npm script template)
           },
         });
+        if (buildToolMaven) {
+          this.packageJson.merge({
+            scripts: {
+              'native-package': './mvnw package -Pnative,prod -DskipTests',
+              'native-start': './target/native-executable',
+            },
+          });
+        } else if (buildToolGradle) {
+          this.packageJson.merge({
+            scripts: {
+              'postnative-package': 'cp build/libs/* build/native-executable',
+              'native-package': './gradle package -Pnative,prod -x test -x integrationTest',
+              'native-start': './build/native-executable',
+            },
+          });
+        }
       },
 
       async removeFiles() {
@@ -71,6 +95,7 @@ bootBuildImage {
         );
         this.writeDestination('build.gradle', buildGradle);
       },
+
       async customizeMaven({ application: { buildToolMaven } }) {
         if (!buildToolMaven) return;
 
