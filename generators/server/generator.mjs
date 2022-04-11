@@ -73,7 +73,6 @@ export default class extends GeneratorBaseEntities {
         this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
         this.addGradleMavenRepository('https://repo.spring.io/release');
         this.addGradlePluginManagementRepository('https://repo.spring.io/release');
-        this.addGradleDependency('implementation', 'org.springdoc', 'springdoc-openapi-native', SPRINGDOC_VERSION);
 
         const buildArgs = ['--no-fallback'];
         if (process.env.GITHUB_ACTIONS) {
