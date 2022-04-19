@@ -63,13 +63,10 @@ export default class extends GeneratorBaseEntities {
         this.addMavenProperty('repackage.classifier');
         this.addMavenProperty('spring-native.version', SPRING_NATIVE_VERSION);
         this.addMavenProperty('native-image-name', 'native-executable');
+        this.addMavenProperty('native-build-args');
 
         this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
 
-        const buildArgs = ['--no-fallback'];
-        if (process.env.GITHUB_ACTIONS) {
-          buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
-        }
         this.addMavenProfile(
           'native',
           `            <properties>
@@ -128,7 +125,7 @@ export default class extends GeneratorBaseEntities {
                         <configuration>
                             <imageName>\${native-image-name}</imageName>
                             <buildArgs>
-${buildArgs.map(buildArg => `                                <buildArg>${buildArg}</buildArg>`).join('/n')}
+                                <buildArg>--no-fallback \${native-build-args}</buildArg>
                             </buildArgs>
                         </configuration>
                     </plugin>

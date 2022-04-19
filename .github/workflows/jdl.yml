@@ -53,8 +53,12 @@ jobs:
           - postgresql-mvc
           - postgresql-webflux
         include:
-          - suite: postgresql-mvc
-          - suite: postgresql-webflux
+          - os: ubuntu-20.04
+            native-build-args: --verbose -J-Xmx10g
+          - os: macos-11
+            native-build-args: --verbose -J-Xmx13g
+          - os: windows-2022
+            native-build-args: --verbose -J-Xmx10g
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -137,7 +141,7 @@ jobs:
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
-        run: npm run native-package
+        run: npm run native-package -- -Dnative-build-args="${{ matrix.native-build-args }}"
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
       - name: 'TESTS: wait'
