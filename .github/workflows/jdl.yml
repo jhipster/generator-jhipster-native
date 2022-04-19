@@ -93,26 +93,26 @@ jobs:
         id: get-date
         run: echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
 
-      - name: 'SETUP Linux: Set up swap space'
+      - name: 'SETUP Linux: configure swap space'
         if: runner.os == 'Linux'
         # v1.0 (49819abfb41bd9b44fb781159c033dba90353a7c)
         uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c
         with:
           swap-size-gb: 10
       - name:
-          'SETUP Windows: Configure pagefile'
+          'SETUP Windows: configure pagefile'
           # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
         uses: al-cheb/configure-pagefile-action@7e234852c937eea04d6ee627c599fb24a5bfffee
         if: runner.os == 'Windows'
         with:
           minimum-size: 10GB
           maximum-size: 12GB
-      - name: 'SETUP Windows: Set up pagefile'
+      - name: 'SETUP Windows: check pagefile'
         if: runner.os == 'Windows'
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
         shell: pwsh
-      - name: 'SETUP MacOS: docker'
+      - name: 'SETUP MacOS: install docker'
         run: |
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
           sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
