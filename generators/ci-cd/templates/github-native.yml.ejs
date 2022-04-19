@@ -28,7 +28,7 @@ jobs:
     name: <%= baseName %> native pipeline
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
-    timeout-minutes: 40
+    timeout-minutes: 90
     env:
       SPRING_OUTPUT_ANSI_ENABLED: DETECT
 <%_ if (!databaseTypeNo && !skipServer ) { _%>
