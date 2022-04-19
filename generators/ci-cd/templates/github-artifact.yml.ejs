@@ -40,10 +40,13 @@ jobs:
         include:
         - os: ubuntu-latest
           executable-suffix: ''
+          native-build-args: --verbose -J-Xmx10g
         - os: macos-latest
           executable-suffix: ''
+          native-build-args: --verbose -J-Xmx13g
         - os: windows-2019
           executable-suffix: '.exe'
+          native-build-args: --verbose -J-Xmx10g
     steps:
       # OS customizations that should improve the build time.
       # Using hash for better security due to third party actions.
@@ -91,7 +94,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
       - name: Build ${{ steps.executable.outputs.name }} native image
-        run: npm run native-package -- -B -ntp "-Dnative-image-name=${{ steps.executable.outputs.name }}"
+        run: npm run native-package -- -B -ntp "-Dnative-image-name=${{ steps.executable.outputs.name }}" "-Dnative-build-args=${{ matrix.native-build-args }}"
       - name: Archive binary
         uses: <%= githubActions['actions/upload-artifact'] %>
         with:

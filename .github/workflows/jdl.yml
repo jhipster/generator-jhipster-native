@@ -64,6 +64,7 @@ jobs:
       # Install all tools and check configuration
       #----------------------------------------------------------------------
       - name: 'SETUP: create app folder'
+        if: runner.os == 'Linux' || runner.os == 'macOS'
         run: |
           mkdir app
           echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
@@ -141,7 +142,7 @@ jobs:
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
-        run: npm run native-package -- -Dnative-build-args="${{ matrix.native-build-args }}"
+        run: npm run native-package -- "-Dnative-build-args=${{ matrix.native-build-args }}"
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
       - name: 'TESTS: wait'
