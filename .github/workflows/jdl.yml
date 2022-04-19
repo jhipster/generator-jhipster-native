@@ -49,7 +49,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-11, windows-2019]
+        os: [ubuntu-20.04, macos-11]
         suite:
           - postgresql-mvc
           - postgresql-webflux
@@ -58,8 +58,6 @@ jobs:
             native-build-args: --verbose -J-Xmx10g
           - os: macos-11
             native-build-args: --verbose -J-Xmx13g
-          - os: windows-2022
-            native-build-args: --verbose -J-Xmx10g
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
