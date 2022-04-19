@@ -28,6 +28,9 @@ jobs:
     name: GraalVM - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
