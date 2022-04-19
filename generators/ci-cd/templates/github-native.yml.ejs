@@ -61,6 +61,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
+        shell: pwsh
 
       - uses: <%= githubActions['actions/checkout'] %>
       - uses: <%= githubActions['actions/setup-node'] %>
