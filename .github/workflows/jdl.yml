@@ -48,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-11]
+        os: [ubuntu-20.04, macos-11, windows-2022]
         suite:
           - postgresql-mvc
           - postgresql-webflux
@@ -88,6 +88,25 @@ jobs:
       - name: 'SETUP: get date'
         id: get-date
         run: echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+
+      - name: Set up swap space
+        if: runner.os == 'Linux'
+        # v1.0 (49819abfb41bd9b44fb781159c033dba90353a7c)
+        uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c
+        with:
+          swap-size-gb: 10
+      - name: Configure pagefile
+         # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
+        uses: al-cheb/configure-pagefile-action@7e234852c937eea04d6ee627c599fb24a5bfffee
+        if: runner.os == 'Windows'
+        with:
+          minimum-size: 10GB
+          maximum-size: 12GB
+      - name: Set up pagefile
+        if: runner.os == 'Windows'
+        run: |
+          (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
+        shell: pwsh
       - name: 'SETUP: docker'
         run: |
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
@@ -95,7 +114,8 @@ jobs:
           open -a /Applications/Docker.app --args --unattended --accept-license
           #echo "We are waiting for Docker to be up and running. It can take over 2 minutes..."
           #while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
-        if: matrix.os == 'macos-11'
+        if: runner.os == 'macOS'
+
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v3
         with:
