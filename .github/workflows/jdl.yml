@@ -65,11 +65,11 @@ jobs:
       # Install all tools and check configuration
       #----------------------------------------------------------------------
       - name: 'SETUP: create app folder'
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        run: |
-          mkdir app
-          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+        run: mkdir app
         working-directory: ${{ github.workspace }}
+      - name: 'SETUP: Configure keycloak host'
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v3
         with:
