@@ -98,6 +98,6 @@ jobs:
           path: target/${{ steps.executable.outputs.name }}${{ matrix.executable-suffix }}
       - name: Upload release
         if: github.event.release.tag_name
-        run: gh release upload ${{ github.event.release.tag_name }} target/${{ steps.executable.outputs.name }}
+        run: gh release upload ${{ github.event.release.tag_name }} target/${{ steps.executable.outputs.name }}${{ matrix.executable-suffix }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
