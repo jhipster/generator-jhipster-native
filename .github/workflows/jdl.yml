@@ -56,7 +56,7 @@ jobs:
         include:
           - os: ubuntu-20.04
           - os: macos-11
-            native-build-args: --verbose -J-Xmx13g
+            extra-args: '"-Dnative-build-args=--verbose -J-Xmx13g"'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -141,7 +141,7 @@ jobs:
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
-        run: npm run native-package -- "-Dnative-build-args=${{ matrix.native-build-args }}"
+        run: npm run native-package -- ${{ matrix.extra-args }}
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
       - name: 'TESTS: wait'
