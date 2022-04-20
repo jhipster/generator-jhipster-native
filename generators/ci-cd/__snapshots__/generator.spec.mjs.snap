@@ -30,7 +30,7 @@ permissions:
 jobs:
   pipeline:
     name: jhipster native pipeline
-    runs-on: ubuntu-latest
+    runs-on: \${{ matrix.os }}
     if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
     timeout-minutes: 90
     env:
@@ -41,8 +41,24 @@ jobs:
     defaults:
       run:
         shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-2019]
+        graalvm-version: [\\"22.0.0.2\\"]
+        java-version: [\\"11\\"]
+        include:
+          - os: ubuntu-latest
+            executable-suffix: \\"\\"
+            native-build-args: --verbose -J-Xmx10g
+          - os: macos-latest
+            executable-suffix: \\"\\"
+            native-build-args: --verbose -J-Xmx13g
+          - os: windows-2019
+            executable-suffix: \\".exe\\"
+            native-build-args: --verbose -J-Xmx10g
     steps:
-      # OS customizations that should improve the build time.
+      # OS customizations that allow the builds to succeed on Linux and Windows.
       # Using hash for better security due to third party actions.
       - name: Set up swap space
         if: runner.os == 'Linux'
@@ -76,17 +92,28 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.14.0
-      - name: \\"SETUP: setup graalvm\\"
+      - name: Set up GraalVM (Java \${{ matrix.java-version }})
         uses: graalvm/setup-graalvm@v1
         with:
-          version: \\"22.0.0.2\\"
-          java-version: \\"11\\"
+          version: \\"\${{ matrix.graalvm-version }}\\"
+          java-version: \\"\${{ matrix.java-version }}\\"
           components: \\"native-image\\"
           github-token: \${{ secrets.GITHUB_TOKEN }}
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: \${{ runner.os }}-maven-\${{ hashFiles('**/pom.xml') }}
+          restore-keys: \${{ runner.os }}-maven
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: \${{ runner.os }}-npm-\${{ hashFiles('**/package-lock.json') }}
       - name: Install node.js packages
         run: npm install
       - name: \\"E2E: Package\\"
-        run: npm run native-package -- -B -ntp \\"-Dnative-build-args=-J-Xmx10g\\"
+        run: npm run native-package -- -B -ntp \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
       - name: \\"E2E: Prepare\\"
         run: npm run ci:e2e:prepare
       - name: \\"E2E: Run\\"
@@ -109,7 +136,7 @@ permissions:
   contents: write
 jobs:
   build:
-    name: GraalVM - \${{ matrix.os }}
+    name: Generate executable - \${{ matrix.os }}
     runs-on: \${{ matrix.os }}
     timeout-minutes: 90
     defaults:
