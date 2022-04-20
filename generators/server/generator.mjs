@@ -28,10 +28,10 @@ export default class extends GeneratorBaseEntities {
         this.packageJson.merge({
           scripts: {
             'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
-            'native-package': 'mvnw package -Pnative,prod -DskipTests',
+            'native-package': 'bin/mvnw package -Pnative,prod -DskipTests',
             'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
             'native-start': './target/native-executable',
-            prepare: 'ln -fs ../../mvnw node_modules/.bin',
+            prepare: 'mkdir -p bin && ln -fs ../mvnw bin',
           },
         });
       },
