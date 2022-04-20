@@ -86,7 +86,7 @@ jobs:
       - name: Install node.js packages
         run: npm install
       - name: \\"E2E: Package\\"
-        run: npm run native-package
+        run: npm run native-package -- -B -ntp \\"-Dnative-build-args=-J-Xmx10g\\"
       - name: \\"E2E: Prepare\\"
         run: npm run ci:e2e:prepare
       - name: \\"E2E: Run\\"
@@ -132,7 +132,7 @@ jobs:
             executable-suffix: \\".exe\\"
             native-build-args: --verbose -J-Xmx10g
     steps:
-      # OS customizations that should improve the build time.
+      # OS customizations that allow the builds to succeed on Linux and Windows.
       # Using hash for better security due to third party actions.
       - name: Set up swap space
         if: runner.os == 'Linux'
