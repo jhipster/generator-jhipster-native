@@ -42,6 +42,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
+        shell: bash
         working-directory: ${{ github.workspace }}/app
     if: github.event.action != 'closed'
     timeout-minutes: 90
@@ -53,17 +54,20 @@ jobs:
           - postgresql-mvc
           - postgresql-webflux
         include:
-          - suite: postgresql-mvc
-          - suite: postgresql-webflux
+          - os: ubuntu-20.04
+            native-build-args: --verbose -J-Xmx10g
+          - os: macos-11
+            native-build-args: --verbose -J-Xmx13g
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
       - name: 'SETUP: create app folder'
-        run: |
-          mkdir app
-          echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+        run: mkdir app
         working-directory: ${{ github.workspace }}
+      - name: 'SETUP: Configure keycloak host'
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v3
         with:
@@ -88,14 +92,35 @@ jobs:
       - name: 'SETUP: get date'
         id: get-date
         run: echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-      - name: 'SETUP: docker'
+
+      - name: 'SETUP Linux: configure swap space'
+        if: runner.os == 'Linux'
+        # v1.0 (49819abfb41bd9b44fb781159c033dba90353a7c)
+        uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c
+        with:
+          swap-size-gb: 10
+      - name:
+          'SETUP Windows: configure pagefile'
+          # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
+        uses: al-cheb/configure-pagefile-action@7e234852c937eea04d6ee627c599fb24a5bfffee
+        if: runner.os == 'Windows'
+        with:
+          minimum-size: 10GB
+          maximum-size: 12GB
+      - name: 'SETUP Windows: check pagefile'
+        if: runner.os == 'Windows'
+        run: |
+          (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
+        shell: pwsh
+      - name: 'SETUP MacOS: install docker'
         run: |
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
           sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
           open -a /Applications/Docker.app --args --unattended --accept-license
           #echo "We are waiting for Docker to be up and running. It can take over 2 minutes..."
           #while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
-        if: matrix.os == 'macos-11'
+        if: runner.os == 'macOS'
+
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v3
         with:
@@ -117,7 +142,7 @@ jobs:
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
-        run: npm run native-package
+        run: npm run native-package -- "-Dnative-build-args=${{ matrix.native-build-args }}"
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
       - name: 'TESTS: wait'
