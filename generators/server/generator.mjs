@@ -34,6 +34,7 @@ export default class extends GeneratorBaseEntities {
             prepare: 'mkdir -p bin && ln -fs ../mvnw bin',
           },
         });
+        this.editFile('package.json', content => content.replaceAll('./mvnw', 'bin/mvnw'));
       },
 
       async removeFiles() {
