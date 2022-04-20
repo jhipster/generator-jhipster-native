@@ -55,7 +55,6 @@ jobs:
           - postgresql-webflux
         include:
           - os: ubuntu-20.04
-            native-build-args: --verbose -J-Xmx10g
           - os: macos-11
             native-build-args: --verbose -J-Xmx13g
     steps:
