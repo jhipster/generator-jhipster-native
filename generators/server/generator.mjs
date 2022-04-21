@@ -79,6 +79,10 @@ export default class extends GeneratorBaseEntities {
           buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
         }
 
+        let devGradle = this.readDestination('gradle/profile_dev.gradle');
+        devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '')
+        this.writeDestination('gradle/profile_dev.gradle', buildGradle);
+
         let buildGradle = this.readDestination('build.gradle');
         buildGradle = buildGradle.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
           'processResources.dependsOn bootBuildInfo',
@@ -91,7 +95,8 @@ bootBuildImage {
     "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs}"
   ]
 }`
-        );
+        ).replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
+
         this.writeDestination('build.gradle', buildGradle);
       },
 
