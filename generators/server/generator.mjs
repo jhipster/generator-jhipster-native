@@ -80,13 +80,15 @@ export default class extends GeneratorBaseEntities {
         }
 
         let devGradle = this.readDestination('gradle/profile_dev.gradle');
-        devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '')
+        devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
         this.writeDestination('gradle/profile_dev.gradle', buildGradle);
 
         let buildGradle = this.readDestination('build.gradle');
-        buildGradle = buildGradle.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
-          'processResources.dependsOn bootBuildInfo',
-          `
+        buildGradle = buildGradle
+          .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
+          .replace(
+            'processResources.dependsOn bootBuildInfo',
+            `
 processResources.dependsOn bootBuildInfo
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
@@ -95,7 +97,8 @@ bootBuildImage {
     "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs}"
   ]
 }`
-        ).replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
+          )
+          .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
 
         this.writeDestination('build.gradle', buildGradle);
       },
