@@ -81,7 +81,7 @@ export default class extends GeneratorBaseEntities {
 
         let devGradle = this.readDestination('gradle/profile_dev.gradle');
         devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
-        this.writeDestination('gradle/profile_dev.gradle', buildGradle);
+        this.writeDestination('gradle/profile_dev.gradle', devGradle);
 
         let buildGradle = this.readDestination('build.gradle');
         buildGradle = buildGradle
