@@ -25,12 +25,15 @@ export default class extends GeneratorBaseEntities {
   get [POST_WRITING_PRIORITY]() {
     return {
       async packageJson() {
+        this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
+
         this.packageJson.merge({
           scripts: {
             'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
-            'native-package': './mvnw package -Pnative,prod -DskipTests',
+            'native-package': 'mvnw package -Pnative,prod -DskipTests',
             'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
             'native-start': './target/native-executable',
+            prepare: 'ln -fs ../../mvnw node_modules/.bin',
           },
         });
       },
