@@ -46,9 +46,9 @@ export default class extends GeneratorBaseEntities {
         } else if (buildToolGradle) {
           this.packageJson.merge({
             scripts: {
-              'postnative-package': 'cp build/native-compile/native/* build/native/native-compilte/native-executable',
+              'postnative-package': 'cp build/native/nativeCompile/*',
               'native-package': './gradlew nativeCompile -Pprod -x test -x integrationTest',
-              'native-start': './build/native/native-compile/native-executable',
+              'native-start': './build/native/nativeCompile/native-executable',
             },
           });
         }
