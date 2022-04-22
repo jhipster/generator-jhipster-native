@@ -396,14 +396,13 @@ class `
 
       replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
         if (!reactive) {
+          this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
+            contents
+              .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
+              .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
+          );
           if (buildToolMaven) {
             this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
-
-            this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
-              contents
-                .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
-                .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
-            );
           } else {
             this.editFile('build.gradle', contents =>
               contents.replaceAll(
