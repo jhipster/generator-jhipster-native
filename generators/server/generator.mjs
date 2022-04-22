@@ -59,13 +59,23 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async customizeGradle({ application: { buildToolGradle } }) {
+      async customizeGradle({ application: { buildToolGradle, reactive, devDatabaseTypeH2Any } }) {
         if (!buildToolGradle) return;
 
         this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
         this.addGradleMavenRepository('https://repo.spring.io/release');
         this.addGradlePluginManagementRepository('https://repo.spring.io/release');
 
+        if (devDatabaseTypeH2Any) {
+          if (reactive) {
+            this.editFile('build.gradle', contents => contents.replace('implementation "io.r2dbc:r2dbc-h2"', ''));
+          } else {
+            this.editFile('build.gradle', contents => contents.replace('liquibaseRuntime "com.h2database:h2"', ''));
+          }
+        }
+
+        let devGradle = this.readDestination('gradle/profile_dev.gradle');
+        devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
         const buildArgs = ['--no-fallback'];
         let verbose = false;
         let memory = '';
@@ -76,9 +86,11 @@ export default class extends GeneratorBaseEntities {
         }
 
         let buildGradle = this.readDestination('build.gradle');
-        buildGradle = buildGradle.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
-          'processResources.dependsOn bootBuildInfo',
-          `
+        buildGradle = buildGradle
+          .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
+          .replace(
+            'processResources.dependsOn bootBuildInfo',
+            `
 processResources.dependsOn bootBuildInfo
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
@@ -91,16 +103,19 @@ graalvmNative {
   binaries {
     main {
       imageName = 'native-executable'
-      javaLauncher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(11)
-        vendor = JvmVendorSpec.matching("GraalVM Community")
-      }
+      //this is only needed when you toolchain can't be detected
+      //javaLauncher = javaToolchains.launcherFor {
+      //  languageVersion = JavaLanguageVersion.of(11)
+      //  vendor = JvmVendorSpec.matching("GraalVM Community")
+      //}
       verbose = ${verbose}
       buildArgs.add('${memory}')
     }
   }
 }`
-        );
+          )
+          .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
+
         this.writeDestination('build.gradle', buildGradle);
       },
 
@@ -316,6 +331,15 @@ ${types.join('        ,\n')}
         );
       },
 
+      async h2TcpServer({ application: { packageFolder, buildToolGradle, devDatabaseTypeH2Any } }) {
+        if (devDatabaseTypeH2Any && buildToolGradle) {
+          this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/DatabaseConfiguration.java`, content =>
+            content
+              .replace('@Bean(initMethod = "start", destroyMethod = "stop"', '')
+              .replace('@Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT', '')
+          );
+        }
+      },
       async webConfigurer({ application: { packageFolder } }) {
         this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
           content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
