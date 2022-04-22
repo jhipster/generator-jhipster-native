@@ -94,7 +94,7 @@ bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
   environment = [
     "BP_NATIVE_IMAGE" : "true",
-    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs}"
+    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs.join(' ')}"
   ]
 }`
           )
