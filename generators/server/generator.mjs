@@ -25,7 +25,6 @@ export default class extends GeneratorBaseEntities {
   get [POST_WRITING_PRIORITY]() {
     return {
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
-        
         if (buildToolMaven) {
           this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
         }
