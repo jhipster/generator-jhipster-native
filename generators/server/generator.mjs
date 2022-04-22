@@ -56,7 +56,7 @@ export default class extends GeneratorBaseEntities {
             scripts: {
               'postnative-package': 'cp build/native/nativeCompile/* build/native-executable',
               'native-package': './gradlew bootBuildImage -Pnative,prod -x test -x integrationTest',
-              'native-start': './build/native/nativeCompile',
+              'native-start': './build/native-executable',
             },
           });
         }
