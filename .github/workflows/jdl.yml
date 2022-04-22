@@ -111,6 +111,12 @@ jobs:
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
         shell: pwsh
+      - name: 'SETUP Windows: setup docker'
+        if: runner.os == 'Windows'
+        run: |
+          cd "C:\Program Files\Docker\Docker"
+          ./DockerCli.exe -SwitchDaemon
+        shell: pwsh
       - name: 'SETUP MacOS: install docker'
         run: |
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
