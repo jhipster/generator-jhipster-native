@@ -335,8 +335,8 @@ ${types.join('        ,\n')}
         if (devDatabaseTypeH2Any && buildToolGradle) {
           this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/DatabaseConfiguration.java`, content =>
             content
-              .replace('@Bean(initMethod = "start", destroyMethod = "stop"', '')
-              .replace('@Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT', '')
+              .replace('@Bean(initMethod = "start", destroyMethod = "stop")', '')
+              .replace('@Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)', '')
           );
         }
       },
