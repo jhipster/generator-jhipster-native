@@ -28,6 +28,9 @@ export default class extends GeneratorBaseEntities {
         if (buildToolMaven) {
           this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
         }
+        if (buildToolGradle) {
+          this.editFile('package.json', content => content.replaceAll('./gradlew', 'gradlew'));
+        }
 
         this.packageJson.merge({
           scripts: {
@@ -47,8 +50,9 @@ export default class extends GeneratorBaseEntities {
           this.packageJson.merge({
             scripts: {
               'postnative-package': 'cp build/native/nativeCompile/*',
-              'native-package': './gradlew nativeCompile -Pprod -x test -x integrationTest',
+              'native-package': 'gradlew nativeCompile -Pprod -x test -x integrationTest',
               'native-start': './build/native/nativeCompile/native-executable',
+              prepare: 'ln -fs ../../gradlew node_modules/.bin',
             },
           });
         }
