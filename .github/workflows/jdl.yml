@@ -49,7 +49,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-11]
+        os: [ubuntu-20.04, macos-11, windows-2019]
         suite:
           - postgresql-mvc
           - postgresql-webflux
@@ -57,6 +57,8 @@ jobs:
           - os: ubuntu-20.04
           - os: macos-11
             extra-args: '"-Dnative-build-args=--verbose -J-Xmx13g"'
+          - os: windows-2019
+            e2e: false
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -144,8 +146,10 @@ jobs:
         run: npm run native-package -- ${{ matrix.extra-args }}
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
+        if: matrix.e2e != false
       - name: 'TESTS: wait'
         run: sleep 60
         if: matrix.os == 'macos-11'
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
+        if: matrix.e2e != false
