@@ -24,39 +24,32 @@ export default class extends GeneratorBaseEntities {
 
   get [POST_WRITING_PRIORITY]() {
     return {
-<<<<<<< HEAD
-      async packageJson() {
-        this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
+      async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
+        
+        if (buildToolMaven) {
+          this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
+        }
 
         this.packageJson.merge({
           scripts: {
             'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
-            'native-package': 'mvnw package -Pnative,prod -DskipTests',
             'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
-            'native-start': './target/native-executable',
-            prepare: 'ln -fs ../../mvnw node_modules/.bin',
-=======
-      async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
-        this.packageJson.merge({
-          scripts: {
-            'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
-            'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
->>>>>>> b9c079e (Add gradle npm script template)
           },
         });
         if (buildToolMaven) {
           this.packageJson.merge({
             scripts: {
-              'native-package': './mvnw package -Pnative,prod -DskipTests',
+              'native-package': 'mvnw package -Pnative,prod -DskipTests',
               'native-start': './target/native-executable',
+              prepare: 'ln -fs ../../mvnw node_modules/.bin',
             },
           });
         } else if (buildToolGradle) {
           this.packageJson.merge({
             scripts: {
-              'postnative-package': 'cp build/native/nativeCompile/* build/native-executable',
-              'native-package': './gradlew bootBuildImage -Pnative,prod -x test -x integrationTest',
-              'native-start': './build/native-executable',
+              'postnative-package': 'cp build/native-compile/native/* build/native/native-compilte/native-executable',
+              'native-package': './gradle nativeCompile -Pprod -x test -x integrationTest',
+              'native-start': './build/native/native-compile/native-executable',
             },
           });
         }
@@ -75,31 +68,40 @@ export default class extends GeneratorBaseEntities {
         this.addGradlePluginManagementRepository('https://repo.spring.io/release');
 
         const buildArgs = ['--no-fallback'];
+        let verbose = false;
+        let memory = '';
         if (process.env.GITHUB_ACTIONS) {
+          verbose = true;
+          memory = process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g';
           buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
         }
 
-        let devGradle = this.readDestination('gradle/profile_dev.gradle');
-        devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
-        this.writeDestination('gradle/profile_dev.gradle', devGradle);
-
         let buildGradle = this.readDestination('build.gradle');
-        buildGradle = buildGradle
-          .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
-          .replace(
-            'processResources.dependsOn bootBuildInfo',
-            `
+        buildGradle = buildGradle.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
+          'processResources.dependsOn bootBuildInfo',
+          `
 processResources.dependsOn bootBuildInfo
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
   environment = [
     "BP_NATIVE_IMAGE" : "true",
-    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs.join(' ')}"
+    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs}"
   ]
+}
+graalvmNative {
+  binaries {
+    main {
+      imageName = 'native-executable'
+      javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(11)
+        vendor = JvmVendorSpec.matching("GraalVM Community")
+      }
+      verbose = ${verbose}
+      buildArgs.add('${memory}')
+    }
+  }
 }`
-          )
-          .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
-
+        );
         this.writeDestination('build.gradle', buildGradle);
       },
 
@@ -315,15 +317,6 @@ ${types.join('        ,\n')}
         );
       },
 
-      async h2TcpServer({ application: { packageFolder, buildToolGradle, devDatabaseTypeH2Any } }) {
-        if (devDatabaseTypeH2Any && buildToolGradle) {
-          this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/DatabaseConfiguration.java`, content =>
-            content
-              .replace('@Bean(initMethod = "start", destroyMethod = "stop")', '')
-              .replace('@Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)', '')
-          );
-        }
-      },
       async webConfigurer({ application: { packageFolder } }) {
         this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
           content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
@@ -378,36 +371,32 @@ class `
         }
       },
 
-      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven, buildToolGradle, devDatabaseTypeH2Any } }) {
+      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
         if (!reactive) {
-          this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
-            contents
-              .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
-              .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
-          );
-
           if (buildToolMaven) {
             this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
-          } else if (buildToolGradle) {
-            this.editFile('build.gradle', contents =>
+
+            this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
               contents
-                .replace(
-                  'implementation.exclude module: "spring-boot-starter-tomcat"',
-                  'implementation.exclude module: "spring-boot-starter-undertow"'
-                )
-                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
-                .replace(
-                  'implementation "org.springframework.boot:spring-boot-starter-undertow"',
-                  'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
-                )
+                .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
+                .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
             );
-            if (devDatabaseTypeH2Any) {
-              if (reactive) {
-                this.editFile('build.gradle', contents => contents.replace('implementation "io.r2dbc:r2dbc-h2"', ''));
-              } else {
-                this.editFile('build.gradle', contents => contents.replace('liquibaseRuntime "com.h2database:h2"', ''));
-              }
-            }
+          } else {
+            this.editFile('build.gradle', contents =>
+              contents.replaceAll(
+                ' implementation.exclude module: "spring-boot-starter-tomcat"',
+                ' implementation.exclude module: "spring-boot-starter-undertow"'
+              )
+            );
+            this.editFile('build.gradle', contents =>
+              contents.replaceAll('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
+            );
+            this.editFile('build.gradle', contents =>
+              contents.replaceAll(
+                'implementation "org.springframework.boot:spring-boot-starter-undertow"',
+                ' implementation "org.springframework.boot:spring-boot-starter-tomcat"'
+              )
+            );
           }
         }
       },
