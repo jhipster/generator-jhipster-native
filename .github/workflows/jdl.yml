@@ -125,6 +125,12 @@ jobs:
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
         shell: pwsh
+      - name: 'SETUP Windows: configure npm shell'
+        if: runner.os == 'Windows'
+        run: |
+          npm config ls -l | grep shell
+          npm config set script-shell bash --userconfig ./.npmrc
+          npm config ls -l | grep shell
       - name: 'SETUP MacOS: install docker'
         run: |
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
