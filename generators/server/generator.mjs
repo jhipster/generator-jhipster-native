@@ -369,7 +369,7 @@ class `
         }
       },
 
-      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven, buildToolGradle } }) {
+      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven, buildToolGradle, devDatabaseTypeH2Any } }) {
         if (!reactive) {
           this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
             contents
@@ -382,16 +382,23 @@ class `
           } else if (buildToolGradle) {
             this.editFile('build.gradle', contents =>
               contents
-                .replaceAll(
+                .replace(
                   'implementation.exclude module: "spring-boot-starter-tomcat"',
                   'implementation.exclude module: "spring-boot-starter-undertow"'
                 )
-                .replaceAll('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
-                .replaceAll(
+                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
+                .replace(
                   'implementation "org.springframework.boot:spring-boot-starter-undertow"',
                   'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
                 )
             );
+            if (devDatabaseTypeH2Any) {
+              if (reactive) {
+                this.editFile('build.gradle', contents => contents.replace('implementation "io.r2dbc:r2dbc-h2"', ''));
+              } else {
+                this.editFile('build.gradle', contents => contents.replace('liquibaseRuntime "com.h2database:h2"', ''));
+              }
+            }
           }
         }
       },
