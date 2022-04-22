@@ -55,7 +55,7 @@ export default class extends GeneratorBaseEntities {
           this.packageJson.merge({
             scripts: {
               'postnative-package': 'cp build/libs/* build/native-executable',
-              'native-package': './gradlew assemble nativeCompile -Pnative,prod -x test -x integrationTest',
+              'native-package': './gradlew bootBuildImage -Pnative,prod -x test -x integrationTest',
               'native-start': './build/native-executable',
             },
           });
