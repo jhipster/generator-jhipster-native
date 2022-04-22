@@ -369,31 +369,28 @@ class `
         }
       },
 
-      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
+      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven, buildToolGradle } }) {
         if (!reactive) {
+          this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
+            contents
+              .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
+              .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
+          );
+
           if (buildToolMaven) {
             this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
-
-            this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
+          } else if (buildToolGradle) {
+            this.editFile('build.gradle', contents =>
               contents
-                .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
-                .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
-            );
-          } else {
-            this.editFile('build.gradle', contents =>
-              contents.replaceAll(
-                ' implementation.exclude module: "spring-boot-starter-tomcat"',
-                ' implementation.exclude module: "spring-boot-starter-undertow"'
-              )
-            );
-            this.editFile('build.gradle', contents =>
-              contents.replaceAll('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
-            );
-            this.editFile('build.gradle', contents =>
-              contents.replaceAll(
-                'implementation "org.springframework.boot:spring-boot-starter-undertow"',
-                ' implementation "org.springframework.boot:spring-boot-starter-tomcat"'
-              )
+                .replaceAll(
+                  'implementation.exclude module: "spring-boot-starter-tomcat"',
+                  'implementation.exclude module: "spring-boot-starter-undertow"'
+                )
+                .replaceAll('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
+                .replaceAll(
+                  'implementation "org.springframework.boot:spring-boot-starter-undertow"',
+                  'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
+                )
             );
           }
         }
