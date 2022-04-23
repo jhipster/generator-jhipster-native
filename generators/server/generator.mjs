@@ -331,16 +331,6 @@ ${types.join('        ,\n')}
         );
       },
 
-      async h2TcpServer({ application: { packageFolder, buildToolGradle, devDatabaseTypeH2Any } }) {
-        return
-        if (devDatabaseTypeH2Any && buildToolGradle) {
-          this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/DatabaseConfiguration.java`, content =>
-            content
-              .replace('@Bean(initMethod = "start", destroyMethod = "stop")', '')
-              .replace('@Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)', '')
-          );
-        }
-      },
       async webConfigurer({ application: { packageFolder } }) {
         this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
           content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
