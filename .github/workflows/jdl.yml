@@ -35,7 +35,7 @@ on:
     paths-ignore:
       - 'generators/ci-cd/**'
 permissions:
-  contents: write
+  contents: read
 jobs:
   applications:
     name: ${{ matrix.suite }} (${{ matrix.os }}, ${{ matrix.build-tool }})
