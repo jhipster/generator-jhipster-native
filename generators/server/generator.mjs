@@ -411,7 +411,7 @@ class `
                   'implementation.exclude module: "spring-boot-starter-tomcat"',
                   'implementation.exclude module: "spring-boot-starter-undertow"'
                 )
-                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-
+                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
                 .replace(
                   'implementation "org.springframework.boot:spring-boot-starter-undertow"',
                   'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
