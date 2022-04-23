@@ -49,7 +49,6 @@ export default class extends GeneratorBaseEntities {
         } else if (buildToolGradle) {
           this.packageJson.merge({
             scripts: {
-              'postnative-package': 'cp build/native/nativeCompile/*',
               'native-package': 'gradlew nativeCompile -Pprod -x test -x integrationTest',
               'native-start': './build/native/nativeCompile/native-executable',
               prepare: 'ln -fs ../../gradlew node_modules/.bin',
@@ -78,8 +77,8 @@ export default class extends GeneratorBaseEntities {
           }
         }
 
-        let devGradle = this.readDestination('gradle/profile_dev.gradle');
-        devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
+        // let devGradle = this.readDestination('gradle/profile_dev.gradle');
+        // devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
         const buildArgs = ['--no-fallback'];
         let verbose = false;
         let memory = '';
@@ -89,12 +88,12 @@ export default class extends GeneratorBaseEntities {
           buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
         }
 
-        let buildGradle = this.readDestination('build.gradle');
-        buildGradle = buildGradle
-          .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
-          .replace(
-            'processResources.dependsOn bootBuildInfo',
-            `
+        this.editFile('build.gradle', content =>
+          content
+            .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
+            .replace(
+              'processResources.dependsOn bootBuildInfo',
+              `
 processResources.dependsOn bootBuildInfo
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
@@ -117,10 +116,9 @@ graalvmNative {
     }
   }
 }`
-          )
-          .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
-
-        this.writeDestination('build.gradle', buildGradle);
+            )
+            .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '')
+        );
       },
 
       async customizeMaven({ application: { buildToolMaven } }) {
