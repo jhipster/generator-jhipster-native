@@ -77,8 +77,6 @@ export default class extends GeneratorBaseEntities {
           }
         }
 
-        // let devGradle = this.readDestination('gradle/profile_dev.gradle');
-        // devGradle = devGradle.replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '');
         const buildArgs = ['--no-fallback'];
         let verbose = false;
         let memory = '';
@@ -334,6 +332,7 @@ ${types.join('        ,\n')}
       },
 
       async h2TcpServer({ application: { packageFolder, buildToolGradle, devDatabaseTypeH2Any } }) {
+        return
         if (devDatabaseTypeH2Any && buildToolGradle) {
           this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/DatabaseConfiguration.java`, content =>
             content
@@ -407,19 +406,16 @@ class `
             this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
           } else {
             this.editFile('build.gradle', contents =>
-              contents.replaceAll(
-                ' implementation.exclude module: "spring-boot-starter-tomcat"',
-                ' implementation.exclude module: "spring-boot-starter-undertow"'
-              )
-            );
-            this.editFile('build.gradle', contents =>
-              contents.replaceAll('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
-            );
-            this.editFile('build.gradle', contents =>
-              contents.replaceAll(
-                'implementation "org.springframework.boot:spring-boot-starter-undertow"',
-                ' implementation "org.springframework.boot:spring-boot-starter-tomcat"'
-              )
+              contents
+                .replace(
+                  'implementation.exclude module: "spring-boot-starter-tomcat"',
+                  'implementation.exclude module: "spring-boot-starter-undertow"'
+                )
+                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-
+                .replace(
+                  'implementation "org.springframework.boot:spring-boot-starter-undertow"',
+                  'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
+                )
             );
           }
         }
