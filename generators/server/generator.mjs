@@ -77,15 +77,6 @@ export default class extends GeneratorBaseEntities {
           }
         }
 
-        const buildArgs = ['--no-fallback'];
-        let verbose = false;
-        let memory = '';
-        if (process.env.GITHUB_ACTIONS) {
-          verbose = true;
-          memory = process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g';
-          buildArgs.push('--verbose', process.platform === 'darwin' ? '-J-Xmx13g' : '-J-Xmx7g');
-        }
-
         this.editFile('build.gradle', content =>
           content
             .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
@@ -97,7 +88,7 @@ bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
   environment = [
     "BP_NATIVE_IMAGE" : "true",
-    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "${buildArgs}"
+    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "--no-fallback \${findProperty('nativeImageProperties') ?: ''}"
   ]
 }
 graalvmNative {
@@ -109,8 +100,8 @@ graalvmNative {
       //  languageVersion = JavaLanguageVersion.of(11)
       //  vendor = JvmVendorSpec.matching("GraalVM Community")
       //}
-      verbose = ${verbose}
-      buildArgs.add('${memory}')
+      verbose = false
+      buildArgs.add("\${findProperty('nativeBuildArgs') ?: ''}")
     }
   }
 }`

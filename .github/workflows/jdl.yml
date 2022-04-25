@@ -57,7 +57,10 @@ jobs:
         include:
           - os: ubuntu-20.04
           - os: macos-11
+          - build-tool: maven
             extra-args: '"-Dnative-build-args=--verbose -J-Xmx13g"'
+          - build-tool: gradle
+            extra-args: '-PnativeBuildArgs=-J-Xmx13g'
           - os: windows-2019
             e2e: false
     steps:
