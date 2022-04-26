@@ -24,18 +24,37 @@ export default class extends GeneratorBaseEntities {
 
   get [POST_WRITING_PRIORITY]() {
     return {
-      async packageJson() {
-        this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
+      async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
+        if (buildToolMaven) {
+          this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
+        }
+        if (buildToolGradle) {
+          this.editFile('package.json', content => content.replaceAll('./gradlew', 'gradlew'));
+        }
 
         this.packageJson.merge({
           scripts: {
             'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
-            'native-package': 'mvnw package -Pnative,prod -DskipTests',
             'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
-            'native-start': './target/native-executable',
-            prepare: 'ln -fs ../../mvnw node_modules/.bin',
           },
         });
+        if (buildToolMaven) {
+          this.packageJson.merge({
+            scripts: {
+              'native-package': 'mvnw package -Pnative,prod -DskipTests',
+              'native-start': './target/native-executable',
+              prepare: 'ln -fs ../../mvnw node_modules/.bin',
+            },
+          });
+        } else if (buildToolGradle) {
+          this.packageJson.merge({
+            scripts: {
+              'native-package': 'gradlew nativeCompile -Pprod -x test -x integrationTest',
+              'native-start': './build/native/nativeCompile/native-executable',
+              prepare: 'ln -fs ../../gradlew node_modules/.bin',
+            },
+          });
+        }
       },
 
       async removeFiles() {
@@ -43,7 +62,55 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async pomXml({ application: { buildToolMaven } }) {
+      async customizeGradle({ application: { buildToolGradle, reactive, devDatabaseTypeH2Any } }) {
+        if (!buildToolGradle) return;
+
+        this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
+        this.addGradleMavenRepository('https://repo.spring.io/release');
+        this.addGradlePluginManagementRepository('https://repo.spring.io/release');
+
+        if (devDatabaseTypeH2Any) {
+          if (reactive) {
+            this.editFile('build.gradle', contents => contents.replace('implementation "io.r2dbc:r2dbc-h2"', ''));
+          } else {
+            this.editFile('build.gradle', contents => contents.replace('liquibaseRuntime "com.h2database:h2"', ''));
+          }
+        }
+
+        this.editFile('build.gradle', content =>
+          content
+            .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
+            .replace(
+              'processResources.dependsOn bootBuildInfo',
+              `
+processResources.dependsOn bootBuildInfo
+bootBuildImage {
+  builder = "paketobuildpacks/builder:tiny"
+  environment = [
+    "BP_NATIVE_IMAGE" : "true",
+    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "--no-fallback \${findProperty('nativeImageProperties') ?: ''}"
+  ]
+}
+graalvmNative {
+  binaries {
+    main {
+      imageName = 'native-executable'
+      //this is only needed when you toolchain can't be detected
+      //javaLauncher = javaToolchains.launcherFor {
+      //  languageVersion = JavaLanguageVersion.of(11)
+      //  vendor = JvmVendorSpec.matching("GraalVM Community")
+      //}
+      verbose = false
+      buildArgs.add("\${findProperty('nativeBuildArgs') ?: ''}")
+    }
+  }
+}`
+            )
+            .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '')
+        );
+      },
+
+      async customizeMaven({ application: { buildToolMaven } }) {
         if (!buildToolMaven) return;
 
         this.addMavenRepository(
@@ -309,15 +376,29 @@ class `
         }
       },
 
-      replaceUndertowWithTomcat({ application: { reactive, packageFolder } }) {
+      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
         if (!reactive) {
-          this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
-
           this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
             contents
               .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
               .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
           );
+          if (buildToolMaven) {
+            this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
+          } else {
+            this.editFile('build.gradle', contents =>
+              contents
+                .replace(
+                  'implementation.exclude module: "spring-boot-starter-tomcat"',
+                  'implementation.exclude module: "spring-boot-starter-undertow"'
+                )
+                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
+                .replace(
+                  'implementation "org.springframework.boot:spring-boot-starter-undertow"',
+                  'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
+                )
+            );
+          }
         }
       },
 
@@ -401,20 +482,8 @@ class `
   get [END_PRIORITY]() {
     return {
       async checkCompatibility({
-        application: {
-          reactive,
-          buildToolMaven,
-          databaseTypeNo,
-          prodDatabaseTypePostgres,
-          cacheProviderNo,
-          enableHibernateCache,
-          websocket,
-          searchEngine,
-        },
+        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngine },
       }) {
-        if (!buildToolMaven) {
-          this.warning('JHipster Native is only tested with Maven build tool');
-        }
         if (!databaseTypeNo && !prodDatabaseTypePostgres) {
           this.warning('JHipster Native is only tested with PostgreSQL database');
         }
