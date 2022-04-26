@@ -46,7 +46,7 @@ jobs:
           native-build-args: <% if (buildToolMaven) { %>--verbose <% } %>-J-Xmx13g
         - os: windows-2019
           executable-suffix: '.exe'
-          native-build-args: <% if (buildToolMaven) { %>--verbose <% } %>-J-Xmx13g
+          native-build-args: <% if (buildToolMaven) { %>--verbose <% } %>-J-Xmx10g
     steps:
       # OS customizations that allow the builds to succeed on Linux and Windows.
       # Using hash for better security due to third party actions.
@@ -98,7 +98,7 @@ jobs:
 <%_ if (buildToolMaven) { _%>
         run: npm run native-package -- -B -ntp "-Dnative-image-name=${{ steps.executable.outputs.name }}" "-Dnative-build-args=${{ matrix.native-build-args }}"
 <%_ } else if (buildToolGradle) { _%>
-        run: npm run native-package -- -B -ntp "-Pnative-build-args=${{ matrix.native-build-args }}"
+        run: npm run native-package -- -B -ntp "-PnativeBuildArgs=${{ matrix.native-build-args }}"
 <%_ } _%>
       - name: Archive binary
         uses: <%= githubActions['actions/upload-artifact'] %>
