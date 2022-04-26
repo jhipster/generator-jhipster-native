@@ -57,7 +57,7 @@ jobs:
         include:
           - os: ubuntu-20.04
             build-tool: gradle
-            extra-args: '-PnativeBuildArgs=-J-Xmx13g'
+            extra-args: '-PnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
             extra-args: '"-Dnative-build-args=--verbose -J-Xmx13g"'
@@ -70,7 +70,7 @@ jobs:
           - os: windows-2019
             build-tool: gradle
             e2e: false
-            extra-args: '-PnativeBuildArgs=-J-Xmx13g'
+            extra-args: '-PnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
