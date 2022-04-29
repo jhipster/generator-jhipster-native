@@ -60,7 +60,7 @@ jobs:
             extra-args: '-PnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
-            extra-args: '"-Dnative-build-args=--verbose -J-Xmx13g"'
+            extra-args: '"-Dnative-build-args=-J-Xmx13g"'
           - os: macos-11
             build-tool: gradle
             extra-args: '-PnativeBuildArgs=-J-Xmx13g'
