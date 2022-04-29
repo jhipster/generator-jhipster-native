@@ -115,7 +115,7 @@ jobs:
       - name: Install node.js packages
         run: npm install
       - name: \\"E2E: Package\\"
-        run: npm run native-package -- -B -ntp \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
+        run: npm run native-package -- \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
       - name: \\"E2E: Prepare\\"
         if: matrix.e2e != false
         run: npm run ci:e2e:prepare
@@ -155,13 +155,13 @@ jobs:
         include:
           - os: ubuntu-latest
             executable-suffix: \\"\\"
-            native-build-args: --verbose -J-Xmx10g
+            native-build-args: -J-Xmx10g
           - os: macos-latest
             executable-suffix: \\"\\"
-            native-build-args: --verbose -J-Xmx13g
+            native-build-args: -J-Xmx13g
           - os: windows-2019
             executable-suffix: \\".exe\\"
-            native-build-args: --verbose -J-Xmx10g
+            native-build-args: -J-Xmx10g
     steps:
       # OS customizations that allow the builds to succeed on Linux and Windows.
       # Using hash for better security due to third party actions.
@@ -211,7 +211,7 @@ jobs:
           key: \${{ runner.os }}-npm-\${{ hashFiles('**/package-lock.json') }}
       - run: npm install
       - name: Build \${{ steps.executable.outputs.name }} native image
-        run: npm run native-package -- -B -ntp \\"-Dnative-image-name=\${{ steps.executable.outputs.name }}\\" \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
+        run: npm run native-package -- \\"-Dnative-image-name=\${{ steps.executable.outputs.name }}\\" \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
       - name: Archive binary
         uses: actions/upload-artifact@v3
         with:
