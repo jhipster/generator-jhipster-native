@@ -49,7 +49,7 @@ export default class extends GeneratorBaseEntities {
         } else if (buildToolGradle) {
           this.packageJson.merge({
             scripts: {
-              'native-package': 'gradlew nativeCompile -Pprod -x test -x integrationTest',
+              'native-package': 'gradlew nativeCompile -B -ntp -Pprod -x test -x integrationTest',
               'native-start': './build/native/nativeCompile/native-executable',
               prepare: 'ln -fs ../../gradlew node_modules/.bin',
             },
