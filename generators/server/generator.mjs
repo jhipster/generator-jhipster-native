@@ -41,7 +41,7 @@ export default class extends GeneratorBaseEntities {
         if (buildToolMaven) {
           this.packageJson.merge({
             scripts: {
-              'native-package': 'mvnw package -Pnative,prod -DskipTests',
+              'native-package': 'mvnw package -B -ntp -Pnative,prod -DskipTests',
               'native-start': './target/native-executable',
               prepare: 'ln -fs ../../mvnw node_modules/.bin',
             },
@@ -49,7 +49,7 @@ export default class extends GeneratorBaseEntities {
         } else if (buildToolGradle) {
           this.packageJson.merge({
             scripts: {
-              'native-package': 'gradlew nativeCompile -B -ntp -Pprod -x test -x integrationTest',
+              'native-package': 'gradlew nativeCompile -Pprod -x test -x integrationTest',
               'native-start': './build/native/nativeCompile/native-executable',
               prepare: 'ln -fs ../../gradlew node_modules/.bin',
             },
