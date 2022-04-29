@@ -96,7 +96,7 @@ jobs:
       - run: npm install
       - name: Build ${{ steps.executable.outputs.name }} native image
 <%_ if (buildToolMaven) { _%>
-        run: npm run native-package -- -B -ntp "-Dnative-image-name=${{ steps.executable.outputs.name }}" "-Dnative-build-args=${{ matrix.native-build-args }}"
+        run: npm run native-package -- "-Dnative-image-name=${{ steps.executable.outputs.name }}" "-Dnative-build-args=${{ matrix.native-build-args }}"
 <%_ } else if (buildToolGradle) { _%>
         run: npm run native-package -- "-PnativeBuildArgs=${{ matrix.native-build-args }}"
 <%_ } _%>
