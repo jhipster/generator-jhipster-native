@@ -114,7 +114,7 @@ jobs:
       - name: Install node.js packages
         run: npm install
       - name: 'E2E: Package'
-        run: npm run native-package -- -B -ntp "-Dnative-build-args=${{ matrix.native-build-args }}"
+        run: npm run native-package -- "-Dnative-build-args=${{ matrix.native-build-args }}"
 <%_ if (cypressTests) { _%>
   <%_ const commented = applicationTypeGateway ? '# ' : ''; _%>
       <%= commented %>- name: 'E2E: Prepare'
