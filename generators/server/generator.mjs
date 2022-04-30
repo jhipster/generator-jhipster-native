@@ -48,7 +48,7 @@ export default class extends GeneratorBaseEntities {
         if (buildToolMaven) {
           this.packageJson.merge({
             scripts: {
-              'native-package': './mvnw package -Pnative,prod -DskipTests',
+              'native-package': './mvnw package -B -ntp -Pnative,prod -DskipTests',
               'native-start': './target/native-executable',
             },
           });
