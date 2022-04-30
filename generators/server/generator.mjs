@@ -1,6 +1,12 @@
 import chalk from 'chalk';
 import { GeneratorBaseEntities, constants } from 'generator-jhipster';
-import { PRIORITY_PREFIX, POST_WRITING_PRIORITY, POST_WRITING_ENTITIES_PRIORITY, END_PRIORITY } from 'generator-jhipster/esm/priorities';
+import {
+  PRIORITY_PREFIX,
+  WRITING_PRIORITY,
+  POST_WRITING_PRIORITY,
+  POST_WRITING_ENTITIES_PRIORITY,
+  END_PRIORITY,
+} from 'generator-jhipster/esm/priorities';
 import { SPRING_NATIVE_VERSION, NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
 const { SERVER_MAIN_SRC_DIR, SERVER_TEST_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
@@ -22,16 +28,17 @@ export default class extends GeneratorBaseEntities {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
+  get [WRITING_PRIORITY]() {
+    return {
+      async customizeNpmRc() {
+        await this.copyTemplate('.npmrc', '.npmrc');
+      },
+    };
+  }
+
   get [POST_WRITING_PRIORITY]() {
     return {
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
-        if (buildToolMaven) {
-          this.editFile('package.json', content => content.replaceAll('./mvnw', 'mvnw'));
-        }
-        if (buildToolGradle) {
-          this.editFile('package.json', content => content.replaceAll('./gradlew', 'gradlew'));
-        }
-
         this.packageJson.merge({
           scripts: {
             'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
@@ -41,17 +48,15 @@ export default class extends GeneratorBaseEntities {
         if (buildToolMaven) {
           this.packageJson.merge({
             scripts: {
-              'native-package': 'mvnw package -Pnative,prod -DskipTests',
+              'native-package': './mvnw package -Pnative,prod -DskipTests',
               'native-start': './target/native-executable',
-              prepare: 'ln -fs ../../mvnw node_modules/.bin',
             },
           });
         } else if (buildToolGradle) {
           this.packageJson.merge({
             scripts: {
-              'native-package': 'gradlew nativeCompile -Pprod -x test -x integrationTest',
+              'native-package': './gradlew nativeCompile -Pprod -x test -x integrationTest',
               'native-start': './build/native/nativeCompile/native-executable',
-              prepare: 'ln -fs ../../gradlew node_modules/.bin',
             },
           });
         }
