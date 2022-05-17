@@ -78,9 +78,6 @@ jobs:
       - name: 'SETUP: create app folder'
         run: mkdir app
         working-directory: ${{ github.workspace }}
-      - name: 'SETUP: Configure keycloak host'
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v3
         with:
@@ -162,6 +159,9 @@ jobs:
       - name: 'TESTS: wait'
         run: sleep 60
         if: matrix.os == 'macos-11'
+      - name: 'SETUP: Configure keycloak host'
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run: sudo docker container inspect docker-compose_keycloak_1 | jq -r '.[0].NetworkSettings.Networks."docker-compose_default".IPAddress' | echo "`cat -` keycloak" | sudo tee -a /etc/hosts
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
         if: matrix.e2e != false
