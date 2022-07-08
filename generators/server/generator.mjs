@@ -31,7 +31,7 @@ export default class extends GeneratorBaseEntities {
   get [WRITING_PRIORITY]() {
     return {
       async customizeNpmRc() {
-        await this.copyTemplate('.npmrc', '.npmrc');
+        await this.copyTemplate('npmrc', '.npmrc');
       },
     };
   }
