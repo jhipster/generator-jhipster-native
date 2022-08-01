@@ -83,11 +83,9 @@ export default class extends GeneratorBaseEntities {
         }
 
         this.editFile('build.gradle', content =>
-          content
-            .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
-            .replace(
-              'processResources.dependsOn bootBuildInfo',
-              `
+          content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
+            'processResources.dependsOn bootBuildInfo',
+            `
 processResources.dependsOn bootBuildInfo
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
@@ -110,8 +108,7 @@ graalvmNative {
     }
   }
 }`
-            )
-            .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '')
+          )
         );
       },
 
@@ -409,7 +406,7 @@ class `
 
       cypress({ application: { cypressTests } }) {
         if (!cypressTests) return;
-        this.editFile(`${CLIENT_TEST_SRC_DIR}/cypress/integration/administration/administration.spec.ts`, contents =>
+        this.editFile(`${CLIENT_TEST_SRC_DIR}/cypress/e2e/administration/administration.cy.ts`, contents =>
           contents
             .replace("describe('/metrics'", "describe.skip('/metrics'")
             .replace("describe('/logs'", "describe.skip('/logs'")
