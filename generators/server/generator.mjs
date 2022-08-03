@@ -347,13 +347,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
         if (reactive) {
           this.editFile(filePath, content => content.replace(', idToken)', ', oidcUser.getIdToken())'));
         } else {
-          this.editFile(filePath, content =>
-            content.replace(
-              '// Okta',
-              `// Okta
-        OidcIdToken idToken = oidcUser.getIdToken();`
-            )
-          );
+          this.editFile(filePath, content => content.replace('(idToken.', `(oidcUser.getIdToken().`));
         }
       },
 
