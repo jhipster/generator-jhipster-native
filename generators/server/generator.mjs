@@ -65,7 +65,6 @@ export default class extends GeneratorBaseEntities {
       async removeFiles() {
         this.deleteDestination('src/main/resources/logback-spring.xml');
         this.deleteDestination('src/test/resources/logback.xml');
-        this.deleteDestination('.npmrc');
       },
 
       async customizeGradle({ application: { buildToolGradle, reactive, devDatabaseTypeH2Any } }) {
