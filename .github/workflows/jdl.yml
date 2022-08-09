@@ -61,10 +61,12 @@ jobs:
           - os: macos-11
             build-tool: maven
             profile: dev
+            e2e: false
             extra-args: '"-Dnative-build-args=-J-Xmx13g"'
           - os: macos-11
             build-tool: gradle
             profile: dev
+            e2e: false
             extra-args: '-PnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
