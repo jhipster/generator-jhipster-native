@@ -212,6 +212,7 @@ graalvmNative {
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative-boringssl-static</artifactId>
+            <scope>runtime</scope>
         </dependency>`,
               ''
             )
