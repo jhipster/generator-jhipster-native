@@ -49,7 +49,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-11, windows-2019]
+        os: [ubuntu-20.04, macos-11, windows-2022]
         build-tool: [maven, gradle]
         suite:
           - postgresql-mvc
