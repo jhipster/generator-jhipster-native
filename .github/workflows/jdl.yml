@@ -64,11 +64,13 @@ jobs:
           - os: macos-11
             build-tool: gradle
             extra-args: '-PnativeBuildArgs=-J-Xmx13g'
-          - os: windows-2019
+          - os: windows-2022
             build-tool: maven
+            profile: dev
             e2e: false
-          - os: windows-2019
+          - os: windows-2022
             build-tool: gradle
+            profile: dev
             e2e: false
             extra-args: '-PnativeBuildArgs=-J-Xmx10g'
     steps:
