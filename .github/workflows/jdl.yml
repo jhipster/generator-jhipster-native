@@ -66,10 +66,10 @@ jobs:
             extra-args: '-PnativeBuildArgs=-J-Xmx13g'
           - os: windows-2019
             build-tool: maven
-            e2e: false
+            e2e: 'false'
           - os: windows-2019
             build-tool: gradle
-            e2e: false
+            e2e: 'false'
             extra-args: '-PnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
@@ -158,10 +158,10 @@ jobs:
         run: npm run native-package -- ${{ matrix.extra-args }}
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
-        if: matrix.e2e != false
+        if: matrix.e2e != 'false'
       - name: 'TESTS: wait'
         run: sleep 60
         if: matrix.os == 'macos-11'
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
-        if: matrix.e2e != false
+        if: matrix.e2e != 'false'
