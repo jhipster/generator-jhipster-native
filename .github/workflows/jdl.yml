@@ -152,7 +152,7 @@ jobs:
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
       - name: 'PROJECT: generate'
-        run: 'jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies'
+        run: 'JHI_PROFILE=${{ github.profile }} jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies'
       - name: 'TESTS: backend tests'
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
