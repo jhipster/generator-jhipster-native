@@ -60,9 +60,11 @@ jobs:
             extra-args: '-PnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
+            profile: dev
             extra-args: '"-Dnative-build-args=-J-Xmx13g"'
           - os: macos-11
             build-tool: gradle
+            profile: dev
             extra-args: '-PnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
