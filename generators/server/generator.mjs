@@ -67,20 +67,12 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async customizeGradle({ application: { buildToolGradle, reactive, devDatabaseTypeH2Any } }) {
+      async customizeGradle({ application: { buildToolGradle, reactive } }) {
         if (!buildToolGradle) return;
 
         this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
         this.addGradleMavenRepository('https://repo.spring.io/release');
         this.addGradlePluginManagementRepository('https://repo.spring.io/release');
-
-        if (devDatabaseTypeH2Any) {
-          if (reactive) {
-            this.editFile('build.gradle', contents => contents.replace('implementation "io.r2dbc:r2dbc-h2"', ''));
-          } else {
-            this.editFile('build.gradle', contents => contents.replace('liquibaseRuntime "com.h2database:h2"', ''));
-          }
-        }
 
         this.editFile('build.gradle', content =>
           content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
