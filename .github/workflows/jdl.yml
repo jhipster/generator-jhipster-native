@@ -132,15 +132,19 @@ jobs:
         if: runner.os == 'macOS'
         with:
           path: |
-            ~/Library/Caches/Homebrew/downloads/*--docker-*
+            ~/Library/Caches/Homebrew/docker--*
+            ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
           key: brew-actions-setup-docker-1.0.11
-      - name: 'SETUP MacOS: install docker'
-        uses: docker-practice/actions-setup-docker@1.0.11
+      - name:
+          'SETUP MacOS: install docker'
+          # v1.0.11 (5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a)
+        uses: docker-practice/actions-setup-docker@5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a
         # alternative solution https://github.com/actions/runner/issues/1456
         if: runner.os == 'macOS'
         with:
           docker_buildx: false
-      - run: ls ~/Library/Caches/Homebrew/downloads/
+      - run: ls ~/Library/Caches/Homebrew/
+        if: runner.os == 'macOS'
 
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v3
