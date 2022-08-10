@@ -213,7 +213,9 @@ graalvmNative {
                     <version>0.8.5.RELEASE</version>
                 </dependency>`
               )
+          );
         }
+
         this.editFile('pom.xml', content =>
           content
             .replace(
