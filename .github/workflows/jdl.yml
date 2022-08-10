@@ -112,6 +112,7 @@ jobs:
         uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c
         with:
           swap-size-gb: 10
+
       - name:
           'SETUP Windows: configure pagefile'
           # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
@@ -125,12 +126,21 @@ jobs:
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
         shell: pwsh
+
+      - name: Configure Homebrew cache
+        uses: actions/cache@v3
+        if: runner.os == 'macOS'
+        with:
+          path: |
+            ~/Library/Caches/Homebrew/downloads/*--docker-*
+          key: brew-actions-setup-docker-1.0.11
       - name: 'SETUP MacOS: install docker'
         uses: docker-practice/actions-setup-docker@1.0.11
         # alternative solution https://github.com/actions/runner/issues/1456
         if: runner.os == 'macOS'
         with:
           docker_buildx: false
+      - run: ls ~/Library/Caches/Homebrew/downloads/
 
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v3
