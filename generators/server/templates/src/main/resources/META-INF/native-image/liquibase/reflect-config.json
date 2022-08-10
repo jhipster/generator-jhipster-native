@@ -1,5 +1,9 @@
 [
   {
+    "name": "liquibase.configuration.ConfiguredValueModifierFactory",
+    "methods": [{"name": "<init>", "parameterTypes": []}]
+  },
+  {
     "name":"com.sun.org.apache.xerces.internal.impl.dv.xs.ExtendedSchemaDVFactoryImpl",
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
