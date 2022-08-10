@@ -129,6 +129,8 @@ jobs:
         uses: docker-practice/actions-setup-docker@1.0.11
         # alternative solution https://github.com/actions/runner/issues/1456
         if: runner.os == 'macOS'
+        with:
+          docker_buildx: false
 
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v3
