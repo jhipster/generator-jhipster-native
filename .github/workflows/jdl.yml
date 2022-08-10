@@ -60,13 +60,9 @@ jobs:
             extra-args: '-PnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
-            profile: dev
-            e2e: 'false'
             extra-args: '"-Dnative-build-args=-J-Xmx13g"'
           - os: macos-11
             build-tool: gradle
-            profile: dev
-            e2e: 'false'
             extra-args: '-PnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
@@ -118,6 +114,7 @@ jobs:
         uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c
         with:
           swap-size-gb: 10
+
       - name:
           'SETUP Windows: configure pagefile'
           # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
@@ -131,13 +128,23 @@ jobs:
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
         shell: pwsh
-      - name: 'SETUP MacOS: install docker'
-        run: |
-          HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
-          sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
-          open -a /Applications/Docker.app --args --unattended --accept-license
-          #echo "We are waiting for Docker to be up and running. It can take over 2 minutes..."
-          #while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
+
+      - name: 'SETUP MacOS: load Homebrew cache'
+        uses: actions/cache@v3
+        if: runner.os == 'macOS'
+        with:
+          path: |
+            ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
+          key: brew-actions-setup-docker-1.0.11
+      - name:
+          'SETUP MacOS: install docker'
+          # v1.0.11 (5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a)
+        uses: docker-practice/actions-setup-docker@5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a
+        # alternative solution https://github.com/actions/runner/issues/1456
+        if: runner.os == 'macOS'
+        with:
+          docker_buildx: false
+      - run: ls ~/Library/Caches/Homebrew/
         if: runner.os == 'macOS'
 
       - name: 'SETUP: load npm cache'
