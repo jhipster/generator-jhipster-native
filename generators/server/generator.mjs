@@ -60,6 +60,7 @@ export default class extends GeneratorBaseEntities {
             },
           });
         }
+        this.editFile('package.json', contents => contents.replace('docker-compose', 'docker compose'));
       },
 
       async removeFiles() {
