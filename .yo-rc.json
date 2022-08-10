@@ -16,7 +16,7 @@
         "written": true
       }
     },
-    "jhipsterVersion": "7.9.0",
+    "jhipsterVersion": "7.9.2",
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",
     "skipCommitHook": true,
