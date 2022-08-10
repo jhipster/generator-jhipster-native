@@ -67,27 +67,17 @@ export default class extends GeneratorBaseEntities {
         this.deleteDestination('src/test/resources/logback.xml');
       },
 
-      async customizeGradle({ application: { buildToolGradle, reactive, devDatabaseTypeH2Any } }) {
+      async customizeGradle({ application: { buildToolGradle, reactive } }) {
         if (!buildToolGradle) return;
 
         this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
         this.addGradleMavenRepository('https://repo.spring.io/release');
         this.addGradlePluginManagementRepository('https://repo.spring.io/release');
 
-        if (devDatabaseTypeH2Any) {
-          if (reactive) {
-            this.editFile('build.gradle', contents => contents.replace('implementation "io.r2dbc:r2dbc-h2"', ''));
-          } else {
-            this.editFile('build.gradle', contents => contents.replace('liquibaseRuntime "com.h2database:h2"', ''));
-          }
-        }
-
         this.editFile('build.gradle', content =>
-          content
-            .replace('implementation "io.netty:netty-tcnative-boringssl-static"', '')
-            .replace(
-              'processResources.dependsOn bootBuildInfo',
-              `
+          content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
+            'processResources.dependsOn bootBuildInfo',
+            `
 processResources.dependsOn bootBuildInfo
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
@@ -110,12 +100,11 @@ graalvmNative {
     }
   }
 }`
-            )
-            .replace('developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"', '')
+          )
         );
       },
 
-      async customizeMaven({ application: { buildToolMaven } }) {
+      async customizeMaven({ application: { buildToolMaven, devDatabaseTypeH2Any } }) {
         if (!buildToolMaven) return;
 
         this.addMavenRepository(
@@ -208,6 +197,24 @@ graalvmNative {
             </build>`
         );
 
+        if (devDatabaseTypeH2Any) {
+          this.editFile('pom.xml', content =>
+            content.replace(
+              `
+                <dependency>
+                    <groupId>io.r2dbc</groupId>
+                    <artifactId>r2dbc-h2</artifactId>
+                </dependency>`,
+              `
+                <dependency>
+                    <groupId>io.r2dbc</groupId>
+                    <artifactId>r2dbc-h2</artifactId>
+                    <version>0.8.5.RELEASE</version>
+                </dependency>`
+            )
+          );
+        }
+
         this.editFile('pom.xml', content =>
           content
             .replace(
@@ -215,6 +222,7 @@ graalvmNative {
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative-boringssl-static</artifactId>
+            <scope>runtime</scope>
         </dependency>`,
               ''
             )
@@ -350,13 +358,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
         if (reactive) {
           this.editFile(filePath, content => content.replace(', idToken)', ', oidcUser.getIdToken())'));
         } else {
-          this.editFile(filePath, content =>
-            content.replace(
-              '// Okta',
-              `// Okta
-        OidcIdToken idToken = oidcUser.getIdToken();`
-            )
-          );
+          this.editFile(filePath, content => content.replace('(idToken.', `(oidcUser.getIdToken().`));
         }
       },
 
@@ -409,7 +411,7 @@ class `
 
       cypress({ application: { cypressTests } }) {
         if (!cypressTests) return;
-        this.editFile(`${CLIENT_TEST_SRC_DIR}/cypress/integration/administration/administration.spec.ts`, contents =>
+        this.editFile(`${CLIENT_TEST_SRC_DIR}/cypress/e2e/administration/administration.cy.ts`, contents =>
           contents
             .replace("describe('/metrics'", "describe.skip('/metrics'")
             .replace("describe('/logs'", "describe.skip('/logs'")
