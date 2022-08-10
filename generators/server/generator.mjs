@@ -199,20 +199,19 @@ graalvmNative {
 
         if (devDatabaseTypeH2Any) {
           this.editFile('pom.xml', content =>
-            content
-              .replace(
-                `
+            content.replace(
+              `
                 <dependency>
                     <groupId>io.r2dbc</groupId>
                     <artifactId>r2dbc-h2</artifactId>
                 </dependency>`,
-                `
+              `
                 <dependency>
                     <groupId>io.r2dbc</groupId>
                     <artifactId>r2dbc-h2</artifactId>
                     <version>0.8.5.RELEASE</version>
                 </dependency>`
-              )
+            )
           );
         }
 
