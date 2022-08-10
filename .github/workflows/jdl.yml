@@ -157,7 +157,7 @@ jobs:
       - name: 'TESTS: build application package'
         run: npm run native-package -- ${{ matrix.extra-args }}
       - name: 'TESTS: start docker dependencies'
-        run: npm run ci:e2e:prepare
+        run: docker compose -f docker-compose/docker-compose.yml up -d
         if: matrix.e2e != 'false'
       - name: 'TESTS: wait'
         run: sleep 60
