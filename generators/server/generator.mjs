@@ -209,7 +209,7 @@ graalvmNative {
                 <dependency>
                     <groupId>io.r2dbc</groupId>
                     <artifactId>r2dbc-h2</artifactId>
-                    <version>0.8.5.RELEASE</version>
+                    <version>\${h2-r2dbc.version}</version>
                 </dependency>`
             )
           );
