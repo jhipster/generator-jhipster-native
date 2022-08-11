@@ -128,6 +128,11 @@ jobs:
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
         shell: pwsh
+      - name: 'SETUP Windows: force npm to use bash'
+        if: runner.os == 'Windows'
+        run: |
+          echo "script-shell=bash" >.npmrc
+          cat .npmrc
 
       - name: 'SETUP MacOS: load Homebrew cache'
         uses: actions/cache@v3
