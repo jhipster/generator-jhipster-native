@@ -136,12 +136,14 @@ jobs:
           path: |
             ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
           key: brew-actions-setup-docker-1.0.11
+          restore-keys: brew-actions-setup-docker-
       - name:
           'SETUP MacOS: install docker'
           # v1.0.11 (5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a)
         uses: docker-practice/actions-setup-docker@5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a
         # alternative solution https://github.com/actions/runner/issues/1456
         if: runner.os == 'macOS'
+        timeout-minutes: 15
         with:
           docker_buildx: false
       - run: ls ~/Library/Caches/Homebrew/
@@ -168,6 +170,7 @@ jobs:
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
+        timeout-minutes: 60
         run: npm run native-package -- ${{ matrix.extra-args }}
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
