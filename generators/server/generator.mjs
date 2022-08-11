@@ -28,14 +28,6 @@ export default class extends GeneratorBaseEntities {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
-  get [WRITING_PRIORITY]() {
-    return {
-      async customizeNpmRc() {
-        await this.copyTemplate('npmrc', '.npmrc');
-      },
-    };
-  }
-
   get [POST_WRITING_PRIORITY]() {
     return {
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
@@ -65,6 +57,9 @@ export default class extends GeneratorBaseEntities {
       async removeFiles() {
         this.deleteDestination('src/main/resources/logback-spring.xml');
         this.deleteDestination('src/test/resources/logback.xml');
+
+        // Don't use deleteDestination because it deletes the existing file.
+        delete this.env.sharedFs.store[this.destinationPath('.npmrc')];
       },
 
       async customizeGradle({ application: { buildToolGradle, reactive } }) {
