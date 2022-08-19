@@ -262,6 +262,18 @@ logging:
         );
       },
 
+      async jwt({ application: { authenticationTypeOauth2 } }) {
+        if (authenticationTypeOauth2) return;
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/jwt/reflect-config.json',
+          'src/main/resources/META-INF/native-image/jwt/reflect-config.json'
+        );
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/jwt/resource-config.json',
+          'src/main/resources/META-INF/native-image/jwt/resource-config.json'
+        );
+      },
+
       async liquibase({ application: { databaseTypeSql } }) {
         if (!databaseTypeSql) return;
         await this.copyTemplate(

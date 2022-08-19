@@ -299,6 +299,12 @@ Object {
   "src/main/resources/.h2.server.properties": Object {
     "stateCleared": "modified",
   },
+  "src/main/resources/META-INF/native-image/jwt/reflect-config.json": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/resources/META-INF/native-image/jwt/resource-config.json": Object {
+    "stateCleared": "modified",
+  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": Object {
     "stateCleared": "modified",
   },
