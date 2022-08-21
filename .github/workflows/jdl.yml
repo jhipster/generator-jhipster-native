@@ -54,6 +54,8 @@ jobs:
         suite:
           - postgresql-mvc
           - postgresql-webflux
+          - postgresql-mvc-jwt
+          - postgresql-webflux-jwt
         include:
           - os: ubuntu-20.04
             build-tool: gradle

@@ -1,0 +1,13 @@
+{
+  "resources": [
+    {
+      "pattern": "META-INF/services/io.jsonwebtoken.CompressionCodec"
+    },
+    {
+      "pattern": "META-INF/services/io.jsonwebtoken.io.Deserializer"
+    },
+    {
+      "pattern": "META-INF/services/io.jsonwebtoken.io.Serializer"
+    }
+  ]
+}
