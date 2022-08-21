@@ -262,17 +262,15 @@ logging:
         );
       },
 
-      async asyncConfiguration({ application: { authenticationTypeOauth2, reactive, packageFolder } }) {
+      async asyncConfiguration({ application: { authenticationTypeOauth2, packageFolder } }) {
         if (authenticationTypeOauth2) return;
-        if (!reactive) {
-          const asyncConfigurationPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/config/AsyncConfiguration.java`;
-          this.editFile(asyncConfigurationPath, content =>
-            content.replace(
-              'return new ExceptionHandlingAsyncTaskExecutor(executor);',
-              'executor.initialize();\nreturn new ExceptionHandlingAsyncTaskExecutor(executor);'
-            )
-          );
-        }
+        const asyncConfigurationPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/config/AsyncConfiguration.java`;
+        this.editFile(asyncConfigurationPath, content =>
+          content.replace(
+            'return new ExceptionHandlingAsyncTaskExecutor(executor);',
+            'executor.initialize();\nreturn new ExceptionHandlingAsyncTaskExecutor(executor);'
+          )
+        );
       },
       async jwt({ application: { authenticationTypeOauth2, reactive } }) {
         if (authenticationTypeOauth2) return;
