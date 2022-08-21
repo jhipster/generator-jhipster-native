@@ -262,7 +262,19 @@ logging:
         );
       },
 
-      async jwt({ application: { authenticationTypeOauth2 } }) {
+      async asyncConfiguration({ application: { authenticationTypeOauth2, reactive, packageFolder } }) {
+        if (authenticationTypeOauth2) return;
+        if (!reactive) {
+          const asyncConfigurationPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/config/AsyncConfiguration.java`;
+          this.editFile(asyncConfigurationPath, content =>
+            content.replace(
+              'return new ExceptionHandlingAsyncTaskExecutor(executor);',
+              'executor.initialize();\nreturn new ExceptionHandlingAsyncTaskExecutor(executor);'
+            )
+          );
+        }
+      },
+      async jwt({ application: { authenticationTypeOauth2, reactive } }) {
         if (authenticationTypeOauth2) return;
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/jwt/reflect-config.json',
@@ -272,6 +284,12 @@ logging:
           'src/main/resources/META-INF/native-image/jwt/resource-config.json',
           'src/main/resources/META-INF/native-image/jwt/resource-config.json'
         );
+        if (!reactive) {
+          await this.copyTemplate(
+            'src/main/resources/META-INF/native-image/common/reflect-config.json',
+            'src/main/resources/META-INF/native-image/common/reflect-config.json'
+          );
+        }
       },
 
       async liquibase({ application: { databaseTypeSql } }) {
