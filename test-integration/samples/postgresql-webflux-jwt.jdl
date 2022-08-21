@@ -1,7 +1,6 @@
 application {
   config {
     applicationType monolith
-    authenticationType oauth2
     creationTimestamp 1632872179205
     reactive true
     enableTranslation false
