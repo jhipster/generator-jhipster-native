@@ -3,5 +3,9 @@
     "name": "java.util.Locale",
     "allDeclaredFields": true,
     "allDeclaredMethods": true
+  },
+  {
+    "name": "java.util.Calendar[]",
+    "unsafeAllocated": true
   }
 ]
