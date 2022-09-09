@@ -192,24 +192,6 @@ graalvmNative {
             </build>`
         );
 
-        if (devDatabaseTypeH2Any) {
-          this.editFile('pom.xml', content =>
-            content.replace(
-              `
-                <dependency>
-                    <groupId>io.r2dbc</groupId>
-                    <artifactId>r2dbc-h2</artifactId>
-                </dependency>`,
-              `
-                <dependency>
-                    <groupId>io.r2dbc</groupId>
-                    <artifactId>r2dbc-h2</artifactId>
-                    <version>\${h2-r2dbc.version}</version>
-                </dependency>`
-            )
-          );
-        }
-
         this.editFile('pom.xml', content =>
           content
             .replace(
