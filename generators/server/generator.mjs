@@ -271,6 +271,15 @@ logging:
         );
       },
 
+      async caffeine({ application: { authenticationTypeOauth2 } }) {
+        if (authenticationTypeOauth2) {
+          await this.copyTemplate(
+            'src/main/resources/META-INF/native-image/caffeine/reflect-config.json',
+            'src/main/resources/META-INF/native-image/caffeine/reflect-config.json'
+          );
+        }
+      },
+
       async liquibase({ application: { databaseTypeSql } }) {
         if (!databaseTypeSql) return;
         await this.copyTemplate(
