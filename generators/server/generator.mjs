@@ -192,24 +192,6 @@ graalvmNative {
             </build>`
         );
 
-        if (devDatabaseTypeH2Any) {
-          this.editFile('pom.xml', content =>
-            content.replace(
-              `
-                <dependency>
-                    <groupId>io.r2dbc</groupId>
-                    <artifactId>r2dbc-h2</artifactId>
-                </dependency>`,
-              `
-                <dependency>
-                    <groupId>io.r2dbc</groupId>
-                    <artifactId>r2dbc-h2</artifactId>
-                    <version>\${h2-r2dbc.version}</version>
-                </dependency>`
-            )
-          );
-        }
-
         this.editFile('pom.xml', content =>
           content
             .replace(
@@ -287,6 +269,15 @@ logging:
           'src/main/resources/META-INF/native-image/common/reflect-config.json',
           'src/main/resources/META-INF/native-image/common/reflect-config.json'
         );
+      },
+
+      async caffeine({ application: { authenticationTypeOauth2 } }) {
+        if (authenticationTypeOauth2) {
+          await this.copyTemplate(
+            'src/main/resources/META-INF/native-image/caffeine/reflect-config.json',
+            'src/main/resources/META-INF/native-image/caffeine/reflect-config.json'
+          );
+        }
       },
 
       async liquibase({ application: { databaseTypeSql } }) {

@@ -59,22 +59,24 @@ jobs:
         include:
           - os: ubuntu-20.04
             build-tool: gradle
-            extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
-            extra-args: '"-Dnative-build-args=-J-Xmx13g"'
+            native-package-extra-args: '"-Dnative-build-args=-J-Xmx13g"'
           - os: macos-11
             build-tool: gradle
-            extra-args: '-PnativeBuildArgs=-J-Xmx13g'
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
             profile: dev
             e2e: 'false'
+            jdl-extra-args: '--skip-install'
           - os: windows-2022
             build-tool: gradle
             profile: dev
             e2e: 'false'
-            extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+            jdl-extra-args: '--skip-install'
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -172,13 +174,19 @@ jobs:
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
       - name: 'PROJECT: generate'
-        run: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit'
+        run: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native jdl "${{ github.workspace }}/generator-jhipster-native/test-integration/samples/${{ matrix.suite }}.jdl" --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit ${{ matrix.jdl-extra-args }}'
+
+      - name: 'Windows: install npm dependencies'
+        # Workaround max PATH size https://github.com/jhipster/generator-jhipster-native/pull/65#issuecomment-1249555392
+        if: runner.os == 'Windows'
+        run: npm install
+
       - name: 'TESTS: backend tests'
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
         timeout-minutes: 60
-        run: npm run native-package -- ${{ matrix.extra-args }}
+        run: npm run native-package -- ${{ matrix.native-package-extra-args }}
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
         if: matrix.e2e != 'false'
