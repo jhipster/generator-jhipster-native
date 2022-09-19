@@ -1,5 +1,6 @@
 {
   "generator-jhipster": {
+    "additionalSubGenerators": "",
     "baseName": "native",
     "cli": true,
     "generators": {
@@ -17,6 +18,7 @@
       }
     },
     "jhipsterVersion": "7.9.3",
+    "localBlueprint": false,
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",
     "skipCommitHook": true,
