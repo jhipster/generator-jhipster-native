@@ -57,7 +57,7 @@ jobs:
         with:
           swap-size-gb: 10
       - name: Configure pagefile
-         # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
+        # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
         uses: al-cheb/configure-pagefile-action@7e234852c937eea04d6ee627c599fb24a5bfffee
         if: runner.os == 'Windows'
         with:
@@ -71,7 +71,7 @@ jobs:
 
       - uses: <%= githubActions['actions/checkout'] %>
       - id: executable
-        run: echo "::set-output name=name::<%= baseName %>-${{ runner.os }}-${{ github.event.release.tag_name || 'snapshot' }}-x86_64"
+        run: echo "name=<%= baseName %>-${{ runner.os }}-${{ github.event.release.tag_name || 'snapshot' }}-x86_64" >> $GITHUB_OUTPUT
       - uses: <%= githubActions['actions/setup-node'] %>
         with:
           node-version: <%= NODE_VERSION %>
