@@ -91,7 +91,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'SETUP: get date'
         id: get-date
-        run: echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+        run: echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
 
       - name: 'SETUP Linux: configure swap space'
         if: runner.os == 'Linux'
