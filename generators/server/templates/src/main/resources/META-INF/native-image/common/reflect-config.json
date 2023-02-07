@@ -7,5 +7,11 @@
   {
     "name": "java.util.Calendar[]",
     "unsafeAllocated": true
+  },
+  {
+    "name": "java.util.HashMap",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "methods": [{ "name": "<init>", "parameterTypes": [] }]
   }
 ]

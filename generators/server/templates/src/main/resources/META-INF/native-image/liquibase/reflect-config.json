@@ -42,6 +42,12 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
+    "name": "liquibase.change.AddColumnConfig",
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "methods": [{ "name": "<init>", "parameterTypes": [] }]
+  },
+  {
     "name":"liquibase.change.ConstraintsConfig",
     "allDeclaredFields":true
   },
