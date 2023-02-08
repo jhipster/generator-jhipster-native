@@ -185,6 +185,7 @@ graalvmNative {
                             <imageName>\${native-image-name}</imageName>
                             <buildArgs>
                                 <buildArg>--no-fallback \${native-build-args}</buildArg>
+                                <buildArg>-H:+AddAllCharsets</buildArg>
                             </buildArgs>
                         </configuration>
                     </plugin>
