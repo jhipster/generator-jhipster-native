@@ -40,13 +40,13 @@ jobs:
         include:
           - os: ubuntu-20.04
             build-tool: gradle
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g -H:+AddAllCharsets'
+            native-package-extra-args: '-PnativeBuildArgs="-J-Xmx10g -H:+AddAllCharsets"'
           - os: macos-11
             build-tool: maven
             native-package-extra-args: '"-Dnative-build-args=-J-Xmx13g -H:+AddAllCharsets"'
           - os: macos-11
             build-tool: gradle
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx13g -H:+AddAllCharsets'
+            native-package-extra-args: '-PnativeBuildArgs="-J-Xmx13g -H:+AddAllCharsets"'
           - os: windows-2022
             build-tool: maven
             profile: dev
@@ -57,7 +57,7 @@ jobs:
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g -H:+AddAllCharsets'
+            native-package-extra-args: '-PnativeBuildArgs="-J-Xmx10g -H:+AddAllCharsets"'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
