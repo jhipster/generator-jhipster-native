@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import CiCdGenerator from 'generator-jhipster/esm/generators/ci-cd';
 import { constants } from 'generator-jhipster';
-import { PRIORITY_PREFIX, WRITING_PRIORITY } from 'generator-jhipster/esm/priorities';
 import { GRAALVM_VERSION } from '../../lib/constants.mjs';
 
 const { NODE_VERSION, JAVA_VERSION } = constants;
@@ -16,11 +15,11 @@ const githubActions = {
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { priorityArgs: true, taskPrefix: PRIORITY_PREFIX, ...features });
+    super(args, opts, features);
 
     if (this.options.help) return;
 
-    if (!this.options.jhipsterContext) {
+    if (!this.jhipsterContext) {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
     }
 

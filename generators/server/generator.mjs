@@ -1,23 +1,18 @@
 import chalk from 'chalk';
-import { GeneratorBaseEntities, constants } from 'generator-jhipster';
-import {
-  PRIORITY_PREFIX,
-  WRITING_PRIORITY,
-  POST_WRITING_PRIORITY,
-  POST_WRITING_ENTITIES_PRIORITY,
-  END_PRIORITY,
-} from 'generator-jhipster/esm/priorities';
+import ServerGenerator from 'generator-jhipster/generators/server';
+
 import { SPRING_NATIVE_VERSION, NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
-const { SERVER_MAIN_SRC_DIR, SERVER_TEST_SRC_DIR, CLIENT_TEST_SRC_DIR } = constants;
+import { JAVA_MAIN_SOURCES_DIR, TEMPLATES_TEST_SOURCES_DIR, TEMPLATES_JAVASCRIPT_TEST_DIR } from 'generator-jhipster';
 
-export default class extends GeneratorBaseEntities {
+
+export default class extends ServerGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { taskPrefix: PRIORITY_PREFIX, ...features });
+    super(args, opts, features);
 
     if (this.options.help) return;
 
-    if (!this.options.jhipsterContext) {
+    if (!this.jhipsterContext) {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
     }
 
@@ -28,7 +23,7 @@ export default class extends GeneratorBaseEntities {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
-  get [POST_WRITING_PRIORITY]() {
+  get [ServerGenerator.POST_WRITING]() {
     return {
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
         this.packageJson.merge({
@@ -54,13 +49,13 @@ export default class extends GeneratorBaseEntities {
         }
       },
 
-      async removeFiles() {
-        this.deleteDestination('src/main/resources/logback-spring.xml');
-        this.deleteDestination('src/test/resources/logback.xml');
+      // async removeFiles() {
+      //   this.deleteDestination('src/main/resources/logback-spring.xml');
+      //   this.deleteDestination('src/test/resources/logback.xml');
 
-        // Don't use deleteDestination because it deletes the existing file.
-        delete this.env.sharedFs.store[this.destinationPath('.npmrc')];
-      },
+      //   // Don't use deleteDestination because it deletes the existing file.
+      //   delete this.env.sharedFs.store[this.destinationPath('.npmrc')];
+      // },
 
       async customizeGradle({ application: { buildToolGradle, reactive } }) {
         if (!buildToolGradle) return;
@@ -99,36 +94,32 @@ graalvmNative {
         );
       },
 
-      async customizeMaven({ application: { buildToolMaven, devDatabaseTypeH2Any } }) {
+      async customizeMaven({ application: { buildToolMaven }, source}) {
         if (!buildToolMaven) return;
 
-        this.addMavenRepository(
-          'spring-releases',
-          'https://repo.spring.io/release',
-          `            <name>Spring Releases</name>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>`
-        );
-        this.addMavenPluginRepository(
-          'spring-releases',
-          'https://repo.spring.io/release',
-          `            <name>Spring Releases</name>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>`
-        );
+        source.addMavenRepository({
+          id: 'spring-releases',
+          name: 'Spring Releases',
+          url: 'https://repo.spring.io/release',          
+          snapshotsEnabled: false
+        });
+        source.addMavenPluginRepository({
+          id: 'spring-releases',
+          name: 'Spring Release',
+          url: 'https://repo.spring.io/release',
+          snapshotsEnabled: false
+        });
 
-        this.addMavenProperty('repackage.classifier');
-        this.addMavenProperty('spring-native.version', SPRING_NATIVE_VERSION);
-        this.addMavenProperty('native-image-name', 'native-executable');
-        this.addMavenProperty('native-build-args', '--verbose -J-Xmx10g');
+        source.addMavenProperty('repackage.classifier');
+        source.addMavenProperty('spring-native.version', SPRING_NATIVE_VERSION);
+        source.addMavenProperty('native-image-name', 'native-executable');
+        source.addMavenProperty('native-build-args', '--verbose -J-Xmx10g');
 
-        this.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
+        //source.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
 
-        this.addMavenProfile(
-          'native',
-          `            <properties>
+        source.addMavenProfile(
+          {id: 'native',
+           content: `            <properties>
                 <repackage.classifier>exec</repackage.classifier>
                 <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
             </properties>
@@ -189,7 +180,7 @@ graalvmNative {
                         </configuration>
                     </plugin>
                 </plugins>
-            </build>`
+            </build>`}
         );
 
         this.editFile('pom.xml', content =>
@@ -246,7 +237,7 @@ logging:
 
       async asyncConfiguration({ application: { authenticationTypeOauth2, packageFolder } }) {
         if (authenticationTypeOauth2) return;
-        const asyncConfigurationPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/config/AsyncConfiguration.java`;
+        const asyncConfigurationPath = `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/config/AsyncConfiguration.java`;
         this.editFile(asyncConfigurationPath, content =>
           content.replace(
             'return new ExceptionHandlingAsyncTaskExecutor(executor);',
@@ -303,8 +294,8 @@ spring:
         );
       },
 
-      async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
-        const mainClassPath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
+/*       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
+        const mainClassPath = `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         const types = [
           'org.HdrHistogram.Histogram.class',
           'org.HdrHistogram.ConcurrentHistogram.class',
@@ -346,17 +337,17 @@ ${types.join('        ,\n')}
 @SpringBootApplication`
           )
         );
-      },
+      }, */
 
       async webConfigurer({ application: { packageFolder } }) {
-        this.editFile(`${SERVER_MAIN_SRC_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
+        this.editFile(`${JAVA_MAIN_SOURCES_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
           content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
         );
       },
 
       async logoutResource({ application: { packageFolder, authenticationTypeOauth2, reactive } }) {
         if (!authenticationTypeOauth2) return;
-        const filePath = `${SERVER_MAIN_SRC_DIR}${packageFolder}/web/rest/LogoutResource.java`;
+        const filePath = `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/web/rest/LogoutResource.java`;
 
         this.editFile(filePath, content =>
           content
@@ -378,7 +369,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`
       userRepository({ application: { packageFolder, reactive, databaseTypeSql } }) {
         if (reactive && databaseTypeSql) {
           this.editFile(
-            `${SERVER_MAIN_SRC_DIR}${packageFolder}/repository/UserRepository.java`,
+            `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/repository/UserRepository.java`,
             contents =>
               contents.replace(
                 'import reactor.core.publisher.Flux;',
@@ -398,7 +389,7 @@ class `
 
       replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
         if (!reactive) {
-          this.editFile(`${SERVER_TEST_SRC_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
+          this.editFile(`${TEMPLATES_TEST_SOURCES_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
             contents
               .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
               .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
@@ -424,7 +415,7 @@ class `
 
       cypress({ application: { cypressTests } }) {
         if (!cypressTests) return;
-        this.editFile(`${CLIENT_TEST_SRC_DIR}/cypress/e2e/administration/administration.cy.ts`, contents =>
+        this.editFile(`${TEMPLATES_JAVASCRIPT_TEST_DIR}/cypress/e2e/administration/administration.cy.ts`, contents =>
           contents
             .replace("describe('/metrics'", "describe.skip('/metrics'")
             .replace("describe('/logs'", "describe.skip('/logs'")
@@ -434,17 +425,17 @@ class `
     };
   }
 
-  get [POST_WRITING_ENTITIES_PRIORITY]() {
+  get [ServerGenerator.POST_WRITING_ENTITIES]() {
     return {
       async entities({ application: { reactive, databaseTypeSql }, entities }) {
         for (const { name } of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
           // Use entity from old location for more complete data.
-          const entity = this.configOptions.sharedEntities[name];
+          const entity = this.sharedData.getEntity(name);
           if (!entity) {
-            this.warning(`Skipping entity generation, use '--with-entities' flag`);
+            this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
             continue;
           }
-          this.editFile(`${SERVER_MAIN_SRC_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
+          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
             content
               .replaceAll(
                 `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
@@ -466,7 +457,7 @@ class `
 
           if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
             this.editFile(
-              `${SERVER_MAIN_SRC_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
+              `${JAVA_MAIN_SOURCES_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
               contents =>
                 contents.replace(
                   'import org.springframework.beans.factory.annotation.Autowired;',
@@ -478,7 +469,7 @@ class `
 
           if (reactive && databaseTypeSql) {
             this.editFile(
-              `${SERVER_MAIN_SRC_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
+              `${JAVA_MAIN_SOURCES_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
               contents =>
                 contents.replace(
                   'import reactor.core.publisher.Flux;',
@@ -499,32 +490,32 @@ class `
     };
   }
 
-  get [END_PRIORITY]() {
+  get [ServerGenerator.END]() {
     return {
       async checkCompatibility({
         application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngine },
       }) {
         if (!databaseTypeNo && !prodDatabaseTypePostgres) {
-          this.warning('JHipster Native is only tested with PostgreSQL database');
+          this.log.warn('JHipster Native is only tested with PostgreSQL database');
         }
         if (searchEngine) {
-          this.warning('JHipster Native is only tested without a search engine');
+          this.log.warn('JHipster Native is only tested without a search engine');
         }
         if (!reactive) {
           if (!cacheProviderNo) {
-            this.warning('JHipster Native is only tested without a cache provider');
+            this.log.warn('JHipster Native is only tested without a cache provider');
           }
           if (enableHibernateCache) {
-            this.warning('JHipster Native is only tested without Hibernate second level cache');
+            this.log.warn('JHipster Native is only tested without Hibernate second level cache');
           }
           if (websocket) {
-            this.warning('JHipster Native is only tested without WebSocket support');
+            this.log.warn('JHipster Native is only tested without WebSocket support');
           }
         }
       },
 
       async endTemplateTask() {
-        this.info(
+        this.log.info(
           `You can see some tips about running Spring Boot with GraalVM at https://github.com/mraible/spring-native-examples#readme.`
         );
       },
