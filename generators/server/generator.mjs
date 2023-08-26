@@ -1,5 +1,8 @@
 import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
+import {
+  javaMainPackageTemplatesBlock,
+} from 'generator-jhipster/generators/java/support';
 
 import { SPRING_NATIVE_VERSION, NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
@@ -436,7 +439,7 @@ class `
   }
 
   get [ServerGenerator.POST_WRITING_ENTITIES]() {
-    return {
+    return this.asPostWritingTaskGroup({
       async entities({ application: { reactive, databaseTypeSql }, entities }) {
         for (const { name } of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
           // Use entity from old location for more complete data.
@@ -497,7 +500,45 @@ class `
           }
         }
       },
-    };
+      async jsonFilter({ entities }) {
+        // include user entity.
+        const targetEntities = [
+          ...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded),
+          this.sharedData.getEntity('User')
+        ]
+        for (const entity of targetEntities) {
+          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`, content =>
+            content.includes('@JsonFilter("lazyPropertyFilter")') ? content :
+            content.replace(
+              '\npublic class ',
+              '\n@JsonFilter("lazyPropertyFilter")\npublic class '
+            )
+            .replace(
+              /(package[\s\S]*?)(import)/,              
+              `$1import com.fasterxml.jackson.annotation.JsonFilter;$2`,
+            )
+          );
+        }
+      },      
+    });
+  }
+
+  get [ServerGenerator.WRITING]() {
+    return this.asWritingTaskGroup({
+      async writingTemplateTask({ application }) {
+        await this.writeFiles({
+          sections: {
+            config: [
+              {
+                ...javaMainPackageTemplatesBlock(),
+                templates: ['config/JacksonNativeConfiguration.java'],
+              },
+            ],
+          },
+          context: application,
+        });
+      },
+    });
   }
 
   get [ServerGenerator.END]() {
