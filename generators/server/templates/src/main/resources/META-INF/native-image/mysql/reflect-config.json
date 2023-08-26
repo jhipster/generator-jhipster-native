@@ -1,0 +1,7 @@
+[
+  {
+    "name": "com.mysql.cj.PerConnectionLRUFactory",
+    "queryAllPublicMethods": true,
+    "methods": [{ "name": "<init>", "parameterTypes": [] }]
+  }
+]

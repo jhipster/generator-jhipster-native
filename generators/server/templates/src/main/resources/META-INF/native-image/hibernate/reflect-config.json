@@ -1,0 +1,21 @@
+[
+  {
+    "name": "org.hibernate.cache.jcache.internal.JCacheRegionFactory",
+    "queryAllPublicMethods": true,
+    "methods": [{ "name": "<init>", "parameterTypes": [] }]
+  },
+  {
+    "name": "org.hibernate.internal.log.IncubationLogger_$logger",
+    "methods": [{ "name": "<init>", "parameterTypes": ["org.jboss.logging.Logger"] }]
+  },  
+  {
+    "condition":{"typeReachable":"org.hibernate.dialect.DialectLogging"},
+    "name":"org.hibernate.dialect.DialectLogging_$logger",
+    "methods":[{"name":"<init>","parameterTypes":["org.jboss.logging.Logger"] }]
+  },
+  {
+    "condition":{"typeReachable":"org.hibernate.metamodel.mapping.MappingModelCreationLogging"},
+    "name":"org.hibernate.metamodel.mapping.MappingModelCreationLogging_$logger",
+    "methods":[{"name":"<init>","parameterTypes":["org.jboss.logging.Logger"] }]
+  }
+]

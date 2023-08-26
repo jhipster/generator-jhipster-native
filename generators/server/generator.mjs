@@ -284,20 +284,32 @@ logging:
           )
         );
       },
-      async jwt({ application: { authenticationTypeOauth2 } }) {
-        if (authenticationTypeOauth2) return;
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/jwt/reflect-config.json',
-          'src/main/resources/META-INF/native-image/jwt/reflect-config.json'
-        );
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/jwt/resource-config.json',
-          'src/main/resources/META-INF/native-image/jwt/resource-config.json'
-        );
-
+      async common({ application }) {
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/common/reflect-config.json',
           'src/main/resources/META-INF/native-image/common/reflect-config.json'
+        );
+      },
+
+      // TODO: platform selection.
+      async h2({ application }) {
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/h2/reflect-config.json',
+          'src/main/resources/META-INF/native-image/h2/reflect-config.json'
+        );
+      },
+
+      async hibernate({ application }) {
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
+          'src/main/resources/META-INF/native-image/hibernate/reflect-config.json'
+        );
+      },
+
+      async mysql({ application }) {
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/mysql/reflect-config.json',
+          'src/main/resources/META-INF/native-image/mysql/reflect-config.json'
         );
       },
 
