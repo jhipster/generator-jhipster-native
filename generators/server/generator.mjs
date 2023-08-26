@@ -97,90 +97,109 @@ graalvmNative {
       async customizeMaven({ application: { buildToolMaven }, source}) {
         if (!buildToolMaven) return;
 
-        source.addMavenRepository({
-          id: 'spring-releases',
-          name: 'Spring Releases',
-          url: 'https://repo.spring.io/release',          
-          snapshotsEnabled: false
-        });
-        source.addMavenPluginRepository({
-          id: 'spring-releases',
-          name: 'Spring Release',
-          url: 'https://repo.spring.io/release',
-          snapshotsEnabled: false
-        });
-
-        source.addMavenProperty('repackage.classifier');
-        source.addMavenProperty('spring-native.version', SPRING_NATIVE_VERSION);
-        source.addMavenProperty('native-image-name', 'native-executable');
-        source.addMavenProperty('native-build-args', '--verbose -J-Xmx10g');
-
-        //source.addMavenDependency('org.springframework.experimental', 'spring-native', '${spring-native.version}');
-
         source.addMavenProfile(
           {id: 'native',
-           content: `            <properties>
-                <repackage.classifier>exec</repackage.classifier>
-                <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>junit-platform-launcher</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.experimental</groupId>
-                        <artifactId>spring-aot-maven-plugin</artifactId>
-                        <version>\${spring-native.version}</version>
-                        <executions>
-                            <execution>
-                                <id>test-generate</id>
-                                <goals>
-                                    <goal>test-generate</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>generate</id>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.graalvm.buildtools</groupId>
-                        <artifactId>native-maven-plugin</artifactId>
-                        <version>\${native-buildtools.version}</version>
-                        <extensions>true</extensions>
-                        <executions>
-                            <execution>
-                                <id>test-native</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>build-native</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <imageName>\${native-image-name}</imageName>
-                            <buildArgs>
-                                <buildArg>--no-fallback \${native-build-args}</buildArg>
-                            </buildArgs>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>`}
+           content: `            <build>
+           <pluginManagement>
+               <plugins>
+                   <plugin>
+                       <groupId>org.apache.maven.plugins</groupId>
+                       <artifactId>maven-jar-plugin</artifactId>
+                       <configuration>
+                           <archive>
+                               <manifestEntries>
+                                   <Spring-Boot-Native-Processed>true</Spring-Boot-Native-Processed>
+                               </manifestEntries>
+                           </archive>
+                       </configuration>
+                   </plugin>
+                   <plugin>
+                       <groupId>org.springframework.boot</groupId>
+                       <artifactId>spring-boot-maven-plugin</artifactId>
+                       <configuration>
+                           <image>
+                               <builder>paketobuildpacks/builder:tiny</builder>
+                               <env>
+                                   <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                               </env>
+                           </image>
+                       </configuration>
+                       <executions>
+                           <execution>
+                               <id>process-aot</id>
+                               <goals>
+                                   <goal>process-aot</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                   </plugin>
+                   <plugin>
+                       <groupId>org.graalvm.buildtools</groupId>
+                       <artifactId>native-maven-plugin</artifactId>
+                       <configuration>
+                           <classesDirectory>\${project.build.outputDirectory}</classesDirectory>
+                           <metadataRepository>
+                               <enabled>true</enabled>
+                           </metadataRepository>
+                           <requiredVersion>22.3</requiredVersion>
+                       </configuration>
+                       <executions>
+                           <execution>
+                               <id>add-reachability-metadata</id>
+                               <goals>
+                                   <goal>add-reachability-metadata</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                   </plugin>
+               </plugins>
+           </pluginManagement>
+       </build>`}
+       );
+       source.addMavenProfile(
+          {id: 'nativeTest',
+           content: `            <dependencies>
+           <dependency>
+               <groupId>org.junit.platform</groupId>
+               <artifactId>junit-platform-launcher</artifactId>
+               <scope>test</scope>
+           </dependency>
+       </dependencies>
+       <build>
+           <plugins>
+               <plugin>
+                   <groupId>org.springframework.boot</groupId>
+                   <artifactId>spring-boot-maven-plugin</artifactId>
+                   <executions>
+                       <execution>
+                           <id>process-test-aot</id>
+                           <goals>
+                               <goal>process-test-aot</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+               </plugin>
+               <plugin>
+                   <groupId>org.graalvm.buildtools</groupId>
+                   <artifactId>native-maven-plugin</artifactId>
+                   <configuration>
+                       <classesDirectory>\${project.build.outputDirectory}</classesDirectory>
+                       <metadataRepository>
+                           <enabled>true</enabled>
+                       </metadataRepository>
+                       <requiredVersion>22.3</requiredVersion>
+                   </configuration>
+                   <executions>
+                       <execution>
+                           <id>native-test</id>
+                           <goals>
+                               <goal>test</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+               </plugin>
+           </plugins>
+       </build>`}
         );
 
         this.editFile('pom.xml', content =>
@@ -194,20 +213,37 @@ graalvmNative {
         </dependency>`,
               ''
             )
+            // Add the GraalVM native-maven-plugin to the 'prod' profile
             .replace(
-              `
-                <artifactId>spring-boot-maven-plugin</artifactId>`,
-              `
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <classifier>\${repackage.classifier}</classifier>
-                    <image>
-                        <builder>paketobuildpacks/builder:tiny</builder>
-                        <env>
-                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-                        </env>
-                    </image>
-                </configuration>`
+              /(<build>[\s\S]*?<pluginManagement>\s*<plugins>[\s\S]*?)(<\/plugins>\s*<\/pluginManagement>\s*<\/build>)/,
+              `$1<plugin>
+              <groupId>org.graalvm.buildtools</groupId>
+              <artifactId>native-maven-plugin</artifactId>
+          </plugin>$2`
+            )
+            // Remove the modernizer-maven-plugin from the content
+            .replace(
+              /<plugin>\s*<groupId>org.gaul<\/groupId>\s*<artifactId>modernizer-maven-plugin<\/artifactId>[\s\S]*?<\/plugin>/g,
+              ''
+            )
+            // Add the hibernate-enhance-maven-plugin to the 'prod' profile         
+            .replace(
+              /(<id>prod<\/id>[\s\S]*?<plugins>[\s\S]*?)(<\/plugins>)/,
+              `$1<plugin>
+              <groupId>org.hibernate.orm.tooling</groupId>
+              <artifactId>hibernate-enhance-maven-plugin</artifactId>
+              <version>\${hibernate.version}</version>
+              <executions>
+                  <execution>
+                      <configuration>
+                          <enableLazyInitialization>true</enableLazyInitialization>
+                      </configuration>
+                      <goals>
+                          <goal>enhance</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>$2`
             )
         );
       },
@@ -384,32 +420,6 @@ import reactor.core.publisher.Flux;`
 class `
               )
           );
-        }
-      },
-
-      replaceUndertowWithTomcat({ application: { reactive, packageFolder, buildToolMaven } }) {
-        if (!reactive) {
-          this.editFile(`${TEMPLATES_TEST_SOURCES_DIR}${packageFolder}/config/WebConfigurerTest.java`, contents =>
-            contents
-              .replace('import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;\n', '')
-              .replace(/    @Test\n    void shouldCustomizeServletContainer\(\)([\s\S]*?)\n    }/, '')
-          );
-          if (buildToolMaven) {
-            this.editFile('pom.xml', contents => contents.replaceAll('undertow', 'tomcat'));
-          } else {
-            this.editFile('build.gradle', contents =>
-              contents
-                .replace(
-                  'implementation.exclude module: "spring-boot-starter-tomcat"',
-                  'implementation.exclude module: "spring-boot-starter-undertow"'
-                )
-                .replace('exclude module: "spring-boot-starter-tomcat"', 'exclude module: "spring-boot-starter-undertow"')
-                .replace(
-                  'implementation "org.springframework.boot:spring-boot-starter-undertow"',
-                  'implementation "org.springframework.boot:spring-boot-starter-tomcat"'
-                )
-            );
-          }
         }
       },
 
