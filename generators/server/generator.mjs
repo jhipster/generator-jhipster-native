@@ -251,7 +251,7 @@ graalvmNative {
         );
       },
 
-      async customizeConfig() {
+/*       async customizeConfig() {
         this.fs.append(
           this.destinationPath('src/main/resources/config/application.yml'),
           `
@@ -272,7 +272,7 @@ logging:
     sun.net.www: ERROR
 `
         );
-      },
+      }, */
 
       async asyncConfiguration({ application: { authenticationTypeOauth2, packageFolder } }) {
         if (authenticationTypeOauth2) return;
@@ -321,7 +321,7 @@ logging:
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json'
         );
 
-        this.fs.append(
+/*         this.fs.append(
           this.destinationPath('src/main/resources/config/application.yml'),
           `
 ---
@@ -330,7 +330,7 @@ spring:
     init:
       mode: never
 `
-        );
+        ); */
       },
 
 /*       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
@@ -378,11 +378,11 @@ ${types.join('        ,\n')}
         );
       }, */
 
-      async webConfigurer({ application: { packageFolder } }) {
+/*       async webConfigurer({ application: { packageFolder } }) {
         this.editFile(`${JAVA_MAIN_SOURCES_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
           content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
         );
-      },
+      }, */
 
       async logoutResource({ application: { packageFolder, authenticationTypeOauth2, reactive } }) {
         if (!authenticationTypeOauth2) return;
