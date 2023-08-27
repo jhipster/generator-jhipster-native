@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import CiCdGenerator from 'generator-jhipster/esm/generators/ci-cd';
+import BaseApplicationGenerator from 'generator-jhipster/esm/generators/base-application';
 import { constants } from 'generator-jhipster';
-import { GRAALVM_VERSION } from '../../lib/constants.mjs';
+import { GRAALVM_VERSION } from '../../lib/constants';
 
 const { NODE_VERSION, JAVA_VERSION } = constants;
 
@@ -13,7 +13,7 @@ const githubActions = {
   'actions/setup-node': 'actions/setup-node@v3',
 };
 
-export default class extends CiCdGenerator {
+export default class extends BaseApplicationGenerator {
   constructor(args, opts, features) {
     super(args, opts, features);
 
@@ -30,7 +30,7 @@ export default class extends CiCdGenerator {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
-  get [WRITING_PRIORITY]() {
+  get [BaseApplicationGenerator.WRITING]() {
     return {
       async writingTemplateTask({ application }) {
         if (this.options.jhipsterContext.pipeline !== 'github') return;
