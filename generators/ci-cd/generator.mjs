@@ -13,15 +13,13 @@ const githubActions = {
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
-    super(args, opts, features);
+    super(args, opts, { ...features, sbsBlueprint: true });
 
     if (this.options.help) return;
 
     if (!this.jhipsterContext) {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
     }
-
-    this.sbsBlueprint = true;
   }
 
   async _postConstruct() {

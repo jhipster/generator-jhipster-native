@@ -3,7 +3,7 @@ import AppGenerator from 'generator-jhipster/generators/app';
 
 export default class extends AppGenerator {
   constructor(args, opts, features) {
-    super(args, opts, features);
+    super(args, opts, { ...features, sbsBlueprint: true });
 
     if (this.options.help) return;
 
