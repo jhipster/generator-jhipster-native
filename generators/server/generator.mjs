@@ -57,12 +57,12 @@ export default class extends ServerGenerator {
       //   delete this.env.sharedFs.store[this.destinationPath('.npmrc')];
       // },
 
-      async customizeGradle({ application: { buildToolGradle, reactive } }) {
+      async customizeGradle({ application: { buildToolGradle, reactive }, source }) {
         if (!buildToolGradle) return;
 
-        this.addGradlePluginToPluginsBlock('org.springframework.experimental.aot', SPRING_NATIVE_VERSION);
-        this.addGradleMavenRepository('https://repo.spring.io/release');
-        this.addGradlePluginManagementRepository('https://repo.spring.io/release');
+        source.addGradlePlugin({ id: 'org.springframework.experimental.aot', version: SPRING_NATIVE_VERSION });
+        source.addGradleMavenRepository({ url: 'https://repo.spring.io/release' });
+        source.addGradlePluginManagement({ url: 'https://repo.spring.io/release' });
 
         this.editFile('build.gradle', content =>
           content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
