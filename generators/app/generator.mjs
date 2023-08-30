@@ -1,9 +1,9 @@
 import chalk from 'chalk';
-import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
+import AppGenerator from 'generator-jhipster/generators/app';
 
-export default class extends BaseApplicationGenerator {
+export default class extends AppGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { ...features, sbsBlueprint: true });
+    super(args, opts, features);
 
     this.option('cache-provider', {
       desc: 'Cache provider',
@@ -36,9 +36,10 @@ export default class extends BaseApplicationGenerator {
     if (this.options.enableHibernateCache !== undefined) {
       this.jhipsterConfig.enableHibernateCache = this.options.enableHibernateCache;
     }
+
+    this.sbsBlueprint = true;
   }
 
   // Temporary fix for 'Error: This Generator is empty. Add at least one method for it to run.'
-  // eslint-disable-next-line getter-return, no-empty-function
-  get [BaseApplicationGenerator.WRITING]() {}
+  get [AppGenerator.WRITING]() {}
 }
