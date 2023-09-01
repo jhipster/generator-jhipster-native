@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
-import { SPRING_NATIVE_VERSION, NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
+import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
 import { JAVA_MAIN_SOURCES_DIR, TEMPLATES_TEST_SOURCES_DIR, TEMPLATES_JAVASCRIPT_TEST_DIR } from 'generator-jhipster';
 
@@ -58,9 +58,9 @@ export default class extends ServerGenerator {
       async customizeGradle({ application: { buildToolGradle, reactive }, source }) {
         if (!buildToolGradle) return;
 
-        source.addGradlePlugin({ id: 'org.springframework.experimental.aot', version: SPRING_NATIVE_VERSION });
-        source.addGradleMavenRepository({ url: 'https://repo.spring.io/release' });
-        source.addGradlePluginManagement({ url: 'https://repo.spring.io/release' });
+        source.addGradlePlugin({ id: 'org.graalvm.buildtools.native', version: NATIVE_BUILDTOOLS_VERSION });
+        // eslint-disable-next-line no-template-curly-in-string
+        source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
 
         this.editFile('build.gradle', content =>
           content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
@@ -75,17 +75,22 @@ bootBuildImage {
   ]
 }
 graalvmNative {
+  toolchainDetection = true
   binaries {
     main {
       imageName = 'native-executable'
       //this is only needed when you toolchain can't be detected
       //javaLauncher = javaToolchains.launcherFor {
-      //  languageVersion = JavaLanguageVersion.of(11)
+      //  languageVersion = JavaLanguageVersion.of(19)
       //  vendor = JvmVendorSpec.matching("GraalVM Community")
       //}
       verbose = false
-      buildArgs.add("\${findProperty('nativeBuildArgs') ?: ''}")
     }
+  }
+}
+hibernate {
+  enhancement {
+      enableLazyInitialization = true
   }
 }`,
           ),
