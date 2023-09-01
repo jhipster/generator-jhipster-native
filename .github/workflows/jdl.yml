@@ -71,7 +71,7 @@ jobs:
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: 'SETUP: checkout generator-jhipster-native'
         uses: actions/checkout@v3
         with:
@@ -85,8 +85,8 @@ jobs:
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.2.0'
-          java-version: '11'
+          version: '22.3.0'
+          java-version: '19'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'SETUP: get date'
