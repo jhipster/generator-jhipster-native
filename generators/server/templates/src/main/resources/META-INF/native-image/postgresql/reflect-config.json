@@ -1,0 +1,7 @@
+[
+  {
+    "name": "com.querydsl.core.types.Path",
+    "queryAllPublicMethods": true,
+    "methods": [{ "name": "<init>", "parameterTypes": [] }]
+  }
+]
