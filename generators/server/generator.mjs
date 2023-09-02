@@ -102,7 +102,13 @@ hibernate {
 
         source.addMavenProfile({
           id: 'native',
-          content: `            <build>
+          content: `            <dependencies>
+           <dependency>
+               <groupId>com.querydsl</groupId>
+               <artifactId>querydsl-core</artifactId>
+           </dependency>
+       </dependencies>
+       <build>
            <pluginManagement>
                <plugins>
                    <plugin>
@@ -329,14 +335,6 @@ logging:
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
-        );
-      },
-
-      // TODO: platform selection.
-      async postgresql({ application }) {
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/postgresql/reflect-config.json',
-          'src/main/resources/META-INF/native-image/postgresql/reflect-config.json',
         );
 
         /*         this.fs.append(
