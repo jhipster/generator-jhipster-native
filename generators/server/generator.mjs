@@ -303,6 +303,7 @@ logging:
         );
       },
 
+      // TODO: platform selection.
       async mysql({ application }) {
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/mysql/reflect-config.json',
@@ -328,6 +329,14 @@ logging:
         await this.copyTemplate(
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
           'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
+        );
+      },
+
+      // TODO: platform selection.
+      async postgresql({ application }) {
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/postgresql/reflect-config.json',
+          'src/main/resources/META-INF/native-image/postgresql/reflect-config.json',
         );
 
         /*         this.fs.append(
