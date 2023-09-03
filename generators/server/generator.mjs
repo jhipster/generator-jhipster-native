@@ -534,7 +534,8 @@ class `,
           }
         }
       },
-      async userEntity() {
+      async userEntity({ application }) {
+        if (!application.generateBuiltInUserEntity) return;
         // Use entity from old location for more complete data.
         const entity = this.sharedData.getEntity('User');
         if (!entity) {
