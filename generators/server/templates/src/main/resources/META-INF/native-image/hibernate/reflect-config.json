@@ -47,5 +47,9 @@
     "condition": { "typeReachable": "org.hibernate.sql.results.graph.embeddable.EmbeddableLoadingLogger" },
     "name": "org.hibernate.sql.results.graph.embeddable.EmbeddableLoadingLogger_$logger",
     "methods": [{ "name": "<init>", "parameterTypes": ["org.jboss.logging.Logger"] }]
-  }
+  },
+  {
+    "name": "org.hibernate.sql.results.graph.FetchParent[]",
+    "unsafeAllocated": true   
+  } 
 ]

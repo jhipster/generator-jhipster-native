@@ -307,6 +307,10 @@ logging:
           'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
           'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
         );
+        await this.copyTemplate(
+          'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
+          'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
+        );
       },
 
       // TODO: platform selection.
@@ -451,6 +455,20 @@ class `,
             .replace("describe('/configuration'", "describe.skip('/configuration'"),
         );
       },
+
+      restErrors({ application: { packageFolder } }) {
+        this.editFile(`${JAVA_MAIN_SOURCES_DIR}${packageFolder}/web/rest/errors/FieldErrorVM.java`, contents =>
+          contents.includes('@RegisterReflectionForBinding')
+            ? contents
+            : contents.replace(
+                'public class FieldErrorVM implements Serializable {',
+                `import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
+
+              @RegisterReflectionForBinding({ FieldErrorVM.class })
+              public class FieldErrorVM implements Serializable {`,
+              ),
+        );
+      },
     };
   }
 
@@ -514,6 +532,20 @@ class `,
                 ),
             );
           }
+        }
+      },
+      async userEntity() {
+        // Use entity from old location for more complete data.
+        const entity = this.sharedData.getEntity('User');
+        if (!entity) {
+          this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
+        } else {
+          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`, content =>
+            content.replaceAll(
+              `@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
+              `@PathVariable(name = "login") @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
+            ),
+          );
         }
       },
       async jsonFilter({ entities }) {

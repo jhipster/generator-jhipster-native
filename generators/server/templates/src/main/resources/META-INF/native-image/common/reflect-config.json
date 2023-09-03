@@ -6,6 +6,11 @@
     "allDeclaredConstructors": true
   },
   {
+    "name": "java.util.Locale",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
     "name": "sun.misc.Unsafe",
     "allDeclaredFields": true,
     "allDeclaredMethods": true
