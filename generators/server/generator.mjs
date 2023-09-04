@@ -21,6 +21,24 @@ export default class extends ServerGenerator {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
+  get [ServerGenerator.WRITING]() {
+    return this.asWritingTaskGroup({
+      async writingTemplateTask({ application }) {
+        await this.writeFiles({
+          sections: {
+            config: [
+              {
+                ...javaMainPackageTemplatesBlock(),
+                templates: ['config/JacksonNativeConfiguration.java'],
+              },
+            ],
+          },
+          context: application,
+        });
+      },
+    });
+  }
+
   get [ServerGenerator.POST_WRITING]() {
     return {
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
@@ -561,24 +579,6 @@ class `,
                   .replace(/(package[\s\S]*?)(import)/, `$1import com.fasterxml.jackson.annotation.JsonFilter;$2`),
           );
         }
-      },
-    });
-  }
-
-  get [ServerGenerator.WRITING]() {
-    return this.asWritingTaskGroup({
-      async writingTemplateTask({ application }) {
-        await this.writeFiles({
-          sections: {
-            config: [
-              {
-                ...javaMainPackageTemplatesBlock(),
-                templates: ['config/JacksonNativeConfiguration.java'],
-              },
-            ],
-          },
-          context: application,
-        });
       },
     });
   }
