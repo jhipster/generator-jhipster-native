@@ -4,7 +4,7 @@ import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/jav
 
 import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
-import { JAVA_MAIN_SOURCES_DIR, TEMPLATES_TEST_SOURCES_DIR, TEMPLATES_JAVASCRIPT_TEST_DIR } from 'generator-jhipster';
+import { JAVA_MAIN_SOURCES_DIR, JAVA_TEST_SOURCES_DIR, TEMPLATES_JAVASCRIPT_TEST_DIR } from 'generator-jhipster';
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
@@ -485,6 +485,27 @@ class `,
               @RegisterReflectionForBinding({ FieldErrorVM.class })
               public class FieldErrorVM implements Serializable {`,
               ),
+        );
+      },
+
+      testUtil({ application: { packageFolder, packageName } }) {
+        this.editFile(`${JAVA_TEST_SOURCES_DIR}${packageFolder}/web/rest/TestUtil.java`, contents =>
+          contents.includes('JacksonNativeConfiguration')
+            ? contents
+            : contents
+                .replace(
+                  'import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;',
+                  `import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+                  import ${packageName}.config.JacksonNativeConfiguration;
+                  import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;`,
+                )
+                .replace(
+                  'mapper.registerModule(new JavaTimeModule());',
+                  `mapper.registerModule(new JavaTimeModule());
+                  Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+                new JacksonNativeConfiguration().customizeJackson().customize(builder);
+                builder.configure(mapper);`,
+                ),
         );
       },
     };
