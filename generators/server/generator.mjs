@@ -571,7 +571,9 @@ class `,
         // include user entity.
         const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
         for (const entity of targetEntities) {
-          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`, content =>
+          // Workaround multi step transform bug
+          const useJhiExtension = !this.env.sharedFs.existsInMemory(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`);
+          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java${useJhiExtension ? '.jhi' : ''}`, content =>
             content.includes('@JsonFilter("lazyPropertyFilter")')
               ? content
               : content
