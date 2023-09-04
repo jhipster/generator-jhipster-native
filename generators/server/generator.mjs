@@ -4,8 +4,6 @@ import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/jav
 
 import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
 
-import { JAVA_MAIN_SOURCES_DIR, JAVA_TEST_SOURCES_DIR, TEMPLATES_JAVASCRIPT_TEST_DIR } from 'generator-jhipster';
-
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
     super(args, opts, { ...features, sbsBlueprint: true });
@@ -40,7 +38,7 @@ export default class extends ServerGenerator {
   }
 
   get [ServerGenerator.POST_WRITING]() {
-    return {
+    return this.asPostWritingTaskGroup({
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
         this.packageJson.merge({
           scripts: {
@@ -295,9 +293,9 @@ logging:
         );
       }, */
 
-      async asyncConfiguration({ application: { authenticationTypeOauth2, packageFolder } }) {
+      async asyncConfiguration({ application: { authenticationTypeOauth2, srcMainJava, packageFolder } }) {
         if (authenticationTypeOauth2) return;
-        const asyncConfigurationPath = `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/config/AsyncConfiguration.java`;
+        const asyncConfigurationPath = `${srcMainJava}${packageFolder}/config/AsyncConfiguration.java`;
         this.editFile(asyncConfigurationPath, content =>
           content.replace(
             'return new ExceptionHandlingAsyncTaskExecutor(executor);',
@@ -372,7 +370,7 @@ spring:
       },
 
       /*       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
-        const mainClassPath = `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/${this.getMainClassName(baseName)}.java`;
+        const mainClassPath = `${srcMainJava}${packageFolder}/${this.getMainClassName(baseName)}.java`;
         const types = [
           'org.HdrHistogram.Histogram.class',
           'org.HdrHistogram.ConcurrentHistogram.class',
@@ -417,14 +415,14 @@ ${types.join('        ,\n')}
       }, */
 
       /*       async webConfigurer({ application: { packageFolder } }) {
-        this.editFile(`${JAVA_MAIN_SOURCES_DIR}${packageFolder}/config/WebConfigurer.java`, content =>
+        this.editFile(`${srcMainJava}${packageFolder}/config/WebConfigurer.java`, content =>
           content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
         );
       }, */
 
-      async logoutResource({ application: { packageFolder, authenticationTypeOauth2, reactive } }) {
+      async logoutResource({ application: { srcMainJava, packageFolder, authenticationTypeOauth2, reactive } }) {
         if (!authenticationTypeOauth2) return;
-        const filePath = `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/web/rest/LogoutResource.java`;
+        const filePath = `${srcMainJava}${packageFolder}/web/rest/LogoutResource.java`;
 
         this.editFile(filePath, content =>
           content
@@ -443,10 +441,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         }
       },
 
-      userRepository({ application: { packageFolder, reactive, databaseTypeSql } }) {
+      userRepository({ application: { srcMainJava, packageFolder, reactive, databaseTypeSql } }) {
         if (reactive && databaseTypeSql) {
           this.editFile(
-            `${JAVA_MAIN_SOURCES_DIR}${packageFolder}/repository/UserRepository.java`,
+            `${srcMainJava}${packageFolder}/repository/UserRepository.java`,
             contents =>
               contents.replace(
                 'import reactor.core.publisher.Flux;',
@@ -464,9 +462,9 @@ class `,
         }
       },
 
-      cypress({ application: { cypressTests } }) {
+      cypress({ application: { srcTestJavascript, cypressTests } }) {
         if (!cypressTests) return;
-        this.editFile(`${TEMPLATES_JAVASCRIPT_TEST_DIR}/cypress/e2e/administration/administration.cy.ts`, contents =>
+        this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, contents =>
           contents
             .replace("describe('/metrics'", "describe.skip('/metrics'")
             .replace("describe('/logs'", "describe.skip('/logs'")
@@ -474,8 +472,8 @@ class `,
         );
       },
 
-      restErrors({ application: { packageFolder } }) {
-        this.editFile(`${JAVA_MAIN_SOURCES_DIR}${packageFolder}/web/rest/errors/FieldErrorVM.java`, contents =>
+      restErrors({ application: { srcMainJava, packageFolder } }) {
+        this.editFile(`${srcMainJava}${packageFolder}/web/rest/errors/FieldErrorVM.java`, contents =>
           contents.includes('@RegisterReflectionForBinding')
             ? contents
             : contents.replace(
@@ -488,8 +486,8 @@ class `,
         );
       },
 
-      testUtil({ application: { packageFolder, packageName } }) {
-        this.editFile(`${JAVA_TEST_SOURCES_DIR}${packageFolder}/web/rest/TestUtil.java`, contents =>
+      testUtil({ application: { srcTestJava, packageFolder, packageName } }) {
+        this.editFile(`${srcTestJava}${packageFolder}/web/rest/TestUtil.java`, contents =>
           contents.includes('JacksonNativeConfiguration')
             ? contents
             : contents
@@ -508,12 +506,12 @@ class `,
                 ),
         );
       },
-    };
+    });
   }
 
   get [ServerGenerator.POST_WRITING_ENTITIES]() {
-    return this.asPostWritingTaskGroup({
-      async entities({ application: { reactive, databaseTypeSql }, entities }) {
+    return this.asPostWritingEntitiesTaskGroup({
+      async entities({ application: { srcMainJava, reactive, databaseTypeSql }, entities }) {
         for (const { name } of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
           // Use entity from old location for more complete data.
           const entity = this.sharedData.getEntity(name);
@@ -521,7 +519,7 @@ class `,
             this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
             continue;
           }
-          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
+          this.editFile(`${srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
             content
               .replaceAll(
                 `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
@@ -543,7 +541,7 @@ class `,
 
           if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
             this.editFile(
-              `${JAVA_MAIN_SOURCES_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
+              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
               contents =>
                 contents.replace(
                   'import org.springframework.beans.factory.annotation.Autowired;',
@@ -555,7 +553,7 @@ class `,
 
           if (reactive && databaseTypeSql) {
             this.editFile(
-              `${JAVA_MAIN_SOURCES_DIR}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
+              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
               contents =>
                 contents.replace(
                   'import reactor.core.publisher.Flux;',
@@ -580,7 +578,7 @@ class `,
         if (!entity) {
           this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
         } else {
-          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`, content =>
+          this.editFile(`${application.srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`, content =>
             content.replaceAll(
               `@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
               `@PathVariable(name = "login") @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
@@ -588,13 +586,14 @@ class `,
           );
         }
       },
-      async jsonFilter({ entities }) {
+      async jsonFilter({ application, entities }) {
         // include user entity.
         const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
         for (const entity of targetEntities) {
+          const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
           // Workaround multi step transform bug
-          const useJhiExtension = !this.env.sharedFs.existsInMemory(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`);
-          this.editFile(`${JAVA_MAIN_SOURCES_DIR}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java${useJhiExtension ? '.jhi' : ''}`, content =>
+          const useJhiExtension = !this.env.sharedFs.existsInMemory(entityClassFilePath);
+          this.editFile(`${entityClassFilePath}${useJhiExtension ? '.jhi' : ''}`, content =>
             content.includes('@JsonFilter("lazyPropertyFilter")')
               ? content
               : content
