@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
-import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION} from '../../lib/constants.mjs';
+import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION } from '../../lib/constants.mjs';
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
