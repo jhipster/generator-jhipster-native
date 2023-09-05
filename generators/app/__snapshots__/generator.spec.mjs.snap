@@ -326,9 +326,6 @@ exports[`SubGenerator app of native JHipster blueprint > run > should succeed 1`
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/.h2.server.properties": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
