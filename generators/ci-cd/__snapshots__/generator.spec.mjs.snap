@@ -45,7 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-2019]
-        graalvm-version: [\\"22.2.0\\"]
+        graalvm-version: [\\"22.3.0\\"]
         java-version: [\\"17\\"]
         include:
           - os: ubuntu-latest
@@ -144,7 +144,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-2019]
-        graalvm-version: [\\"22.2.0\\"]
+        graalvm-version: [\\"22.3.0\\"]
         java-version: [\\"17\\"]
         include:
           - os: ubuntu-latest

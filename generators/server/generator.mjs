@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
-import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.mjs';
+import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION} from '../../lib/constants.mjs';
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
@@ -116,70 +116,96 @@ hibernate {
       async customizeMaven({ application: { buildToolMaven }, source }) {
         if (!buildToolMaven) return;
 
+        source.addMavenProperty({ property: 'repackage.classifier' });
+        source.addMavenProperty({ property: 'native-image-name', value: 'native-executable' });
+        source.addMavenProperty({ property: 'native-build-args', value: '--verbose -J-Xmx10g' });
+
         source.addMavenProfile({
           id: 'native',
-          content: `            <dependencies>
-           <dependency>
-               <groupId>com.querydsl</groupId>
-               <artifactId>querydsl-core</artifactId>
-           </dependency>
-       </dependencies>
-       <build>
-           <pluginManagement>
-               <plugins>
-                   <plugin>
-                       <groupId>org.apache.maven.plugins</groupId>
-                       <artifactId>maven-jar-plugin</artifactId>
-                       <configuration>
-                           <archive>
-                               <manifestEntries>
-                                   <Spring-Boot-Native-Processed>true</Spring-Boot-Native-Processed>
-                               </manifestEntries>
-                           </archive>
-                       </configuration>
-                   </plugin>
-                   <plugin>
-                       <groupId>org.springframework.boot</groupId>
-                       <artifactId>spring-boot-maven-plugin</artifactId>
-                       <configuration>
-                           <image>
-                               <builder>paketobuildpacks/builder:tiny</builder>
-                               <env>
-                                   <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-                               </env>
-                           </image>
-                       </configuration>
-                       <executions>
-                           <execution>
-                               <id>process-aot</id>
-                               <goals>
-                                   <goal>process-aot</goal>
-                               </goals>
-                           </execution>
-                       </executions>
-                   </plugin>
-                   <plugin>
-                       <groupId>org.graalvm.buildtools</groupId>
-                       <artifactId>native-maven-plugin</artifactId>
-                       <configuration>
-                           <classesDirectory>\${project.build.outputDirectory}</classesDirectory>
-                           <metadataRepository>
-                               <enabled>true</enabled>
-                           </metadataRepository>
-                           <requiredVersion>22.3</requiredVersion>
-                       </configuration>
-                       <executions>
-                           <execution>
-                               <id>add-reachability-metadata</id>
-                               <goals>
-                                   <goal>add-reachability-metadata</goal>
-                               </goals>
-                           </execution>
-                       </executions>
-                   </plugin>
-               </plugins>
-           </pluginManagement>
-       </build>`,
+          content: `            <properties>
+          <repackage.classifier>exec</repackage.classifier>
+          <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
+          <graalvm.version>${GRAALVM_VERSION}</graalvm.version>
+        </properties>
+        <dependencies>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+            </dependency>
+        </dependencies>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Spring-Boot-Native-Processed>true</Spring-Boot-Native-Processed>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <image>
+                            <builder>paketobuildpacks/builder:tiny</builder>
+                            <env>
+                                <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                            </env>
+                        </image>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>process-aot</id>
+                            <goals>
+                                <goal>process-aot</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>\${native-buildtools.version}</version>
+                    <executions>
+                        <execution>
+                            <id>add-reachability-metadata</id>
+                            <goals>
+                                <goal>add-reachability-metadata</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>build-native</id>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                        <execution>
+                            <id>test-native</id>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                            <phase>test</phase>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <classesDirectory>\${project.build.outputDirectory}</classesDirectory>
+                        <metadataRepository>
+                            <enabled>true</enabled>
+                        </metadataRepository>
+                        <requiredVersion>\${graalvm.version}</requiredVersion>
+                        <imageName>\${native-image-name}</imageName>
+                        <buildArgs>
+                            <buildArg>--no-fallback \${native-build-args}</buildArg>
+                        </buildArgs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>`,
         });
         source.addMavenProfile({
           id: 'nativeTest',
