@@ -30,36 +30,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # os: [ubuntu-20.04, macos-11, windows-2022]
-        os: [ubuntu-20.04]
-        # build-tool: [maven, gradle]
-        build-tool: [maven]
+        os: [ubuntu-20.04, macos-11, windows-2022]
+        build-tool: [maven, gradle]
         suite:
           - postgresql-mvc
-        #  - postgresql-webflux
-        #  - postgresql-mvc-jwt
-        #  - postgresql-webflux-jwt
-        # include:
-        #   - os: ubuntu-20.04
-        #     build-tool: gradle
-        #     native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
-        #   - os: macos-11
-        #     build-tool: maven
-        #     native-package-extra-args: '"-Dnative-build-args=-J-Xmx13g"'
-        #   - os: macos-11
-        #     build-tool: gradle
-        #     native-package-extra-args: '-PnativeBuildArgs=-J-Xmx13g'
-        #   - os: windows-2022
-        #     build-tool: maven
-        #     profile: dev
-        #     e2e: 'false'
-        #     jdl-extra-args: '--skip-install'
-        #   - os: windows-2022
-        #     build-tool: gradle
-        #     profile: dev
-        #     e2e: 'false'
-        #     jdl-extra-args: '--skip-install'
-        #     native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+          - postgresql-webflux
+          - postgresql-mvc-jwt
+          - postgresql-webflux-jwt
+        include:
+          - os: ubuntu-20.04
+            build-tool: gradle
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+          - os: macos-11
+            build-tool: maven
+            native-package-extra-args: '"-Dnative-build-args=-J-Xmx13g"'
+          - os: macos-11
+            build-tool: gradle
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx13g'
+          - os: windows-2022
+            build-tool: maven
+            profile: dev
+            e2e: 'false'
+            jdl-extra-args: '--skip-install'
+          - os: windows-2022
+            build-tool: gradle
+            profile: dev
+            e2e: 'false'
+            jdl-extra-args: '--skip-install'
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
