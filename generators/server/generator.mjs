@@ -591,9 +591,7 @@ class `,
         const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
         for (const entity of targetEntities) {
           const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
-          // Workaround multi step transform bug
-          const useJhiExtension = !this.env.sharedFs.existsInMemory(entityClassFilePath);
-          this.editFile(`${entityClassFilePath}${useJhiExtension ? '.jhi' : ''}`, content =>
+          this.editFile(entityClassFilePath, content =>
             content.includes('@JsonFilter("lazyPropertyFilter")')
               ? content
               : content
@@ -635,13 +633,5 @@ class `,
         );
       },
     };
-  }
-
-  editFile(filePath, ...transformCallbacks) {
-    let content = this.readDestination(filePath);
-    for (const cb of transformCallbacks) {
-      content = cb(content);
-    }
-    this.writeDestination(filePath, content);
   }
 }
