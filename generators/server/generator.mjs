@@ -532,6 +532,26 @@ class `,
                 ),
         );
       },
+
+      // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
+      technicalStructureTest({ application: { buildToolGradle, srcTestJava, packageFolder } }) {
+        if (!buildToolGradle) return;
+        this.editFile(`${srcTestJava}${packageFolder}/TechnicalStructureTest.java`, contents =>
+          contents.includes('__BeanFactoryRegistrations')
+            ? contents
+            : contents
+                .replace(
+                  'import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;',
+                  `import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;                  
+                  import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameEndingWith;`,
+                )
+                .replace(
+                  '.ignoreDependency(belongToAnyOf',
+                  `.ignoreDependency(simpleNameEndingWith("_BeanFactoryRegistrations"), alwaysTrue())
+        .ignoreDependency(belongToAnyOf`,
+                ),
+        );
+      },
     });
   }
 
