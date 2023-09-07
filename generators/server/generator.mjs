@@ -22,6 +22,7 @@ export default class extends ServerGenerator {
   get [ServerGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application }) {
+        if (application.reactive) return;
         await this.writeFiles({
           sections: {
             config: [
@@ -75,14 +76,16 @@ export default class extends ServerGenerator {
         if (!buildToolGradle) return;
 
         source.addGradlePlugin({ id: 'org.graalvm.buildtools.native', version: NATIVE_BUILDTOOLS_VERSION });
-        // eslint-disable-next-line no-template-curly-in-string
-        source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
+        if (!reactive) {
+          // eslint-disable-next-line no-template-curly-in-string
+          source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
+        }
 
         this.editFile('build.gradle', content =>
           content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
             'processResources.dependsOn bootBuildInfo',
-            `
-processResources.dependsOn bootBuildInfo
+            `processResources.dependsOn bootBuildInfo
+
 bootBuildImage {
   builder = "paketobuildpacks/builder:tiny"
   environment = [
@@ -104,16 +107,22 @@ graalvmNative {
     }
   }
 }
+${
+  reactive
+    ? ''
+    : `
 hibernate {
   enhancement {
       enableLazyInitialization = true
   }
-}`,
+}`
+}
+`,
           ),
         );
       },
 
-      async customizeMaven({ application: { buildToolMaven }, source }) {
+      async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
         if (!buildToolMaven) return;
 
         source.addMavenProperty({ property: 'repackage.classifier' });
@@ -273,11 +282,16 @@ hibernate {
           </plugin>$2`,
             )
             // Remove the modernizer-maven-plugin from the content
-            .replace(/<plugin>\s*<groupId>org.gaul<\/groupId>\s*<artifactId>modernizer-maven-plugin<\/artifactId>[\s\S]*?<\/plugin>/g, '')
-            // Add the hibernate-enhance-maven-plugin to the 'prod' profile
-            .replace(
-              /(<id>prod<\/id>[\s\S]*?<plugins>[\s\S]*?)(<\/plugins>)/,
-              `$1<plugin>
+            .replace(/<plugin>\s*<groupId>org.gaul<\/groupId>\s*<artifactId>modernizer-maven-plugin<\/artifactId>[\s\S]*?<\/plugin>/g, ''),
+        );
+
+        if (!reactive) {
+          this.editFile('pom.xml', content =>
+            content
+              // Add the hibernate-enhance-maven-plugin to the 'prod' profile
+              .replace(
+                /(<id>prod<\/id>[\s\S]*?<plugins>[\s\S]*?)(<\/plugins>)/,
+                `$1<plugin>
               <groupId>org.hibernate.orm.tooling</groupId>
               <artifactId>hibernate-enhance-maven-plugin</artifactId>
               <version>\${hibernate.version}</version>
@@ -292,8 +306,9 @@ hibernate {
                   </execution>
               </executions>
           </plugin>$2`,
-            ),
-        );
+              ),
+          );
+        }
       },
 
       /*       async customizeConfig() {
@@ -512,7 +527,8 @@ class `,
         );
       },
 
-      testUtil({ application: { srcTestJava, packageFolder, packageName } }) {
+      testUtil({ application: { srcTestJava, packageFolder, packageName, reactive } }) {
+        if (reactive) return;
         this.editFile(`${srcTestJava}${packageFolder}/web/rest/TestUtil.java`, contents =>
           contents.includes('JacksonNativeConfiguration')
             ? contents
@@ -633,6 +649,7 @@ class `,
         }
       },
       async jsonFilter({ application, entities }) {
+        if (application.reactive) return;
         // include user entity.
         const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
         for (const entity of targetEntities) {
