@@ -107,6 +107,9 @@ graalvmNative {
     }
   }
 }
+processTestAot {
+  jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
+}
 ${
   reactive
     ? ''
