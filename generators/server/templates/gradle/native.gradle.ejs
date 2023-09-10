@@ -1,0 +1,34 @@
+bootBuildImage {
+  builder = "paketobuildpacks/builder:tiny"
+  environment = [
+    "BP_NATIVE_IMAGE" : "true",
+    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "--no-fallback \${findProperty('nativeImageProperties') ?: ''}"
+  ]
+}
+
+graalvmNative {
+  toolchainDetection = true
+  binaries {
+    main {
+      imageName = 'native-executable'
+      //this is only needed when you toolchain can't be detected
+      //javaLauncher = javaToolchains.launcherFor {
+      //  languageVersion = JavaLanguageVersion.of(19)
+      //  vendor = JvmVendorSpec.matching("GraalVM Community")
+      //}
+      verbose = false
+    }
+  }
+}
+
+processTestAot {
+  jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
+}
+
+<%_ if (!reactive) { _%>
+hibernate {
+  enhancement {
+      enableLazyInitialization = true
+  }
+}
+<%_ } _%>

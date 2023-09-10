@@ -31,6 +31,12 @@ export default class extends ServerGenerator {
                 templates: ['config/JacksonNativeConfiguration.java'],
               },
             ],
+            gradle: [
+              {
+                condition: ctx => ctx.buildToolGradle,
+                templates: ['gradle/native.gradle'],
+              },
+            ],
           },
           context: application,
         });
@@ -81,48 +87,9 @@ export default class extends ServerGenerator {
           source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
         }
 
-        this.editFile('build.gradle', content =>
-          content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', '').replace(
-            'processResources.dependsOn bootBuildInfo',
-            `processResources.dependsOn bootBuildInfo
+        source.applyFromGradle({ script: 'gradle/native.gradle' });
 
-bootBuildImage {
-  builder = "paketobuildpacks/builder:tiny"
-  environment = [
-    "BP_NATIVE_IMAGE" : "true",
-    "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "--no-fallback \${findProperty('nativeImageProperties') ?: ''}"
-  ]
-}
-graalvmNative {
-  toolchainDetection = true
-  binaries {
-    main {
-      imageName = 'native-executable'
-      //this is only needed when you toolchain can't be detected
-      //javaLauncher = javaToolchains.launcherFor {
-      //  languageVersion = JavaLanguageVersion.of(19)
-      //  vendor = JvmVendorSpec.matching("GraalVM Community")
-      //}
-      verbose = false
-    }
-  }
-}
-processTestAot {
-  jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
-}
-${
-  reactive
-    ? ''
-    : `
-hibernate {
-  enhancement {
-      enableLazyInitialization = true
-  }
-}`
-}
-`,
-          ),
-        );
+        this.editFile('build.gradle', content => content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', ''));
       },
 
       async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
