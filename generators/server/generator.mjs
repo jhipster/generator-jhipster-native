@@ -22,12 +22,12 @@ export default class extends ServerGenerator {
   get [ServerGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application }) {
-        if (application.reactive) return;
         await this.writeFiles({
           sections: {
             config: [
               {
                 ...javaMainPackageTemplatesBlock(),
+                condition: ctx => !ctx.reactive,
                 templates: ['config/JacksonNativeConfiguration.java'],
               },
             ],
