@@ -446,6 +446,15 @@ class `,
                 ),
         );
       },
+
+      keycloak({ application }) {
+        if (!application.authenticationTypeOauth2) return;
+
+        // Increase wait for macos.
+        this.editFile('src/main/docker/keycloak.yml', content =>
+          content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
+        );
+      },
     });
   }
 
