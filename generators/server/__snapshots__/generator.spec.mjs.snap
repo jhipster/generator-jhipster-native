@@ -314,9 +314,6 @@ exports[`SubGenerator server of native JHipster blueprint > run > should succeed
   "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/h2/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/hibernate/proxy-config.json": {
     "stateCleared": "modified",
   },
@@ -327,9 +324,6 @@ exports[`SubGenerator server of native JHipster blueprint > run > should succeed
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/mysql/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {

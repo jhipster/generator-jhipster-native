@@ -24,6 +24,12 @@ export default class extends ServerGenerator {
       async writingTemplateTask({ application }) {
         await this.writeFiles({
           sections: {
+            common: [
+              {
+                transform: false,
+                templates: ['src/main/resources/META-INF/native-image/common/reflect-config.json'],
+              },
+            ],
             config: [
               {
                 ...javaMainPackageTemplatesBlock(),
@@ -35,6 +41,47 @@ export default class extends ServerGenerator {
               {
                 condition: ctx => ctx.buildToolGradle,
                 templates: ['gradle/native.gradle'],
+              },
+            ],
+            liquibase: [
+              {
+                condition: ctx => ctx.databaseTypeSql,
+                transform: false,
+                templates: [
+                  'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
+                  'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
+                ],
+              },
+            ],
+            hibernate: [
+              {
+                condition: ctx => ctx.databaseTypeSql && !ctx.reactive,
+                transform: false,
+                templates: [
+                  'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
+                  'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
+                ],
+              },
+            ],
+            h2: [
+              {
+                condition: ctx => ctx.devDatabaseTypeH2Any,
+                transform: false,
+                templates: ['src/main/resources/META-INF/native-image/h2/reflect-config.json'],
+              },
+            ],
+            mysql: [
+              {
+                condition: ctx => ctx.prodDatabaseTypeMysql,
+                transform: false,
+                templates: ['src/main/resources/META-INF/native-image/mysql/reflect-config.json'],
+              },
+            ],
+            caffeine: [
+              {
+                condition: ctx => ctx.authenticationTypeOauth2 || ctx.cacheProviderCaffeine,
+                transform: false,
+                templates: ['src/main/resources/META-INF/native-image/caffeine/reflect-config.json', ,],
               },
             ],
           },
@@ -281,29 +328,6 @@ export default class extends ServerGenerator {
         }
       },
 
-      /*       async customizeConfig() {
-        this.fs.append(
-          this.destinationPath('src/main/resources/config/application.yml'),
-          `
----
-logging:
-  level:
-    root: ERROR
-    io.netty: ERROR
-    liquibase: ERROR
-    org.hibernate: ERROR
-    org.springframework: ERROR
-    com.zaxxer.hikari: ERROR
-    org.apache.catalina: ERROR
-    org.apache.tomcat: ERROR
-    tech.jhipster.config: ERROR
-    jdk.event.security: ERROR
-    java.net: ERROR
-    sun.net.www: ERROR
-`
-        );
-      }, */
-
       async asyncConfiguration({ application: { authenticationTypeOauth2, srcMainJava, packageFolder } }) {
         if (authenticationTypeOauth2) return;
         const asyncConfigurationPath = `${srcMainJava}${packageFolder}/config/AsyncConfiguration.java`;
@@ -314,122 +338,6 @@ logging:
           ),
         );
       },
-      async common({ application }) {
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/common/reflect-config.json',
-          'src/main/resources/META-INF/native-image/common/reflect-config.json',
-        );
-      },
-
-      // TODO: platform selection.
-      async h2({ application }) {
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/h2/reflect-config.json',
-          'src/main/resources/META-INF/native-image/h2/reflect-config.json',
-        );
-      },
-
-      async hibernate({ application }) {
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
-          'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
-        );
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
-          'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
-        );
-      },
-
-      // TODO: platform selection.
-      async mysql({ application }) {
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/mysql/reflect-config.json',
-          'src/main/resources/META-INF/native-image/mysql/reflect-config.json',
-        );
-      },
-
-      async caffeine({ application: { authenticationTypeOauth2 } }) {
-        if (authenticationTypeOauth2) {
-          await this.copyTemplate(
-            'src/main/resources/META-INF/native-image/caffeine/reflect-config.json',
-            'src/main/resources/META-INF/native-image/caffeine/reflect-config.json',
-          );
-        }
-      },
-
-      async liquibase({ application: { databaseTypeSql } }) {
-        if (!databaseTypeSql) return;
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
-          'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
-        );
-        await this.copyTemplate(
-          'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
-          'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
-        );
-
-        /*         this.fs.append(
-          this.destinationPath('src/main/resources/config/application.yml'),
-          `
----
-spring:
-  sql:
-    init:
-      mode: never
-`
-        ); */
-      },
-
-      /*       async mainClass({ application: { baseName, packageFolder, databaseTypeSql, prodDatabaseTypePostgres, reactive } }) {
-        const mainClassPath = `${srcMainJava}${packageFolder}/${this.getMainClassName(baseName)}.java`;
-        const types = [
-          'org.HdrHistogram.Histogram.class',
-          'org.HdrHistogram.ConcurrentHistogram.class',
-          // Required by *ToMany relationships
-          'java.util.HashSet.class',
-        ];
-        const typeNames = [];
-        if (databaseTypeSql) {
-          types.push(
-            'liquibase.configuration.LiquibaseConfiguration.class',
-            'com.zaxxer.hikari.HikariDataSource.class',
-            'liquibase.change.core.LoadDataColumnConfig.class'
-          );
-          if (prodDatabaseTypePostgres && !reactive) {
-            types.push('org.hibernate.type.TextType.class', 'tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class');
-          }
-          if (reactive) {
-            types.push('org.springframework.data.r2dbc.repository.support.SimpleR2dbcRepository.class');
-            typeNames.push('"com.zaxxer.hikari.util.ConcurrentBag$IConcurrentBagEntry[]"');
-          }
-        }
-
-        const typeNamesContent =
-          typeNames.length > 0
-            ? `,
-    typeNames = {
-${typeNames.join('        ,\n')}
-    }`
-            : '';
-
-        this.editFile(mainClassPath, content =>
-          content.replace(
-            '@SpringBootApplication',
-            `@org.springframework.nativex.hint.TypeHint(
-    types = {
-${types.join('        ,\n')}
-    }${typeNamesContent}
-)
-@SpringBootApplication`
-          )
-        );
-      }, */
-
-      /*       async webConfigurer({ application: { packageFolder } }) {
-        this.editFile(`${srcMainJava}${packageFolder}/config/WebConfigurer.java`, content =>
-          content.replace('setLocationForStaticAssets(server)', '// setLocationForStaticAssets(server)')
-        );
-      }, */
 
       async logoutResource({ application: { srcMainJava, packageFolder, authenticationTypeOauth2, reactive } }) {
         if (!authenticationTypeOauth2) return;
