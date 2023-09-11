@@ -40,25 +40,25 @@ jobs:
         include:
           - os: ubuntu-20.04
             build-tool: gradle
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
-            native-package-extra-args: '"-Dnative-build-args=-J-Xmx13g"'
+            native-package-extra-args: '-Dnative-build-args=-J-Xmx13g'
           - os: macos-11
             build-tool: gradle
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx13g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx17g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
           - os: windows-2022
             build-tool: gradle
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx17g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
