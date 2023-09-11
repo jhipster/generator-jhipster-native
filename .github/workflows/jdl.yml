@@ -40,24 +40,25 @@ jobs:
         include:
           - os: ubuntu-20.04
             build-tool: gradle
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
           - os: macos-11
             build-tool: maven
-            native-package-extra-args: '"-Dnative-build-args=-J-Xmx13g"'
+            native-package-extra-args: '-Dnative-build-args=-J-Xmx13g'
           - os: macos-11
             build-tool: gradle
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx13g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
           - os: windows-2022
             build-tool: gradle
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -71,7 +72,7 @@ jobs:
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: 'SETUP: checkout generator-jhipster-native'
         uses: actions/checkout@v3
         with:
@@ -85,8 +86,8 @@ jobs:
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.2.0'
-          java-version: '11'
+          version: '22.3.0'
+          java-version: '19'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'SETUP: get date'
@@ -171,9 +172,9 @@ jobs:
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
         if: matrix.e2e != 'false'
-      - name: 'TESTS: wait'
-        run: sleep 60
-        if: matrix.os == 'macos-11'
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
         if: matrix.e2e != 'false'
+      - name: Dump docker logs
+        if: always() && matrix.e2e != 'false'
+        uses: jwalton/gh-docker-logs@v2

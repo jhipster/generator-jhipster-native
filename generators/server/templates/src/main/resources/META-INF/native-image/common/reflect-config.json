@@ -1,17 +1,18 @@
 [
   {
+    "name": "java.util.HashSet",
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
     "name": "java.util.Locale",
     "allDeclaredFields": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "java.util.Calendar[]",
-    "unsafeAllocated": true
-  },
-  {
-    "name": "java.util.HashMap",
+    "name": "sun.misc.Unsafe",
     "allDeclaredFields": true,
-    "allDeclaredMethods": true,
-    "methods": [{ "name": "<init>", "parameterTypes": [] }]
+    "allDeclaredMethods": true
   }
 ]

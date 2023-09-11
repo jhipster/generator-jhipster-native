@@ -1,25 +1,25 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`SubGenerator ci-cd of native JHipster blueprint run generated files should match snapshot 1`] = `
-Object {
-  ".github/workflows/main.yml": Object {
+exports[`SubGenerator ci-cd of native JHipster blueprint > run > generated files should match snapshot 1`] = `
+{
+  ".github/workflows/main.yml": {
     "stateCleared": "modified",
   },
-  ".github/workflows/native-artifact.yml": Object {
+  ".github/workflows/native-artifact.yml": {
     "stateCleared": "modified",
   },
-  ".github/workflows/native.yml": Object {
+  ".github/workflows/native.yml": {
     "stateCleared": "modified",
   },
-  ".yo-rc.json": Object {
+  ".yo-rc.json": {
     "stateCleared": "modified",
   },
 }
 `;
 
-exports[`SubGenerator ci-cd of native JHipster blueprint run native.yml should match snapshot 1`] = `
-Object {
-  ".github/workflows/native.yml": Object {
+exports[`SubGenerator ci-cd of native JHipster blueprint > run > native.yml should match snapshot 1`] = `
+{
+  ".github/workflows/native.yml": {
     "contents": "name: Native CI
 on:
   workflow_dispatch:
@@ -45,8 +45,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-2019]
-        graalvm-version: [\\"22.2.0\\"]
-        java-version: [\\"11\\"]
+        graalvm-version: [\\"22.3.0\\"]
+        java-version: [\\"17\\"]
         include:
           - os: ubuntu-latest
             executable-suffix: \\"\\"
@@ -93,7 +93,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.17.0
+          node-version: 18.17.1
       - name: Set up GraalVM (Java \${{ matrix.java-version }})
         uses: graalvm/setup-graalvm@v1
         with:
@@ -116,21 +116,15 @@ jobs:
         run: npm install
       - name: \\"E2E: Package\\"
         run: npm run native-package -- \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
-      - name: \\"E2E: Prepare\\"
-        if: matrix.e2e != false
-        run: npm run ci:e2e:prepare
-      - name: \\"E2E: Run\\"
-        if: matrix.e2e != false
-        run: npm run native-e2e
 ",
     "stateCleared": "modified",
   },
 }
 `;
 
-exports[`SubGenerator ci-cd of native JHipster blueprint run native-artifact.yml should match snapshot 1`] = `
-Object {
-  ".github/workflows/native-artifact.yml": Object {
+exports[`SubGenerator ci-cd of native JHipster blueprint > run > native-artifact.yml should match snapshot 1`] = `
+{
+  ".github/workflows/native-artifact.yml": {
     "contents": "name: Generate Executables
 on:
   workflow_dispatch:
@@ -150,8 +144,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-2019]
-        graalvm-version: [\\"22.2.0\\"]
-        java-version: [\\"11\\"]
+        graalvm-version: [\\"22.3.0\\"]
+        java-version: [\\"17\\"]
         include:
           - os: ubuntu-latest
             executable-suffix: \\"\\"
@@ -189,7 +183,7 @@ jobs:
         run: echo \\"name=jhipster-\${{ runner.os }}-\${{ github.event.release.tag_name || 'snapshot' }}-x86_64\\" >> $GITHUB_OUTPUT
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.17.0
+          node-version: 18.17.1
       - name: Set up GraalVM (Java \${{ matrix.java-version }})
         uses: graalvm/setup-graalvm@v1
         with:

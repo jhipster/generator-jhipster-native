@@ -1,16 +1,21 @@
-import { expect } from 'expect';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 import { helpers, lookups } from '#test-utils';
+
+const SUB_GENERATOR = 'ci-cd';
+const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
 
 describe('SubGenerator ci-cd of native JHipster blueprint', () => {
   describe('run', () => {
     let result;
-    before(async function () {
+    beforeAll(async function () {
       result = await helpers
-        .create('jhipster:ci-cd')
+        .create(BLUEPRINT_NAMESPACE)
         .withOptions({
           reproducible: true,
           defaults: true,
+          baseName: 'jhipster',
+          ignoreNeedlesError: true,
           blueprint: 'native',
           autoconfigureGithub: true,
           localConfig: {

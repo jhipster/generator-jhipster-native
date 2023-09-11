@@ -2,6 +2,7 @@ application {
   config {
     applicationType monolith
     creationTimestamp 1632872179205
+    devDatabaseType h2Disk
     reactive true
     enableTranslation false
     testFrameworks [cypress]

@@ -1,4 +1,4 @@
-import { expect } from 'expect';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 import { helpers, lookups } from '#test-utils';
 
@@ -8,12 +8,14 @@ const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
 describe('SubGenerator server of native JHipster blueprint', () => {
   describe('run', () => {
     let result;
-    before(async function () {
+    beforeAll(async function () {
       result = await helpers
         .create(BLUEPRINT_NAMESPACE)
         .withOptions({
           reproducible: true,
           defaults: true,
+          baseName: 'jhipster',
+          ignoreNeedlesError: true,
           blueprint: 'native',
         })
         .withLookups(lookups)

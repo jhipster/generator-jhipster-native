@@ -36,7 +36,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-2019]
         graalvm-version: ['<%= GRAALVM_VERSION %>']
-        java-version: ['<%= JAVA_VERSION %>']
+        java-version: ['<%= RECOMMENDED_JAVA_VERSION %>']
         include:
         - os: ubuntu-latest
           executable-suffix: ''
@@ -74,7 +74,7 @@ jobs:
         run: echo "name=<%= baseName %>-${{ runner.os }}-${{ github.event.release.tag_name || 'snapshot' }}-x86_64" >> $GITHUB_OUTPUT
       - uses: <%= githubActions['actions/setup-node'] %>
         with:
-          node-version: <%= NODE_VERSION %>
+          node-version: <%= RECOMMENDED_NODE_VERSION %>
       - name: Set up GraalVM (Java ${{ matrix.java-version }})
         uses: <%= githubActions['graalvm/setup-graalvm'] %>
         with:

@@ -1,0 +1,19 @@
+[
+  {
+    "name": "org.h2.tools.Server",
+    "methods": [
+      {
+        "name": "start",
+        "parameterTypes": []
+      },
+      {
+        "name": "stop",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "org.h2.server.TcpServer",
+    "queryAllPublicMethods": true
+  }
+]

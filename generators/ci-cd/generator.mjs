@@ -1,10 +1,7 @@
 import chalk from 'chalk';
-import CiCdGenerator from 'generator-jhipster/esm/generators/ci-cd';
-import { constants } from 'generator-jhipster';
-import { PRIORITY_PREFIX, WRITING_PRIORITY } from 'generator-jhipster/esm/priorities';
+import CiCdGenerator from 'generator-jhipster/generators/base-application';
+import { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION } from 'generator-jhipster';
 import { GRAALVM_VERSION } from '../../lib/constants.mjs';
-
-const { NODE_VERSION, JAVA_VERSION } = constants;
 
 const githubActions = {
   'actions/checkout': 'actions/checkout@v3',
@@ -16,25 +13,23 @@ const githubActions = {
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { priorityArgs: true, taskPrefix: PRIORITY_PREFIX, ...features });
+    super(args, opts, { ...features, sbsBlueprint: true });
 
     if (this.options.help) return;
 
-    if (!this.options.jhipsterContext) {
+    if (!this.jhipsterContext) {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
     }
-
-    this.sbsBlueprint = true;
   }
 
   async _postConstruct() {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
-  get [WRITING_PRIORITY]() {
+  get [CiCdGenerator.WRITING]() {
     return {
       async writingTemplateTask({ application }) {
-        if (this.options.jhipsterContext.pipeline !== 'github') return;
+        if (this.jhipsterContext.pipeline !== 'github') return;
         await this.writeFiles({
           sections: {
             files: [
@@ -48,8 +43,8 @@ export default class extends CiCdGenerator {
           },
           context: {
             ...application,
-            NODE_VERSION,
-            JAVA_VERSION,
+            RECOMMENDED_NODE_VERSION,
+            RECOMMENDED_JAVA_VERSION,
             GRAALVM_VERSION,
             githubActions,
           },
