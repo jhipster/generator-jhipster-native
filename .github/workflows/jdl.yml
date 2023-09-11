@@ -52,12 +52,13 @@ jobs:
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx17g'
           - os: windows-2022
             build-tool: gradle
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx10g'
+            native-package-extra-args: '-PnativeBuildArgs=-J-Xmx17g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -171,9 +172,6 @@ jobs:
       - name: 'TESTS: start docker dependencies'
         run: npm run ci:e2e:prepare
         if: matrix.e2e != 'false'
-      - name: 'TESTS: wait'
-        run: sleep 60
-        if: matrix.os == 'macos-11'
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
         if: matrix.e2e != 'false'
