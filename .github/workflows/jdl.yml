@@ -52,13 +52,11 @@ jobs:
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
           - os: windows-2022
             build-tool: gradle
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
-            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -101,14 +99,6 @@ jobs:
         with:
           swap-size-gb: 10
 
-      - name:
-          'SETUP Windows: configure pagefile'
-          # v1.2 (7e234852c937eea04d6ee627c599fb24a5bfffee)
-        uses: al-cheb/configure-pagefile-action@7e234852c937eea04d6ee627c599fb24a5bfffee
-        if: runner.os == 'Windows'
-        with:
-          minimum-size: 10GB
-          maximum-size: 12GB
       - name: 'SETUP Windows: check pagefile'
         if: runner.os == 'Windows'
         run: |
