@@ -108,7 +108,7 @@ jobs:
         uses: docker-practice/actions-setup-docker@5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a
         # alternative solution https://github.com/actions/runner/issues/1456
         if: runner.os == 'macOS'
-        timeout-minutes: 15
+        timeout-minutes: 30
         with:
           docker_buildx: false
       - run: ls ~/Library/Caches/Homebrew/
