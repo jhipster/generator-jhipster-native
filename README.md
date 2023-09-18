@@ -23,7 +23,7 @@ To install or update this blueprint:
 npm install -g generator-jhipster-native
 ```
 
-To build a Native image, you need to install a JDK that is compatible with GraalVM. Please refer to the [GraalVM Release Notes](https://www.graalvm.org/release-notes/) and install the appropriate JDK. Using SDKMAN simplifies the installation process.
+To build a native image, you need to install a JDK that is compatible with GraalVM. Please refer to the [GraalVM Release Notes](https://www.graalvm.org/release-notes/) and install the appropriate JDK. Using SDKMAN simplifies the installation process.
 
 ```
 sdk install java 22.3.3.r17-grl
