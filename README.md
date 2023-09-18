@@ -23,7 +23,15 @@ To install or update this blueprint:
 npm install -g generator-jhipster-native
 ```
 
+To build a Native image, you need to install a JDK that is compatible with GraalVM. Please refer to the [GraalVM Release Notes](https://www.graalvm.org/release-notes/) and install the appropriate JDK. Using SDKMAN simplifies the installation process.
+
+```
+sdk install java 22.3.3.r17-grl
+```
+
 # Usage
+
+## How to Generate Code
 
 To use this blueprint, run the below command
 
@@ -31,10 +39,40 @@ To use this blueprint, run the below command
 jhipster-native
 ```
 
+When building a new application, we recommend enabling e2e testing with Cypress to ensure that no runtime errors occur.
+
+```
+? Besides Jest/Vitest, which testing frameworks would you like to use? (Press <space> to select, <a> to
+ toggle all, <i> to invert selection, and <enter> to proceed)
+❯◉ Cypress
+```
+
 For available options, you can run
 
 ```bash
 jhipster-native app --help
+```
+
+## How to Build a Native Image
+
+To build a native image, execute the following command:
+
+```bash
+npm run native-package
+```
+
+After that, set up peripheral services like PostgreSQL using `npm run services:up` and ensure everything is ready.
+
+Lastly, run the Native image and experience its fast startup 😊.
+
+```bash
+npm run native-start
+```
+
+If you've enabled e2e testing with Cypress, you can verify its operation using the following command:
+
+```bash
+npm run native-e2e
 ```
 
 # Pre-release
