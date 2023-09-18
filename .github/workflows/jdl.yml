@@ -71,8 +71,10 @@ jobs:
         with:
           version: '22.3.3'
           java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
       - name: 'SETUP: get date'
         id: get-date
         run: echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
