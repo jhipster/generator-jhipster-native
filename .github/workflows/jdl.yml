@@ -39,12 +39,6 @@ jobs:
           - postgresql-webflux-jwt
         include:
           - os: windows-2022
-            build-tool: maven
-            profile: dev
-            e2e: 'false'
-            jdl-extra-args: '--skip-install'
-          - os: windows-2022
-            build-tool: gradle
             profile: dev
             e2e: 'false'
             jdl-extra-args: '--skip-install'
@@ -83,11 +77,6 @@ jobs:
         id: get-date
         run: echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
 
-      - name: 'SETUP Windows: check pagefile'
-        if: runner.os == 'Windows'
-        run: |
-          (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
-        shell: pwsh
       - name: 'SETUP Windows: force npm to use bash'
         if: runner.os == 'Windows'
         run: |
