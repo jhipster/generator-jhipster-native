@@ -38,15 +38,6 @@ jobs:
           - postgresql-mvc-jwt
           - postgresql-webflux-jwt
         include:
-          - os: ubuntu-20.04
-            build-tool: gradle
-            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx10g'
-          - os: macos-11
-            build-tool: maven
-            native-package-extra-args: '-Dnative-build-args=-J-Xmx13g'
-          - os: macos-11
-            build-tool: gradle
-            native-package-extra-args: '-DnativeBuildArgs=-J-Xmx13g'
           - os: windows-2022
             build-tool: maven
             profile: dev
@@ -91,13 +82,6 @@ jobs:
       - name: 'SETUP: get date'
         id: get-date
         run: echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
-
-      - name: 'SETUP Linux: configure swap space'
-        if: runner.os == 'Linux'
-        # v1.0 (49819abfb41bd9b44fb781159c033dba90353a7c)
-        uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c
-        with:
-          swap-size-gb: 10
 
       - name: 'SETUP Windows: check pagefile'
         if: runner.os == 'Windows'
