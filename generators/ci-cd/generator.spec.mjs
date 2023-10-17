@@ -1,30 +1,29 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { helpers, lookups } from '#test-utils';
+import { defaultHelpers as helpers, result } from 'generator-jhipster/testing';
 
 const SUB_GENERATOR = 'ci-cd';
 const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
 
 describe('SubGenerator ci-cd of native JHipster blueprint', () => {
   describe('run', () => {
-    let result;
     beforeAll(async function () {
-      result = await helpers
-        .create(BLUEPRINT_NAMESPACE)
+      await helpers
+        .run(BLUEPRINT_NAMESPACE)
+        .withJHipsterConfig({
+          testFrameworks: ['cypress'],
+        })
+        .withArguments(['github'])
         .withOptions({
-          reproducible: true,
-          defaults: true,
-          baseName: 'jhipster',
           ignoreNeedlesError: true,
           blueprint: 'native',
-          autoconfigureGithub: true,
-          localConfig: {
-            baseName: 'jhipster',
-            testFrameworks: ['cypress'],
-          },
         })
-        .withLookups(lookups)
-        .run();
+        .withJHipsterLookup()
+        .withParentBlueprintLookup();
+    });
+
+    it('should succeed', () => {
+      expect(result.getStateSnapshot()).toMatchSnapshot();
     });
 
     it('native.yml should match snapshot', () => {
@@ -33,10 +32,6 @@ describe('SubGenerator ci-cd of native JHipster blueprint', () => {
 
     it('native-artifact.yml should match snapshot', () => {
       expect(result.getSnapshot('**/.github/workflows/native-artifact.yml')).toMatchSnapshot();
-    });
-
-    it('generated files should match snapshot', () => {
-      expect(result.getStateSnapshot()).toMatchSnapshot();
     });
   });
 });

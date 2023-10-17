@@ -3,6 +3,7 @@
     "additionalSubGenerators": "",
     "baseName": "native",
     "cli": true,
+    "entities": [],
     "generators": {
       "ci-cd": {
         "command": false,
@@ -21,6 +22,7 @@
     "localBlueprint": false,
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",
+    "sampleWritten": true,
     "skipCommitHook": true,
     "subGenerators": ["ci-cd", "server"]
   }

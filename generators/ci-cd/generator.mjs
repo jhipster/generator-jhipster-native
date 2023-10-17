@@ -29,7 +29,7 @@ export default class extends CiCdGenerator {
   get [CiCdGenerator.WRITING]() {
     return {
       async writingTemplateTask({ application }) {
-        if (this.jhipsterContext.pipeline !== 'github') return;
+        if (!application.ciCdGithub) return;
         await this.writeFiles({
           sections: {
             files: [
