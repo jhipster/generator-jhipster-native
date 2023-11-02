@@ -19,6 +19,7 @@
       }
     },
     "jhipsterVersion": "7.9.3",
+    "js": true,
     "localBlueprint": false,
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",

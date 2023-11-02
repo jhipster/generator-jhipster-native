@@ -70,8 +70,5 @@
     "type": "opencollective",
     "url": "https://opencollective.com/generator-jhipster",
     "logo": "https://opencollective.com/opencollective/logo.txt"
-  },
-  "imports": {
-    "#test-utils": "./test/utils.mjs"
   }
 }
