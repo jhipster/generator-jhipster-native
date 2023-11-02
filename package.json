@@ -20,9 +20,6 @@
   "license": "Apache-2.0",
   "author": "Marcelo Shima <marceloshima@gmail.com> (https://github.com/mshima)",
   "type": "module",
-  "imports": {
-    "#test-utils": "./test/utils.mjs"
-  },
   "bin": {
     "jhipster-native": "cli/cli.cjs"
   },
@@ -47,14 +44,14 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "generator-jhipster": "8.0.0-rc.1"
+    "generator-jhipster": "8.0.0"
   },
   "devDependencies": {
     "ejs-lint": "2.0.0",
-    "eslint": "8.51.0",
+    "eslint": "8.52.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "9.0.0",
-    "eslint-plugin-import": "2.28.1",
+    "eslint-plugin-import": "2.29.0",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-prettier": "5.0.1",
     "prettier": "3.0.3",
@@ -64,7 +61,7 @@
     "yeoman-test": ">=8.0.0-rc.1"
   },
   "engines": {
-    "node": "^18.13.0 || >= 20.2.0"
+    "node": "^18.13.0 || >= 20.6.1"
   },
   "cacheDirectories": [
     "node_modules"
@@ -73,5 +70,8 @@
     "type": "opencollective",
     "url": "https://opencollective.com/generator-jhipster",
     "logo": "https://opencollective.com/opencollective/logo.txt"
+  },
+  "imports": {
+    "#test-utils": "./test/utils.mjs"
   }
 }

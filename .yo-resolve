@@ -1,5 +1,1 @@
-cli/cli.mjs skip
-generators/server/generator.mjs skip
-README.md skip
-generators/ci-cd/generator.spec.mjs skip
-generators/ci-cd/generator.mjs skip
+!package.json skip
