@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
-import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION } from '../../lib/constants.mjs';
+import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION } from '../../lib/constants.js';
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
@@ -81,7 +81,7 @@ export default class extends ServerGenerator {
               {
                 condition: ctx => ctx.authenticationTypeOauth2 || ctx.cacheProviderCaffeine,
                 transform: false,
-                templates: ['src/main/resources/META-INF/native-image/caffeine/reflect-config.json', ,],
+                templates: ['src/main/resources/META-INF/native-image/caffeine/reflect-config.json'],
               },
             ],
           },
