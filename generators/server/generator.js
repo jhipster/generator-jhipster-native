@@ -477,14 +477,6 @@ class `,
               .replaceAll(
                 `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
                 `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-              )
-              .replaceAll(
-                `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
-                `@RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload`,
-              )
-              .replaceAll(
-                `@RequestParam(required = false, defaultValue = "true") boolean eagerload`,
-                `@RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload`,
               ),
           );
 
