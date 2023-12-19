@@ -14,7 +14,7 @@ jobs:
   pipeline:
     name: jhipster native pipeline
     runs-on: \${{ matrix.os }}
-    if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
     timeout-minutes: 90
     env:
       SPRING_OUTPUT_ANSI_ENABLED: DETECT
@@ -68,7 +68,7 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask docker
           sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
           open -a /Applications/Docker.app --args --unattended --accept-license
-          #echo \\"We are waiting for Docker to be up and running. It can take over 2 minutes...\\"
+          #echo "We are waiting for Docker to be up and running. It can take over 2 minutes..."
           #while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
         if: runner.os == 'macOS'
 
@@ -97,7 +97,7 @@ jobs:
       - name: Install node.js packages
         run: npm install
       - name: 'E2E: Package'
-        run: npm run native-package -- \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
+        run: npm run native-package -- "-Dnative-build-args=\${{ matrix.native-build-args }}"
       - name: 'E2E: Prepare'
         if: matrix.e2e != false
         run: npm run ci:e2e:prepare
@@ -168,7 +168,7 @@ jobs:
 
       - uses: actions/checkout@v3
       - id: executable
-        run: echo \\"name=jhipster-\${{ runner.os }}-\${{ github.event.release.tag_name || 'snapshot' }}-x86_64\\" >> $GITHUB_OUTPUT
+        run: echo "name=jhipster-\${{ runner.os }}-\${{ github.event.release.tag_name || 'snapshot' }}-x86_64" >> $GITHUB_OUTPUT
       - uses: actions/setup-node@v3
         with:
           node-version: 18.18.2
@@ -192,7 +192,7 @@ jobs:
           key: \${{ runner.os }}-npm-\${{ hashFiles('**/package-lock.json') }}
       - run: npm install
       - name: Build \${{ steps.executable.outputs.name }} native image
-        run: npm run native-package -- \\"-Dnative-image-name=\${{ steps.executable.outputs.name }}\\" \\"-Dnative-build-args=\${{ matrix.native-build-args }}\\"
+        run: npm run native-package -- "-Dnative-image-name=\${{ steps.executable.outputs.name }}" "-Dnative-build-args=\${{ matrix.native-build-args }}"
       - name: Archive binary
         uses: actions/upload-artifact@v3
         with:

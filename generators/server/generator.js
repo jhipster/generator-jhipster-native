@@ -455,6 +455,30 @@ class `,
           content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
         );
       },
+
+      // workaround for https://github.com/spring-projects/spring-boot/issues/32195
+      disableMockBean({ application: { srcTestJava, packageFolder } }) {
+        const targetClasses = [
+          { packageSubFolder: 'security/jwt', targetClass: 'TokenAuthenticationIT' },
+          { packageSubFolder: 'security/jwt', targetClass: 'TokenAuthenticationSecurityMetersIT' },
+          { packageSubFolder: 'security/oauth2', targetClass: 'CustomClaimConverterIT' },
+          { packageSubFolder: 'service', targetClass: 'MailServiceIT' },
+          { packageSubFolder: 'service', targetClass: 'UserServiceIT' },
+        ];
+        for (const { packageSubFolder, targetClass } of targetClasses) {
+          const filePath = `${srcTestJava}${packageFolder}/${packageSubFolder}/${targetClass}.java`;
+          if (this.existsDestination(filePath)) {
+            this.editFile(filePath, content =>
+              content
+                .replace(
+                  `class ${targetClass}`,
+                  `@DisabledInAotMode // workaround for https://github.com/spring-projects/spring-boot/issues/32195\nclass ${targetClass}`,
+                )
+                .replace(/(import .+;)\n/, '$1\nimport org.springframework.test.context.aot.DisabledInAotMode;\n'),
+            );
+          }
+        }
+      },
     });
   }
 
@@ -477,14 +501,6 @@ class `,
               .replaceAll(
                 `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
                 `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-              )
-              .replaceAll(
-                `@RequestParam(required = false, defaultValue = "false") boolean eagerload`,
-                `@RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload`,
-              )
-              .replaceAll(
-                `@RequestParam(required = false, defaultValue = "true") boolean eagerload`,
-                `@RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload`,
               ),
           );
 

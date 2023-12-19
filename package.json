@@ -44,20 +44,20 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "generator-jhipster": "8.0.0"
+    "generator-jhipster": "8.1.0"
   },
   "devDependencies": {
     "ejs-lint": "2.0.0",
-    "eslint": "8.52.0",
+    "eslint": "8.55.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "9.0.0",
+    "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.0",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-prettier": "5.0.1",
-    "prettier": "3.0.3",
+    "prettier": "3.1.0",
     "prettier-plugin-java": "",
     "prettier-plugin-packagejson": "",
-    "vitest": "0.34.6",
+    "vitest": "1.0.2",
     "yeoman-test": ">=8.0.0-rc.1"
   },
   "engines": {
