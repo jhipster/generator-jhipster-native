@@ -26,7 +26,7 @@ npm install -g generator-jhipster-native
 To build a native image, you need to install a JDK that is compatible with GraalVM. Please refer to the [GraalVM Release Notes](https://www.graalvm.org/release-notes/) and install the appropriate JDK. Using SDKMAN simplifies the installation process.
 
 ```
-sdk install java 20.0.2-graalce
+sdk install java 21-graalce
 ```
 
 # Usage
