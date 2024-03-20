@@ -86,7 +86,7 @@ jobs:
           cat .npmrc
 
       - name: 'SETUP MacOS: load Homebrew cache'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         if: runner.os == 'macOS'
         with:
           path: |
@@ -106,14 +106,14 @@ jobs:
         if: runner.os == 'macOS'
 
       - name: 'SETUP: load npm cache'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
             ~/.cache/Cypress/
           key: ${{ runner.os }}-npm-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
       - name: 'SETUP: load maven cache'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
