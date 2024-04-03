@@ -516,4 +516,123 @@ npm run native-e2e
       },
     });
   }
+
+  get [ServerGenerator.POST_WRITING_ENTITIES]() {
+    return this.asPostWritingEntitiesTaskGroup({
+      async entities({ application: { srcMainJava, reactive, databaseTypeSql }, entities }) {
+        for (const { name } of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
+          // Use entity from old location for more complete data.
+          const entity = this.sharedData.getEntity(name);
+          if (!entity) {
+            this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
+            continue;
+          }
+          this.editFile(`${srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
+            content
+              .replaceAll(
+                `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+              )
+              .replaceAll(
+                `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+              ),
+          );
+
+          if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
+            this.editFile(
+              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
+              contents =>
+                contents.replace(
+                  'import org.springframework.beans.factory.annotation.Autowired;',
+                  'import javax.persistence.PersistenceContext;',
+                ),
+              contents => contents.replace('@Autowired', '@PersistenceContext'),
+            );
+          }
+
+          if (reactive && databaseTypeSql) {
+            this.editFile(
+              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
+              contents =>
+                contents.replace(
+                  'import reactor.core.publisher.Flux;',
+                  `import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;`,
+                ),
+              contents =>
+                contents.replace(
+                  '\nclass ',
+                  `
+@Component
+class `,
+                ),
+            );
+          }
+        }
+      },
+      async userEntity({ application }) {
+        if (!application.generateUserManagement) return;
+        // Use entity from old location for more complete data.
+        const entity = this.sharedData.getEntity('User');
+        if (!entity) {
+          this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
+        } else {
+          this.editFile(`${application.srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`, content =>
+            content.replaceAll(
+              `@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
+              `@PathVariable(name = "login") @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
+            ),
+          );
+        }
+      },
+      async jsonFilter({ application, entities }) {
+        if (application.reactive) return;
+        // include user entity.
+        const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
+        for (const entity of targetEntities) {
+          const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
+          this.editFile(entityClassFilePath, content =>
+            content.includes('@JsonFilter("lazyPropertyFilter")')
+              ? content
+              : content
+                  .replace('\npublic class ', '\n@JsonFilter("lazyPropertyFilter")\npublic class ')
+                  .replace(/(package[\s\S]*?)(import)/, `$1import com.fasterxml.jackson.annotation.JsonFilter;$2`),
+          );
+        }
+      },
+    });
+  }
+
+  get [ServerGenerator.END]() {
+    return {
+      async checkCompatibility({
+        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngine },
+      }) {
+        if (!databaseTypeNo && !prodDatabaseTypePostgres) {
+          this.log.warn('JHipster Native is only tested with PostgreSQL database');
+        }
+        if (searchEngine) {
+          this.log.warn('JHipster Native is only tested without a search engine');
+        }
+        if (!reactive) {
+          if (!cacheProviderNo) {
+            this.log.warn('JHipster Native is only tested without a cache provider');
+          }
+          if (enableHibernateCache) {
+            this.log.warn('JHipster Native is only tested without Hibernate second level cache');
+          }
+          if (websocket) {
+            this.log.warn('JHipster Native is only tested without WebSocket support');
+          }
+        }
+      },
+
+      async endTemplateTask() {
+        this.log.info(
+          `You can see some tips about running Spring Boot with GraalVM at https://github.com/mraible/spring-native-examples#readme.`,
+        );
+      },
+    };
+  }
 }
