@@ -55,7 +55,7 @@ jobs:
       - name: 'SETUP: setup node'
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
       - name: 'SETUP: checkout generator-jhipster-native'
         uses: actions/checkout@v4
         with:
@@ -121,7 +121,7 @@ jobs:
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
       - name: 'PROJECT: generate'
-        run: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native generate-sample ${{ matrix.suite }}.jdl --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit ${{ matrix.jdl-extra-args }}'
+        run: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native generate-sample ${{ matrix.suite }}.jdl --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit ${{ matrix.jdl-extra-args }}'
       - uses: jhipster/actions/compare-sample@v0
         id: compare
         with:
