@@ -103,7 +103,7 @@ export default class extends ServerGenerator {
         if (buildToolMaven) {
           this.packageJson.merge({
             scripts: {
-              'native-package': './mvnw package -B -ntp -Pnative,prod -DskipTests',
+              'native-package': './mvnw package -B -ntp -Pnative,prod -DskipTests -Dmodernizer.failOnViolations=false',
               'native-start': './target/native-executable',
             },
           });
@@ -117,11 +117,12 @@ export default class extends ServerGenerator {
         }
       },
 
-      async customizeGradle({ application: { buildToolGradle, reactive }, source }) {
+      async customizeGradle({ application: { buildToolGradle, reactive, springBootDependencies }, source }) {
         if (!buildToolGradle) return;
 
         source.addGradlePlugin({ id: 'org.graalvm.buildtools.native', version: NATIVE_BUILDTOOLS_VERSION });
         if (!reactive) {
+          source.addGradleProperty({ property: 'hibernateVersion', value: springBootDependencies['hibernate'] });
           // eslint-disable-next-line no-template-curly-in-string
           source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
         }
@@ -144,6 +145,7 @@ export default class extends ServerGenerator {
           <repackage.classifier>exec</repackage.classifier>
           <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
           <graalvm.version>${GRAALVM_VERSION}</graalvm.version>
+          <modernizer.skip>true</modernizer.skip>
         </properties>
         <dependencies>
             <dependency>
@@ -456,6 +458,8 @@ class `,
           { packageSubFolder: 'security/oauth2', targetClass: 'CustomClaimConverterIT' },
           { packageSubFolder: 'service', targetClass: 'MailServiceIT' },
           { packageSubFolder: 'service', targetClass: 'UserServiceIT' },
+          { packageSubFolder: 'web/rest', targetClass: 'LogoutResourceIT' },
+          { packageSubFolder: 'config/timezone', targetClass: 'HibernateTimeZoneIT' },
         ];
         for (const { packageSubFolder, targetClass } of targetClasses) {
           const filePath = `${srcTestJava}${packageFolder}/${packageSubFolder}/${targetClass}.java`;
