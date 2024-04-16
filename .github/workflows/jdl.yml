@@ -46,21 +46,15 @@ jobs:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - name: 'SETUP: create app folder'
-        run: mkdir app
-        working-directory: ${{ github.workspace }}
-      - name: 'SETUP: Configure keycloak host'
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
-      - name: 'SETUP: setup node'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - name: 'SETUP: checkout generator-jhipster-native'
         uses: actions/checkout@v4
         with:
           path: generator-jhipster-native
           fetch-depth: 2
+      - uses: jhipster/actions/setup-runner@v0
+        with:
+          node-version: 20
+          maven-cache: true
       - name: 'SETUP: install generator-jhister-native'
         run: |
           npm ci --prod
@@ -104,19 +98,6 @@ jobs:
           docker_buildx: false
       - run: ls ~/Library/Caches/Homebrew/
         if: runner.os == 'macOS'
-
-      - name: 'SETUP: load npm cache'
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.npm
-            ~/.cache/Cypress/
-          key: ${{ runner.os }}-npm-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
-      - name: 'SETUP: load maven cache'
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
