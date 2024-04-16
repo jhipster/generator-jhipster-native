@@ -80,7 +80,7 @@ jobs:
           cat .npmrc
 
       - name: 'SETUP MacOS: load Homebrew cache'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         if: runner.os == 'macOS'
         with:
           path: |
