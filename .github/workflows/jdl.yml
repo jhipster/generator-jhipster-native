@@ -6,7 +6,7 @@ concurrency:
 on:
   push:
     branches:
-      - '*'
+      - main
     paths-ignore:
       - 'generators/ci-cd/**'
   pull_request:
@@ -107,7 +107,7 @@ jobs:
         id: compare
         with:
           generator-path: generator-jhipster-native
-          cmd: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native generate-sample ${{ matrix.suite }}.jdl --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit ${{ matrix.jdl-extra-args }}'
+          cmd: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native generate-sample ${{ matrix.suite }}.jdl --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
       - name: 'Windows: install npm dependencies'
         # Workaround max PATH size https://github.com/jhipster/generator-jhipster-native/pull/65#issuecomment-1249555392
         if: runner.os == 'Windows'
