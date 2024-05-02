@@ -159,9 +159,11 @@ export default class extends ServerGenerator {
 
         source.applyFromGradle({ script: 'gradle/native.gradle' });
 
-        this.editFile('build.gradle', { assertModified: true }, content =>
-          content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', ''),
-        );
+        if (reactive) {
+          this.editFile('build.gradle', { assertModified: true }, content =>
+            content.replace('runtimeOnly "io.netty:netty-tcnative-boringssl-static"', ''),
+          );
+        }
       },
 
       async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
