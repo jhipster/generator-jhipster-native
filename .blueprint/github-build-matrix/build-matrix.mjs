@@ -2,12 +2,15 @@ import { readdir } from 'fs/promises';
 import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jhipster';
 import { fromMatrix } from 'generator-jhipster/testing';
 
+import { GRAALVM_VERSION } from '../../lib/constants.js';
+
 const defaultMatrix = {
   os: ['ubuntu-20.04', 'macos-11', 'windows-2022'],
   'build-tool': ['maven', 'gradle'],
   'node-version': [RECOMMENDED_NODE_VERSION],
   'java-version': [RECOMMENDED_JAVA_VERSION],
   'default-environment': ['prod'],
+  'graalvm-version': [GRAALVM_VERSION],
 };
 
 export const buildMatrix = async samplesFolder => {
