@@ -1,6 +1,9 @@
+import { extname } from 'node:path';
+import { passthrough } from '@yeoman/transform';
+import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
 import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
-import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
+import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
 
 import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION } from '../../lib/constants.js';
 
@@ -17,6 +20,28 @@ export default class extends ServerGenerator {
 
   async _postConstruct() {
     await this.dependsOnJHipster('bootstrap-application');
+  }
+
+  
+  get [ServerGenerator.DEFAULT]() {
+    return this.asDefaultTaskGroup({
+      // workaround for https://github.com/spring-projects/spring-boot/issues/32195
+      async disabledInAotModeAnnotation({ application }) {
+        this.queueTransformStream(
+          {
+            name: 'adding @DisabledInAotMode annotations',
+            filter: file => isFileStateModified(file) && !isFileStateDeleted(file) && file.path.startsWith(this.destinationPath()) && file.path.endsWith('.java'),
+            refresh: false,
+          },
+          passthrough(file => {
+            const contents = file.contents.toString('utf8');
+            if (/@(MockBean|SpyBean)/.test(contents)) {
+              file.contents = Buffer.from(addJavaAnnotation(contents, { package: 'org.springframework.test.context.aot', annotation: 'DisabledInAotMode' }));
+            }
+          }),
+        );
+      },
+    });
   }
 
   get [ServerGenerator.WRITING]() {
@@ -448,29 +473,6 @@ class `,
         this.editFile('src/main/docker/keycloak.yml', content =>
           content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
         );
-      },
-
-      // workaround for https://github.com/spring-projects/spring-boot/issues/32195
-      disableMockBean({ application: { srcTestJava, packageFolder } }) {
-        const targetClasses = [
-          { packageSubFolder: 'security/jwt', targetClass: 'JwtAuthenticationTestUtils' },
-          { packageSubFolder: 'security/oauth2', targetClass: 'CustomClaimConverterIT' },
-          { packageSubFolder: 'service', targetClass: 'MailServiceIT' },
-          { packageSubFolder: 'service', targetClass: 'UserServiceIT' },
-        ];
-        for (const { packageSubFolder, targetClass } of targetClasses) {
-          const filePath = `${srcTestJava}${packageFolder}/${packageSubFolder}/${targetClass}.java`;
-          if (this.existsDestination(filePath)) {
-            this.editFile(filePath, content =>
-              content
-                .replace(
-                  `class ${targetClass}`,
-                  `@DisabledInAotMode // workaround for https://github.com/spring-projects/spring-boot/issues/32195\nclass ${targetClass}`,
-                )
-                .replace(/(import .+;)\n/, '$1\nimport org.springframework.test.context.aot.DisabledInAotMode;\n'),
-            );
-          }
-        }
       },
 
       readme() {
