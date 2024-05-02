@@ -159,7 +159,9 @@ export default class extends ServerGenerator {
 
         source.applyFromGradle({ script: 'gradle/native.gradle' });
 
-        this.editFile('build.gradle', content => content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', ''));
+        this.editFile('build.gradle', { assertModified: true }, content =>
+          content.replace('implementation "io.netty:netty-tcnative-boringssl-static"', ''),
+        );
       },
 
       async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
@@ -168,6 +170,19 @@ export default class extends ServerGenerator {
         source.addMavenProperty({ property: 'repackage.classifier' });
         source.addMavenProperty({ property: 'native-image-name', value: 'native-executable' });
         source.addMavenProperty({ property: 'native-build-args', value: '--verbose -J-Xmx10g' });
+
+        if (reactive) {
+          source.addMavenDependencyManagement({
+            artifactId: 'commons-beanutils',
+            groupId: 'commons-beanutils',
+            additionalContent: `<exclusions>
+        <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </exclusion>
+    </exclusions>`,
+          });
+        }
 
         source.addMavenProfile({
           id: 'native',
