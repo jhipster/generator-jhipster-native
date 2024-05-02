@@ -1,7 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { fromMatrix, defaultHelpers as helpers, result } from 'generator-jhipster/testing';
-import { authenticationTypes } from 'generator-jhipster/jdl';
 
 const SUB_GENERATOR = 'server';
 const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
@@ -9,7 +8,7 @@ const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
 const matrix = fromMatrix({
   build: ['maven', 'gradle'],
   reactive: [false, true],
-  authenticationType: ['jwt', 'oauth2'],
+  auth: ['jwt', 'oauth2'],
 });
 
 describe('SubGenerator server of native JHipster blueprint', () => {
