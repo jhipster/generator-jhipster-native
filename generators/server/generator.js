@@ -401,8 +401,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         }
       },
 
-      userRepository({ application: { srcMainJava, packageFolder, reactive, databaseTypeSql } }) {
-        if (reactive && databaseTypeSql) {
+      userRepository({ application: { srcMainJava, packageFolder, reactive, databaseTypeSql, generateBuiltInUserEntity } }) {
+        if (reactive && databaseTypeSql && generateBuiltInUserEntity) {
           this.editFile(
             `${srcMainJava}${packageFolder}/repository/UserRepository.java`,
             { assertModified: true },
