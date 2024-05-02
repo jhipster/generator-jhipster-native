@@ -55,8 +55,9 @@ jobs:
           fetch-depth: 2
       - uses: jhipster/actions/setup-runner@v0
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           maven-cache: true
+          gradle-cache: true
           binary-dir: ${{ github.workspace }}/generator-jhipster-native/cli/
       - name: 'SETUP: install generator-jhister-native'
         run: npm ci --prod
