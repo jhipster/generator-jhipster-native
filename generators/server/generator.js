@@ -578,24 +578,6 @@ class `,
           }
         }
       },
-      async userEntity({ application }) {
-        if (!application.generateUserManagement) return;
-        // Use entity from old location for more complete data.
-        const entity = this.sharedData.getEntity('User');
-        if (!entity) {
-          this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
-        } else {
-          this.editFile(
-            `${application.srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`,
-            { assertModified: true },
-            content =>
-              content.replaceAll(
-                `@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
-                `@PathVariable(name = "login") @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
-              ),
-          );
-        }
-      },
       async jsonFilter({ application, entities }) {
         if (application.reactive) return;
         // include user entity.
