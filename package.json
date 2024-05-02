@@ -57,8 +57,8 @@
     "prettier": "3.2.5",
     "prettier-plugin-java": "",
     "prettier-plugin-packagejson": "",
-    "vitest": "1.4.0",
-    "yeoman-test": ">=8.2.0"
+    "vitest": "1.5.2",
+    "yeoman-test": ">=8.0.0-rc.1"
   },
   "engines": {
     "node": "^18.13.0 || >= 20.6.1"
