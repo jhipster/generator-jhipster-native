@@ -433,8 +433,8 @@ class `,
         );
       },
 
-      restErrors({ application: { srcMainJava, packageFolder } }) {
-        this.editFile(`${srcMainJava}${packageFolder}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
+      restErrors({ application: { javaPackageSrcDir } }) {
+        this.editFile(`${javaPackageSrcDir}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
           contents.includes('@RegisterReflectionForBinding')
             ? contents
             : contents.replace(
@@ -448,9 +448,9 @@ class `,
       },
 
       // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
-      technicalStructureTest({ application: { buildToolGradle, srcTestJava, packageFolder } }) {
+      technicalStructureTest({ application: { buildToolGradle, javaPackageTestDir } }) {
         if (!buildToolGradle) return;
-        this.editFile(`${srcTestJava}${packageFolder}/TechnicalStructureTest.java`, { assertModified: true }, contents =>
+        this.editFile(`${javaPackageTestDir}/TechnicalStructureTest.java`, { assertModified: true }, contents =>
           contents.includes('__BeanFactoryRegistrations')
             ? contents
             : contents
@@ -465,6 +465,14 @@ class `,
         .ignoreDependency(belongToAnyOf`,
                 ),
         );
+      },
+
+      reactiveJwtTestAdjust({ application: { reactive, javaPackageTestDir, generateUserManagement, packageName } }) {
+        if (reactive && generateUserManagement) {
+          this.editFile(`${javaPackageTestDir}security/jwt/AuthenticationIntegrationTest.java`, { assertModified: true }, content =>
+            content.replace(/@Import\(\n {4}{\n/, `$1        ${packageName}.security.DomainUserDetailsService.class,\n`),
+          );
+        }
       },
 
       keycloak({ application }) {
@@ -548,19 +556,7 @@ npm run native-e2e
             this.editFile(
               `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
               { assertModified: true },
-              contents =>
-                contents.replace(
-                  'import reactor.core.publisher.Flux;',
-                  `import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;`,
-                ),
-              contents =>
-                contents.replace(
-                  '\nclass ',
-                  `
-@Component
-class `,
-                ),
+              contents => addJavaAnnotation(contents, { package: 'org.springframework.stereotype', annotation: 'Component' }),
             );
           }
         }
