@@ -15,8 +15,8 @@ export const buildMatrix = async samplesFolder => {
   return {
     include: Object.values(
       fromMatrix({
-        'sample-name': samples.filter(sample => !sample.includes('disabled')),
         ...defaultMatrix,
+        'sample-name': samples.filter(sample => !sample.includes('disabled')),
       }),
     ).map(value => ({
       ...value,
