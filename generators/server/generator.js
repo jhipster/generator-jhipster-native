@@ -169,26 +169,23 @@ export default class extends ServerGenerator {
       async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
         if (!buildToolMaven) return;
 
-        source.addMavenProperty({ property: 'repackage.classifier' });
-        source.addMavenProperty({ property: 'native-image-name', value: 'native-executable' });
-        source.addMavenProperty({ property: 'native-build-args', value: '--verbose -J-Xmx10g' });
-
-        if (reactive) {
-          source.addMavenDependencyManagement({
-            artifactId: 'commons-beanutils',
-            groupId: 'commons-beanutils',
-            additionalContent: `<exclusions>
-        <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </exclusion>
-    </exclusions>`,
-          });
-        }
-
-        source.addMavenProfile({
-          id: 'native',
-          content: `            <properties>
+        source.addMavenDefinition({
+          properties: [
+            { property: 'repackage.classifier' },
+            { property: 'native-image-name', value: 'native-executable' },
+            { property: 'native-build-args', value: '--verbose -J-Xmx10g' },
+          ],
+          plugins: [
+            {
+              inProfile: 'prod',
+              groupId: 'org.graalvm.buildtools',
+              artifactId: 'native-maven-plugin',
+            },
+          ],
+          profiles: [
+            {
+              id: 'native',
+              content: `            <properties>
           <repackage.classifier>exec</repackage.classifier>
           <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
           <graalvm.version>${GRAALVM_VERSION}</graalvm.version>
@@ -273,10 +270,10 @@ export default class extends ServerGenerator {
                 </plugin>
             </plugins>
         </build>`,
-        });
-        source.addMavenProfile({
-          id: 'nativeTest',
-          content: `            <dependencies>
+            },
+            {
+              id: 'nativeTest',
+              content: `            <dependencies>
            <dependency>
                <groupId>org.junit.platform</groupId>
                <artifactId>junit-platform-launcher</artifactId>
@@ -318,11 +315,29 @@ export default class extends ServerGenerator {
                </plugin>
            </plugins>
        </build>`,
+            },
+          ],
         });
 
-        this.editFile('pom.xml', { assertModified: true }, content =>
-          content
-            .replace(
+        if (reactive) {
+          source.addMavenDefinition({
+            dependencyManagement: [
+              {
+                artifactId: 'commons-beanutils',
+                groupId: 'commons-beanutils',
+                additionalContent: `<exclusions>
+      <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+      </exclusion>
+  </exclusions>`,
+              },
+            ],
+          });
+
+          this.editFile('pom.xml', { assertModified: true }, content => {
+            console.log(content);
+            return content.replace(
               `
         <dependency>
             <groupId>io.netty</groupId>
@@ -330,31 +345,16 @@ export default class extends ServerGenerator {
             <scope>runtime</scope>
         </dependency>`,
               '',
-            )
-            // Add the GraalVM native-maven-plugin to the 'prod' profile
-            .replace(
-              /(<build>[\s\S]*?<pluginManagement>\s*<plugins>[\s\S]*?)(<\/plugins>\s*<\/pluginManagement>\s*<\/build>)/,
-              `$1<plugin>
-              <groupId>org.graalvm.buildtools</groupId>
-              <artifactId>native-maven-plugin</artifactId>
-          </plugin>$2`,
-            )
-            // Remove the modernizer-maven-plugin from the content
-            .replace(/<plugin>\s*<groupId>org.gaul<\/groupId>\s*<artifactId>modernizer-maven-plugin<\/artifactId>[\s\S]*?<\/plugin>/g, ''),
-        );
-
-        if (!reactive) {
-          this.editFile('pom.xml', { assertModified: true }, content =>
-            content
-              // Add the hibernate-enhance-maven-plugin to the 'prod' profile
-              .replace(
-                /(<id>prod<\/id>[\s\S]*?<plugins>[\s\S]*?)(<\/plugins>)/,
-                `$1<plugin>
-              <groupId>org.hibernate.orm.tooling</groupId>
-              <artifactId>hibernate-enhance-maven-plugin</artifactId>
-              <version>\${hibernate.version}</version>
-              <executions>
-                  <execution>
+            );
+          });
+        } else {
+          source.addMavenDefinition({
+            plugins: [
+              {
+                inProfile: 'prod',
+                groupId: 'org.hibernate.orm.tooling',
+                artifactId: 'hibernate-enhance-maven-plugin',
+                additionalContent: `                  <execution>
                       <configuration>
                           <enableLazyInitialization>true</enableLazyInitialization>
                       </configuration>
@@ -362,10 +362,10 @@ export default class extends ServerGenerator {
                           <goal>enhance</goal>
                       </goals>
                   </execution>
-              </executions>
-          </plugin>$2`,
-              ),
-          );
+              </executions>`,
+              },
+            ],
+          });
         }
       },
 
@@ -470,7 +470,7 @@ class `,
       reactiveJwtTestAdjust({ application: { reactive, javaPackageTestDir, generateUserManagement, packageName } }) {
         if (reactive && generateUserManagement) {
           this.editFile(`${javaPackageTestDir}security/jwt/AuthenticationIntegrationTest.java`, { assertModified: true }, content =>
-            content.replace(/@Import\(\n {4}{\n/, `$1        ${packageName}.security.DomainUserDetailsService.class,\n`),
+            content.replace(/@Import\(\n {4}{\n/, `$0        ${packageName}.security.DomainUserDetailsService.class,\n`),
           );
         }
       },
