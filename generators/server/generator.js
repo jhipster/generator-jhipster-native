@@ -544,19 +544,6 @@ npm run native-e2e
                 ),
           );
 
-          if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
-            this.editFile(
-              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
-              { assertModified: true },
-              contents =>
-                contents.replace(
-                  'import org.springframework.beans.factory.annotation.Autowired;',
-                  'import javax.persistence.PersistenceContext;',
-                ),
-              contents => contents.replace('@Autowired', '@PersistenceContext'),
-            );
-          }
-
           if (reactive && databaseTypeSql) {
             this.editFile(
               `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
