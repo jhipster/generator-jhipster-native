@@ -453,13 +453,10 @@ class `,
       // workaround for https://github.com/spring-projects/spring-boot/issues/32195
       disableMockBean({ application: { srcTestJava, packageFolder } }) {
         const targetClasses = [
-          { packageSubFolder: 'security/jwt', targetClass: 'TokenAuthenticationIT' },
-          { packageSubFolder: 'security/jwt', targetClass: 'TokenAuthenticationSecurityMetersIT' },
+          { packageSubFolder: 'security/jwt', targetClass: 'JwtAuthenticationTestUtils' },
           { packageSubFolder: 'security/oauth2', targetClass: 'CustomClaimConverterIT' },
           { packageSubFolder: 'service', targetClass: 'MailServiceIT' },
           { packageSubFolder: 'service', targetClass: 'UserServiceIT' },
-          { packageSubFolder: 'web/rest', targetClass: 'LogoutResourceIT' },
-          { packageSubFolder: 'config/timezone', targetClass: 'HibernateTimeZoneIT' },
         ];
         for (const { packageSubFolder, targetClass } of targetClasses) {
           const filePath = `${srcTestJava}${packageFolder}/${packageSubFolder}/${targetClass}.java`;
