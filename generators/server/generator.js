@@ -524,9 +524,7 @@ npm run native-e2e
   get [ServerGenerator.POST_WRITING_ENTITIES]() {
     return this.asPostWritingEntitiesTaskGroup({
       async entities({ application: { srcMainJava, reactive, databaseTypeSql }, entities }) {
-        for (const { name } of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
-          // Use entity from old location for more complete data.
-          const entity = this.sharedData.getEntity(name);
+        for (const entity of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
           if (!entity) {
             this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
             continue;
@@ -569,11 +567,9 @@ class `,
       },
       async jsonFilter({ application, entities }) {
         if (application.reactive) return;
-        // include user entity.
-        const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
-        for (const entity of targetEntities) {
+        for (const entity of entities.filter(({ builtIn, builtInUser, embedded }) => builtInUser || (!builtIn && !embedded))) {
           const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
-          this.editFile(entityClassFilePath, { assertModified: true }, content =>
+          this.editFile(entityClassFilePath, content =>
             content.includes('@JsonFilter("lazyPropertyFilter")')
               ? content
               : content
