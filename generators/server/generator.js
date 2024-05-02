@@ -318,7 +318,7 @@ export default class extends ServerGenerator {
        </build>`,
         });
 
-        this.editFile('pom.xml', content =>
+        this.editFile('pom.xml', { assertModified: true }, content =>
           content
             .replace(
               `
@@ -342,7 +342,7 @@ export default class extends ServerGenerator {
         );
 
         if (!reactive) {
-          this.editFile('pom.xml', content =>
+          this.editFile('pom.xml', { assertModified: true }, content =>
             content
               // Add the hibernate-enhance-maven-plugin to the 'prod' profile
               .replace(
@@ -370,7 +370,7 @@ export default class extends ServerGenerator {
       async asyncConfiguration({ application: { authenticationTypeOauth2, srcMainJava, packageFolder } }) {
         if (authenticationTypeOauth2) return;
         const asyncConfigurationPath = `${srcMainJava}${packageFolder}/config/AsyncConfiguration.java`;
-        this.editFile(asyncConfigurationPath, content =>
+        this.editFile(asyncConfigurationPath, { assertModified: true }, content =>
           content.replace(
             'return new ExceptionHandlingAsyncTaskExecutor(executor);',
             'executor.initialize();\nreturn new ExceptionHandlingAsyncTaskExecutor(executor);',
@@ -382,7 +382,7 @@ export default class extends ServerGenerator {
         if (!authenticationTypeOauth2) return;
         const filePath = `${srcMainJava}${packageFolder}/web/rest/LogoutResource.java`;
 
-        this.editFile(filePath, content =>
+        this.editFile(filePath, { assertModified: true }, content =>
           content
             .replace('@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken', '@AuthenticationPrincipal OidcUser oidcUser')
             .replace(
@@ -393,9 +393,9 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
             .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.'),
         );
         if (reactive) {
-          this.editFile(filePath, content => content.replace(', idToken)', ', oidcUser.getIdToken())'));
+          this.editFile(filePath, { assertModified: true }, content => content.replace(', idToken)', ', oidcUser.getIdToken())'));
         } else {
-          this.editFile(filePath, content => content.replace('(idToken.', `(oidcUser.getIdToken().`));
+          this.editFile(filePath, { assertModified: true }, content => content.replace('(idToken.', `(oidcUser.getIdToken().`));
         }
       },
 
@@ -403,6 +403,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         if (reactive && databaseTypeSql) {
           this.editFile(
             `${srcMainJava}${packageFolder}/repository/UserRepository.java`,
+            { assertModified: true },
             contents =>
               contents.replace(
                 'import reactor.core.publisher.Flux;',
@@ -422,7 +423,7 @@ class `,
 
       cypress({ application: { srcTestJavascript, cypressTests } }) {
         if (!cypressTests) return;
-        this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, contents =>
+        this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, { assertModified: true }, contents =>
           contents
             .replace("describe('/metrics'", "describe.skip('/metrics'")
             .replace("describe('/logs'", "describe.skip('/logs'")
@@ -431,7 +432,7 @@ class `,
       },
 
       restErrors({ application: { srcMainJava, packageFolder } }) {
-        this.editFile(`${srcMainJava}${packageFolder}/web/rest/errors/FieldErrorVM.java`, contents =>
+        this.editFile(`${srcMainJava}${packageFolder}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
           contents.includes('@RegisterReflectionForBinding')
             ? contents
             : contents.replace(
@@ -446,7 +447,7 @@ class `,
 
       testUtil({ application: { srcTestJava, packageFolder, packageName, reactive } }) {
         if (reactive) return;
-        this.editFile(`${srcTestJava}${packageFolder}/web/rest/TestUtil.java`, contents =>
+        this.editFile(`${srcTestJava}${packageFolder}/web/rest/TestUtil.java`, { assertModified: true }, contents =>
           contents.includes('JacksonNativeConfiguration')
             ? contents
             : contents
@@ -469,7 +470,7 @@ class `,
       // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
       technicalStructureTest({ application: { buildToolGradle, srcTestJava, packageFolder } }) {
         if (!buildToolGradle) return;
-        this.editFile(`${srcTestJava}${packageFolder}/TechnicalStructureTest.java`, contents =>
+        this.editFile(`${srcTestJava}${packageFolder}/TechnicalStructureTest.java`, { assertModified: true }, contents =>
           contents.includes('__BeanFactoryRegistrations')
             ? contents
             : contents
@@ -490,13 +491,13 @@ class `,
         if (!application.authenticationTypeOauth2) return;
 
         // Increase wait for macos.
-        this.editFile('src/main/docker/keycloak.yml', content =>
+        this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content =>
           content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
         );
       },
 
       readme() {
-        this.editFile('README.md', content =>
+        this.editFile('README.md', { assertModified: true }, content =>
           content.includes('## About Native Build')
             ? content
             : content.replace(
@@ -550,21 +551,25 @@ npm run native-e2e
             this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
             continue;
           }
-          this.editFile(`${srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`, content =>
-            content
-              .replaceAll(
-                `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-                `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-              )
-              .replaceAll(
-                `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-                `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-              ),
+          this.editFile(
+            `${srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`,
+            { assertModified: true },
+            content =>
+              content
+                .replaceAll(
+                  `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                  `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                )
+                .replaceAll(
+                  `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                  `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`,
+                ),
           );
 
           if (!reactive && databaseTypeSql && entity.containsBagRelationships) {
             this.editFile(
               `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryWithBagRelationshipsImpl.java`,
+              { assertModified: true },
               contents =>
                 contents.replace(
                   'import org.springframework.beans.factory.annotation.Autowired;',
@@ -577,6 +582,7 @@ npm run native-e2e
           if (reactive && databaseTypeSql) {
             this.editFile(
               `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
+              { assertModified: true },
               contents =>
                 contents.replace(
                   'import reactor.core.publisher.Flux;',
@@ -601,11 +607,14 @@ class `,
         if (!entity) {
           this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
         } else {
-          this.editFile(`${application.srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`, content =>
-            content.replaceAll(
-              `@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
-              `@PathVariable(name = "login") @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
-            ),
+          this.editFile(
+            `${application.srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/UserResource.java`,
+            { assertModified: true },
+            content =>
+              content.replaceAll(
+                `@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
+                `@PathVariable(name = "login") @Pattern(regexp = Constants.LOGIN_REGEX) String login`,
+              ),
           );
         }
       },
@@ -615,7 +624,7 @@ class `,
         const targetEntities = [...entities.filter(({ builtIn, embedded }) => !builtIn && !embedded), this.sharedData.getEntity('User')];
         for (const entity of targetEntities) {
           const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
-          this.editFile(entityClassFilePath, content =>
+          this.editFile(entityClassFilePath, { assertModified: true }, content =>
             content.includes('@JsonFilter("lazyPropertyFilter")')
               ? content
               : content
