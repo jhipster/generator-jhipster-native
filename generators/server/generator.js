@@ -22,7 +22,6 @@ export default class extends ServerGenerator {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
-  
   get [ServerGenerator.DEFAULT]() {
     return this.asDefaultTaskGroup({
       // workaround for https://github.com/spring-projects/spring-boot/issues/32195
@@ -30,13 +29,19 @@ export default class extends ServerGenerator {
         this.queueTransformStream(
           {
             name: 'adding @DisabledInAotMode annotations',
-            filter: file => isFileStateModified(file) && !isFileStateDeleted(file) && file.path.startsWith(this.destinationPath()) && file.path.endsWith('.java'),
+            filter: file =>
+              !isFileStateDeleted(file) &&
+              isFileStateModified(file) &&
+              file.path.startsWith(this.destinationPath(application.srcTestJava)) &&
+              extname(file.path) === '.java',
             refresh: false,
           },
           passthrough(file => {
             const contents = file.contents.toString('utf8');
             if (/@(MockBean|SpyBean)/.test(contents)) {
-              file.contents = Buffer.from(addJavaAnnotation(contents, { package: 'org.springframework.test.context.aot', annotation: 'DisabledInAotMode' }));
+              file.contents = Buffer.from(
+                addJavaAnnotation(contents, { package: 'org.springframework.test.context.aot', annotation: 'DisabledInAotMode' }),
+              );
             }
           }),
         );
@@ -128,7 +133,7 @@ export default class extends ServerGenerator {
         if (buildToolMaven) {
           this.packageJson.merge({
             scripts: {
-              'native-package': './mvnw package -B -ntp -Pnative,prod -DskipTests -Dmodernizer.failOnViolations=false',
+              'native-package': './mvnw package -B -ntp -Pnative,prod -DskipTests',
               'native-start': './target/native-executable',
             },
           });
