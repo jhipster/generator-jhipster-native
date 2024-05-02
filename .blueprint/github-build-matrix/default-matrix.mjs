@@ -9,7 +9,7 @@ export const defaultMatrix = {
   include: [
     {
       os: 'windows-2022',
-      'default-environment': dev,
+      'default-environment': 'dev',
       e2e: 'false',
       'jdl-extra-args': '--skip-install',
     },
