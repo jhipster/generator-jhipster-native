@@ -445,28 +445,6 @@ class `,
         );
       },
 
-      testUtil({ application: { srcTestJava, packageFolder, packageName, reactive } }) {
-        if (reactive) return;
-        this.editFile(`${srcTestJava}${packageFolder}/web/rest/TestUtil.java`, { assertModified: true }, contents =>
-          contents.includes('JacksonNativeConfiguration')
-            ? contents
-            : contents
-                .replace(
-                  'import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;',
-                  `import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-                  import ${packageName}.config.JacksonNativeConfiguration;
-                  import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;`,
-                )
-                .replace(
-                  'mapper.registerModule(new JavaTimeModule());',
-                  `mapper.registerModule(new JavaTimeModule());
-                  Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-                new JacksonNativeConfiguration().customizeJackson().customize(builder);
-                builder.configure(mapper);`,
-                ),
-        );
-      },
-
       // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
       technicalStructureTest({ application: { buildToolGradle, srcTestJava, packageFolder } }) {
         if (!buildToolGradle) return;
