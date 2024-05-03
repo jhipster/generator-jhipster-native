@@ -198,8 +198,8 @@ export default class extends ServerGenerator {
         );
       },
 
-      async logoutResource({ application: { srcMainJava, packageFolder, authenticationTypeOauth2, reactive } }) {
-        if (!authenticationTypeOauth2) return;
+      async logoutResource({ application: { srcMainJava, packageFolder, authenticationTypeOauth2, reactive, generateAuthenticationApi } }) {
+        if (!authenticationTypeOauth2 || !generateAuthenticationApi) return;
         const filePath = `${srcMainJava}${packageFolder}/web/rest/LogoutResource.java`;
 
         this.editFile(filePath, { assertModified: true }, content =>
