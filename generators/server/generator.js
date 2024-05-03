@@ -285,20 +285,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
             this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
             continue;
           }
-          this.editFile(
-            `${srcMainJava}/${entity.entityAbsoluteFolder}/web/rest/${entity.entityClass}Resource.java`,
-            { assertModified: true },
-            content =>
-              content
-                .replaceAll(
-                  `@PathVariable(value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-                  `@PathVariable(name = "${entity.primaryKey.name}", value = "${entity.primaryKey.name}", required = false) final ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-                )
-                .replaceAll(
-                  `@PathVariable ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-                  `@PathVariable("${entity.primaryKey.name}") ${entity.primaryKey.type} ${entity.primaryKey.name}`,
-                ),
-          );
 
           if (reactive && databaseTypeSql) {
             this.editFile(
