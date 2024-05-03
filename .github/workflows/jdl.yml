@@ -115,14 +115,16 @@ jobs:
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
       - name: 'TESTS: backend tests'
+        if: steps.compare.outputs.equals != 'true'
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
+        if: steps.compare.outputs.equals != 'true'
         timeout-minutes: 60
         run: npm run native-package -- ${{ matrix.native-package-extra-args }}
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
-        if: matrix.e2e != 'false'
+        if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
       - name: Dump docker logs
         if: always() && matrix.e2e != 'false'
         uses: jwalton/gh-docker-logs@v2
