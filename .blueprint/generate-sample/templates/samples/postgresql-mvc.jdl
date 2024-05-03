@@ -1,6 +1,6 @@
 application {
   config {
-    applicationType monolith
+    baseName mvcOauth
     authenticationType oauth2
     cacheProvider no
     creationTimestamp 1632872179205

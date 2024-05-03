@@ -1,6 +1,6 @@
 application {
   config {
-    applicationType monolith
+    baseName webfluxOauth
     authenticationType oauth2
     creationTimestamp 1632872179205
     devDatabaseType h2Disk
