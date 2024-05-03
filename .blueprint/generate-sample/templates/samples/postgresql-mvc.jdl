@@ -8,7 +8,6 @@ application {
     enableHibernateCache false
     enableTranslation false
     testFrameworks [cypress]
-    syncUserWithIdp true
   }
 
   entities Blog, Post, Tag

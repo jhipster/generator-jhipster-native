@@ -62,11 +62,10 @@ export default class extends ServerGenerator {
               },
             ],
             config: [
-              {
-                ...javaMainPackageTemplatesBlock(),
+              javaMainPackageTemplatesBlock({
                 condition: ctx => !ctx.reactive,
                 templates: ['config/JacksonNativeConfiguration.java'],
-              },
+              }),
             ],
             gradle: [
               {
@@ -128,7 +127,7 @@ export default class extends ServerGenerator {
         this.packageJson.merge({
           scripts: {
             'native-e2e': 'concurrently -k -s first "npm run native-start" "npm run e2e:headless"',
-            'prenative-start': 'npm run docker:db:await --if-present && npm run docker:others:await --if-present',
+            'prenative-start': 'npm run services:up',
           },
         });
         if (buildToolMaven) {
@@ -221,22 +220,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
 
       userRepository({ application: { srcMainJava, packageFolder, reactive, databaseTypeSql, generateBuiltInUserEntity } }) {
         if (reactive && databaseTypeSql && generateBuiltInUserEntity) {
-          this.editFile(
-            `${srcMainJava}${packageFolder}/repository/UserRepository.java`,
-            { assertModified: true },
-            contents =>
-              contents.replace(
-                'import reactor.core.publisher.Flux;',
-                `import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;`,
-              ),
-            contents =>
-              contents.replace(
-                '\nclass ',
-                `
-@Component
-class `,
-              ),
+          this.editFile(`${srcMainJava}${packageFolder}/repository/UserRepository.java`, { assertModified: true }, contents =>
+            addJavaAnnotation(contents, { package: 'org.springframework.stereotype', annotation: 'Component' }),
           );
         }
       },
@@ -253,15 +238,10 @@ class `,
 
       restErrors({ application: { javaPackageSrcDir } }) {
         this.editFile(`${javaPackageSrcDir}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
-          contents.includes('@RegisterReflectionForBinding')
-            ? contents
-            : contents.replace(
-                'public class FieldErrorVM implements Serializable {',
-                `import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
-
-              @RegisterReflectionForBinding({ FieldErrorVM.class })
-              public class FieldErrorVM implements Serializable {`,
-              ),
+          addJavaAnnotation(contents, {
+            package: 'org.springframework.aot.hint.annotation',
+            annotation: 'RegisterReflectionForBinding',
+          }).replace('@RegisterReflectionForBinding\n', '@RegisterReflectionForBinding({ FieldErrorVM.class })\n'),
         );
       },
 
@@ -375,12 +355,11 @@ npm run native-e2e
         if (application.reactive) return;
         for (const entity of entities.filter(({ builtIn, builtInUser, embedded }) => builtInUser || (!builtIn && !embedded))) {
           const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
-          this.editFile(entityClassFilePath, content =>
-            content.includes('@JsonFilter("lazyPropertyFilter")')
-              ? content
-              : content
-                  .replace('\npublic class ', '\n@JsonFilter("lazyPropertyFilter")\npublic class ')
-                  .replace(/(package[\s\S]*?)(import)/, `$1import com.fasterxml.jackson.annotation.JsonFilter;$2`),
+          this.editFile(entityClassFilePath, { assertModified: true }, content =>
+            addJavaAnnotation(content, { package: 'com.fasterxml.jackson.annotation', annotation: 'JsonFilter' }).replace(
+              '@JsonFilter\n',
+              '@JsonFilter("lazyPropertyFilter")\n',
+            ),
           );
         }
       },

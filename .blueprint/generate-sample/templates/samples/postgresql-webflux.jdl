@@ -7,7 +7,6 @@ application {
     reactive true
     enableTranslation false
     testFrameworks [cypress]
-    syncUserWithIdp true
   }
 
   entities Blog, Post, Tag
