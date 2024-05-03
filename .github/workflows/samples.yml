@@ -65,7 +65,6 @@ jobs:
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ matrix.graalvm-version }}
           java-version: ${{ matrix.java-version }}
           distribution: 'graalvm-community'
           components: 'native-image'
@@ -104,14 +103,14 @@ jobs:
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
       - name: 'PROJECT: generate'
-        run: 'cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
+        run: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
       - uses: jhipster/actions/compare-sample@v0
         id: compare
         with:
           generator-path: generator-jhipster-native
-          cmd: 'cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
+          cmd: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
       - name: 'TESTS: backend tests'
