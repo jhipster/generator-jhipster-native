@@ -167,10 +167,10 @@ export default class extends ServerGenerator {
         }
       },
 
-      async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
+      async customizeMaven({ application: { buildToolMaven, reactive, springBootDependencies }, source }) {
         if (!buildToolMaven) return;
 
-        source.addMavenDefinition(mavenDefinition({ reactive }));
+        source.addMavenDefinition(mavenDefinition({ reactive, hibernateVersion: springBootDependencies.hibernateVersion }));
 
         if (reactive) {
           this.editFile('pom.xml', { assertModified: true }, content =>

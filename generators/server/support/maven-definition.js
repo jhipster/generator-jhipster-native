@@ -1,10 +1,11 @@
 import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION } from '../../../lib/constants.js';
 
-export const mavenDefinition = ({ reactive }) => ({
+export const mavenDefinition = ({ reactive, hibernateVersion }) => ({
   properties: [
     { property: 'repackage.classifier' },
     { property: 'native-image-name', value: 'native-executable' },
     { property: 'native-build-args', value: '--verbose -J-Xmx10g' },
+    ...(reactive ? [] : [{ property: 'hibernate.version', value: hibernateVersion }]),
   ],
   plugins: [
     {
@@ -19,6 +20,7 @@ export const mavenDefinition = ({ reactive }) => ({
             inProfile: 'prod',
             groupId: 'org.hibernate.orm.tooling',
             artifactId: 'hibernate-enhance-maven-plugin',
+            version: '${hibernate.version}',
             additionalContent: `              <executions>
                   <execution>
                       <configuration>
