@@ -39,7 +39,7 @@ export default class extends ServerGenerator {
           },
           passthrough(file => {
             const contents = file.contents.toString('utf8');
-            if (/@(MockBean|SpyBean)/.test(contents)) {
+            if (/@(MockBean|SpyBean)/.test(contents) || (application.reactive && /@AuthenticationIntegrationTest/.test(contents))) {
               file.contents = Buffer.from(
                 addJavaAnnotation(contents, { package: 'org.springframework.test.context.aot', annotation: 'DisabledInAotMode' }),
               );
@@ -283,14 +283,6 @@ class `,
         .ignoreDependency(belongToAnyOf`,
                 ),
         );
-      },
-
-      reactiveJwtTestAdjust({ application: { reactive, javaPackageTestDir, generateUserManagement, packageName } }) {
-        if (reactive && generateUserManagement) {
-          this.editFile(`${javaPackageTestDir}security/jwt/AuthenticationIntegrationTest.java`, { assertModified: true }, content =>
-            content.replace(/(@Import\(\n {4}{\n)/, `$1        ${packageName}.security.DomainUserDetailsService.class,\n`),
-          );
-        }
       },
 
       keycloak({ application }) {
