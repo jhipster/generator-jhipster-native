@@ -273,6 +273,15 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content =>
           content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
         );
+
+        const awaitScript = this.packageJson.getPath('scripts.ci:server:await');
+        if (awaitScript) {
+          this.packageJson.merge({
+            scripts: {
+              'ci:server:await': awaitScript.replaceAll('180', '240'),
+            },
+          });
+        }
       },
     });
   }
