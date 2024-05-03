@@ -25,6 +25,8 @@ jobs:
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: jhipster/actions/cache-npm-dependencies@v0
+        with:
+          generator-path: generator-jhipster-native
         if: always()
       - run: cli.cjs generate-sample --all
         continue-on-error: true
