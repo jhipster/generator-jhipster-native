@@ -173,9 +173,8 @@ export default class extends ServerGenerator {
         source.addMavenDefinition(mavenDefinition({ reactive }));
 
         if (reactive) {
-          this.editFile('pom.xml', { assertModified: true }, content => {
-            console.log(content);
-            return content.replace(
+          this.editFile('pom.xml', { assertModified: true }, content =>
+            content.replace(
               `
         <dependency>
             <groupId>io.netty</groupId>
@@ -183,8 +182,8 @@ export default class extends ServerGenerator {
             <scope>runtime</scope>
         </dependency>`,
               '',
-            );
-          });
+            ),
+          );
         }
       },
 
