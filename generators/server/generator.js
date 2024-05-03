@@ -188,6 +188,26 @@ export default class extends ServerGenerator {
         );
       },
 
+      // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
+      technicalStructureTest({ application: { buildToolGradle, javaPackageTestDir } }) {
+        if (!buildToolGradle) return;
+        this.editFile(`${javaPackageTestDir}/TechnicalStructureTest.java`, { assertModified: true }, contents =>
+          contents.includes('__BeanFactoryRegistrations')
+            ? contents
+            : contents
+                .replace(
+                  'import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;',
+                  `import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;
+                  import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameEndingWith;`,
+                )
+                .replace(
+                  '.ignoreDependency(belongToAnyOf',
+                  `.ignoreDependency(simpleNameEndingWith("_BeanFactoryRegistrations"), alwaysTrue())
+        .ignoreDependency(belongToAnyOf`,
+                ),
+        );
+      },
+
       keycloak({ application }) {
         if (!application.authenticationTypeOauth2) return;
 
