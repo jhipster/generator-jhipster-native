@@ -56,6 +56,7 @@ export default class extends ServerGenerator {
         await this.writeFiles({
           sections: {
             common: [
+              { templates: ['README.md.jhi.native'] },
               {
                 transform: false,
                 templates: ['src/main/resources/META-INF/native-image/common/reflect-config.json'],
@@ -271,49 +272,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         // Increase wait for macos.
         this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content =>
           content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
-        );
-      },
-
-      readme() {
-        this.editFile('README.md', { assertModified: true }, content =>
-          content.includes('## About Native Build')
-            ? content
-            : content.replace(
-                /^(# .+?)(## .+)$/ms,
-                `$1
-The project has also been extended with [JHipster Native](https://github.com/jhipster/generator-jhipster-native) Blueprint.
-See what's been added here to learn [About Native Build](#about-native-build).
-
-$2
-
-## About Native Build
-
-### Installation
-
-To build a Native image, you need to install a JDK that is compatible with GraalVM. Please refer to the [GraalVM Release Notes](https://www.graalvm.org/release-notes/) and install the appropriate JDK. Using SDKMAN simplifies the installation process.
-\`\`\`
-sdk install java 21-graalce
-\`\`\`
-### How to Build a Native Image
-
-To build a native image, execute the following command:
-\`\`\`bash
-npm run native-package
-\`\`\`
-
-After that, set up peripheral services like PostgreSQL using \`npm run services:up\` and ensure everything is ready.
-
-Lastly, run the Native image and experience its fast startup 😊.
-\`\`\`bash
-npm run native-start
-\`\`\`
-
-If you've enabled e2e testing with Cypress, you can verify its operation using the following command:
-\`\`\`bash
-npm run native-e2e
-\`\`\`
-`,
-              ),
         );
       },
     });
