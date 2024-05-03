@@ -6,6 +6,7 @@ const SUB_GENERATOR = 'server';
 const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
 
 const matrix = fromMatrix({
+  applicationType: ['monolith', 'gateway', 'microservice'],
   build: ['maven', 'gradle'],
   reactive: [false, true],
   auth: ['jwt', 'oauth2'],
@@ -21,6 +22,7 @@ describe('SubGenerator server of native JHipster blueprint', () => {
           .withOptions({
             ignoreNeedlesError: true,
             blueprint: 'native',
+            experimental: true,
             ...options,
           })
           .withJHipsterLookup()
