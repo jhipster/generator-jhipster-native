@@ -289,7 +289,7 @@ class `,
       reactiveJwtTestAdjust({ application: { reactive, javaPackageTestDir, generateUserManagement, packageName } }) {
         if (reactive && generateUserManagement) {
           this.editFile(`${javaPackageTestDir}security/jwt/AuthenticationIntegrationTest.java`, { assertModified: true }, content =>
-            content.replace(/@Import\(\n {4}{\n/, `$0        ${packageName}.security.DomainUserDetailsService.class,\n`),
+            content.replace(/(@Import\(\n {4}{\n)/, `$1        ${packageName}.security.DomainUserDetailsService.class,\n`),
           );
         }
       },
