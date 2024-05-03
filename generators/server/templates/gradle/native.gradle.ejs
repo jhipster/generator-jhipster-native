@@ -32,3 +32,9 @@ hibernate {
   }
 }
 <%_ } _%>
+<%_ if (reactive) { _%>
+
+configurations.all {
+  exclude group:"commons-logging", module: "commons-logging"
+}
+<%_ } _%>

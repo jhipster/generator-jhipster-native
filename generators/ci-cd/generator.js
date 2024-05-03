@@ -43,9 +43,13 @@ export default class extends CiCdGenerator {
           },
           context: {
             ...application,
-            RECOMMENDED_NODE_VERSION,
-            RECOMMENDED_JAVA_VERSION,
-            GRAALVM_VERSION,
+            ...(this.useVersionPlaceholders
+              ? {
+                  RECOMMENDED_NODE_VERSION: 'RECOMMENDED_NODE_VERSION',
+                  RECOMMENDED_JAVA_VERSION: 'RECOMMENDED_JAVA_VERSION',
+                  GRAALVM_VERSION: 'GRAALVM_VERSION',
+                }
+              : { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION, GRAALVM_VERSION }),
             githubActions,
           },
         });

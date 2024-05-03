@@ -1,11 +1,11 @@
 {
   "env": {
     "node": true,
-    "es2023": true
+    "es2020": true
   },
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "parserOptions": {
-    "ecmaVersion": 13,
+    "ecmaVersion": 11,
     "sourceType": "module"
   },
   "overrides": [
@@ -15,7 +15,6 @@
   ],
   "rules": {
     "func-names": "off",
-    "import/no-unresolved": "off",
     "no-restricted-syntax": [
       "error",
       {

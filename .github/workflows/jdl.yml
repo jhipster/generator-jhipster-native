@@ -6,7 +6,7 @@ concurrency:
 on:
   push:
     branches:
-      - '*'
+      - main
     paths-ignore:
       - 'generators/ci-cd/**'
   pull_request:
@@ -18,9 +18,23 @@ on:
 permissions:
   contents: read
 jobs:
+  build-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - id: build
+        run: |
+          npm ci --ignore-scripts
+          cli/cli.cjs github-build-matrix
   applications:
-    name: ${{ matrix.suite }} (${{ matrix.os }}, ${{ matrix.build-tool }})
+    name: ${{ matrix.sample-name }} (${{ matrix.os }}, ${{ matrix.build-tool }})
     runs-on: ${{ matrix.os }}
+    needs: build-matrix
     defaults:
       run:
         shell: bash
@@ -29,48 +43,30 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      matrix:
-        os: [ubuntu-20.04, macos-11, windows-2022]
-        build-tool: [maven, gradle]
-        suite:
-          - postgresql-mvc
-          - postgresql-webflux
-          - postgresql-mvc-jwt
-          - postgresql-webflux-jwt
-        include:
-          - os: windows-2022
-            profile: dev
-            e2e: 'false'
-            jdl-extra-args: '--skip-install'
+      matrix: ${{fromJson(needs.build-matrix.outputs.matrix)}}
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - name: 'SETUP: create app folder'
-        run: mkdir app
-        working-directory: ${{ github.workspace }}
-      - name: 'SETUP: Configure keycloak host'
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
-      - name: 'SETUP: setup node'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
       - name: 'SETUP: checkout generator-jhipster-native'
         uses: actions/checkout@v4
         with:
           path: generator-jhipster-native
           fetch-depth: 2
+      - uses: jhipster/actions/setup-runner@v0
+        with:
+          node-version: ${{ matrix.node-version }}
+          maven-cache: true
+          gradle-cache: true
+          binary-dir: ${{ github.workspace }}/generator-jhipster-native/cli/
       - name: 'SETUP: install generator-jhister-native'
-        run: |
-          npm ci --prod
-          npm link
+        run: npm ci --prod
         working-directory: ${{ github.workspace }}/generator-jhipster-native
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.3.3'
-          java-version: '17'
+          version: ${{ matrix.graalvm-version }}
+          java-version: ${{ matrix.java-version }}
           distribution: 'graalvm-community'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -104,39 +100,26 @@ jobs:
           docker_buildx: false
       - run: ls ~/Library/Caches/Homebrew/
         if: runner.os == 'macOS'
-
-      - name: 'SETUP: load npm cache'
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ~/.cache/Cypress/
-          key: ${{ runner.os }}-npm-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
-      - name: 'SETUP: load maven cache'
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ matrix.suite }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('generator-jhipster-native/package*.json') }}
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
       - name: 'PROJECT: generate'
-        run: 'JHI_PROFILE=${{ matrix.profile }} jhipster-native generate-sample ${{ matrix.suite }}.jdl --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit ${{ matrix.jdl-extra-args }}'
-
-      - name: 'Windows: install npm dependencies'
-        # Workaround max PATH size https://github.com/jhipster/generator-jhipster-native/pull/65#issuecomment-1249555392
-        if: runner.os == 'Windows'
-        run: npm install
-
+        run: 'cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
+        env:
+          JHI_PROFILE: ${{ matrix.default-environment }}
+      - uses: jhipster/actions/compare-sample@v0
+        id: compare
+        with:
+          generator-path: generator-jhipster-native
+          cmd: 'cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
+        env:
+          JHI_PROFILE: ${{ matrix.default-environment }}
       - name: 'TESTS: backend tests'
         run: npm run ci:backend:test
       # Native build is memory intensive, containers should not be started.
       - name: 'TESTS: build application package'
         timeout-minutes: 60
         run: npm run native-package -- ${{ matrix.native-package-extra-args }}
-      - name: 'TESTS: start docker dependencies'
-        run: npm run ci:e2e:prepare
-        if: matrix.e2e != 'false'
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
         if: matrix.e2e != 'false'
