@@ -1,6 +1,6 @@
 application {
   config {
-    baseName vcJwt
+    baseName mvcJwt
     cacheProvider no
     creationTimestamp 1632872179205
     devDatabaseType h2Disk
