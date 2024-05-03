@@ -53,6 +53,8 @@ export default class extends ServerGenerator {
   get [ServerGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application }) {
+        this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+
         await this.writeFiles({
           sections: {
             common: [
@@ -67,6 +69,9 @@ export default class extends ServerGenerator {
                 condition: ctx => !ctx.reactive,
                 templates: ['config/JacksonNativeConfiguration.java'],
               }),
+              javaMainPackageTemplatesBlock({
+                templates: ['config/NativeConfiguration.java'],
+              }),
             ],
             gradle: [
               {
@@ -78,10 +83,7 @@ export default class extends ServerGenerator {
               {
                 condition: ctx => ctx.databaseTypeSql,
                 transform: false,
-                templates: [
-                  'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
-                  'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
-                ],
+                templates: ['src/main/resources/META-INF/native-image/liquibase/reflect-config.json'],
               },
             ],
             hibernate: [
@@ -124,6 +126,15 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
+      hints({ application: { mainClass, javaPackageSrcDir, packageName } }) {
+        this.editFile(`${javaPackageSrcDir}${mainClass}.java`, { assertModified: true }, contents =>
+          addJavaAnnotation(contents, { package: 'org.springframework.context.annotation', annotation: 'ImportRuntimeHints' }).replaceAll(
+            '@ImportRuntimeHints\n',
+            `@ImportRuntimeHints({ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class })\n`,
+          ),
+        );
+      },
+
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
         this.packageJson.merge({
           scripts: {

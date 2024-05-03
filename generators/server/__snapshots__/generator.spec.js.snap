@@ -203,6 +203,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -372,9 +375,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -856,6 +856,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -992,9 +995,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -1419,6 +1419,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -1612,9 +1615,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -2078,6 +2078,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -2235,9 +2238,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -2614,6 +2614,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -2783,9 +2786,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -3228,6 +3228,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -3364,9 +3367,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -3752,6 +3752,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -3945,9 +3948,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -4372,6 +4372,9 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -4529,9 +4532,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -4947,6 +4947,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -5011,9 +5014,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -5405,6 +5405,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -5472,9 +5475,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -5830,6 +5830,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -5900,9 +5903,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -6264,6 +6264,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -6337,9 +6340,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -6656,6 +6656,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -6720,9 +6723,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -7075,6 +7075,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -7142,9 +7145,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -7464,6 +7464,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -7534,9 +7537,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -7862,6 +7862,9 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -7935,9 +7938,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -8284,6 +8284,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -8453,9 +8456,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -8916,6 +8916,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/OAuth2Configuration.java": {
     "stateCleared": "modified",
   },
@@ -9013,9 +9016,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -9383,6 +9383,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -9561,9 +9564,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -9997,6 +9997,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/OAuth2Configuration.java": {
     "stateCleared": "modified",
   },
@@ -10094,9 +10097,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -10416,6 +10416,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -10585,9 +10588,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -11006,6 +11006,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/OAuth2Configuration.java": {
     "stateCleared": "modified",
   },
@@ -11103,9 +11106,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -11434,6 +11434,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/ReactorConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -11612,9 +11615,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
@@ -12009,6 +12009,9 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
   "src/main/java/com/mycompany/myapp/config/LoggingConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/NativeConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/OAuth2Configuration.java": {
     "stateCleared": "modified",
   },
@@ -12106,9 +12109,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/liquibase/resource-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/banner.txt": {
