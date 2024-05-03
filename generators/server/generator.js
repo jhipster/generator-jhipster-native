@@ -55,13 +55,7 @@ export default class extends ServerGenerator {
       async writingTemplateTask({ application }) {
         await this.writeFiles({
           sections: {
-            common: [
-              { templates: ['README.md.jhi.native'] },
-              {
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/common/reflect-config.json'],
-              },
-            ],
+            common: [{ templates: ['README.md.jhi.native'] }],
             config: [
               javaMainPackageTemplatesBlock({
                 condition: ctx => !ctx.reactive,
@@ -72,47 +66,6 @@ export default class extends ServerGenerator {
               {
                 condition: ctx => ctx.buildToolGradle,
                 templates: ['gradle/native.gradle'],
-              },
-            ],
-            liquibase: [
-              {
-                condition: ctx => ctx.databaseTypeSql,
-                transform: false,
-                templates: [
-                  'src/main/resources/META-INF/native-image/liquibase/reflect-config.json',
-                  'src/main/resources/META-INF/native-image/liquibase/resource-config.json',
-                ],
-              },
-            ],
-            hibernate: [
-              {
-                condition: ctx => ctx.databaseTypeSql && !ctx.reactive,
-                transform: false,
-                templates: [
-                  'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
-                  'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
-                ],
-              },
-            ],
-            h2: [
-              {
-                condition: ctx => ctx.devDatabaseTypeH2Any,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/h2/reflect-config.json'],
-              },
-            ],
-            mysql: [
-              {
-                condition: ctx => ctx.prodDatabaseTypeMysql,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/mysql/reflect-config.json'],
-              },
-            ],
-            caffeine: [
-              {
-                condition: ctx => ctx.authenticationTypeOauth2 || ctx.cacheProviderCaffeine,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/caffeine/reflect-config.json'],
               },
             ],
           },
