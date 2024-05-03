@@ -90,8 +90,8 @@ jobs:
           restore-keys: brew-actions-setup-docker-
       - name:
           'SETUP MacOS: install docker'
-          # v1.0.11 (5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a)
-        uses: docker-practice/actions-setup-docker@fd7ecdac7caf8e2c541a48c9bcc280aae59a8461
+          # main branch
+        uses: docker-practice/actions-setup-docker@ccc771627519a0dc44b99c63f3ccf5fab1b1b9b8
         # alternative solution https://github.com/actions/runner/issues/1456
         if: runner.os == 'macOS'
         timeout-minutes: 30
