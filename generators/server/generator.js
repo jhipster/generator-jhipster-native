@@ -104,11 +104,21 @@ export default class extends ServerGenerator {
       async customizeGradle({ application: { buildToolGradle, reactive, springBootDependencies }, source }) {
         if (!buildToolGradle) return;
 
-        source.addGradlePlugin({ id: 'org.graalvm.buildtools.native', version: NATIVE_BUILDTOOLS_VERSION });
+        source.addGradleDependencyCatalogPlugin({
+          addToBuild: true,
+          pluginName: 'graalvm',
+          id: 'org.graalvm.buildtools.native',
+          version: NATIVE_BUILDTOOLS_VERSION,
+        });
+
         if (!reactive) {
-          source.addGradleProperty({ property: 'hibernateVersion', value: springBootDependencies.hibernate });
-          // eslint-disable-next-line no-template-curly-in-string
-          source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
+          source.addGradleDependencyCatalogVersion({ name: 'hibernate', version: springBootDependencies.hibernate });
+          source.addGradleDependencyCatalogPlugin({
+            addToBuild: true,
+            pluginName: 'hibernate',
+            id: 'org.hibernate.orm',
+            'version.ref': 'hibernate',
+          });
         }
 
         source.applyFromGradle({ script: 'gradle/native.gradle' });
