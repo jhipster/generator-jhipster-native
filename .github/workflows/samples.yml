@@ -123,5 +123,5 @@ jobs:
         run: npm run native-e2e --if-present
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
       - name: Dump docker logs
-        if: always() && matrix.e2e != 'false'
+        if: always() && matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
         uses: jwalton/gh-docker-logs@v2
