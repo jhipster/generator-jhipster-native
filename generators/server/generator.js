@@ -6,7 +6,7 @@ import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
 
 import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.js';
-import { mavenDefinition } from './support/maven-definition.js';
+import { mavenDefinition } from './support/index.js';
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
@@ -153,7 +153,7 @@ export default class extends ServerGenerator {
 
         source.addGradlePlugin({ id: 'org.graalvm.buildtools.native', version: NATIVE_BUILDTOOLS_VERSION });
         if (!reactive) {
-          source.addGradleProperty({ property: 'hibernateVersion', value: springBootDependencies['hibernate'] });
+          source.addGradleProperty({ property: 'hibernateVersion', value: springBootDependencies.hibernate });
           // eslint-disable-next-line no-template-curly-in-string
           source.addGradlePlugin({ id: 'org.hibernate.orm', version: '${hibernateVersion}' });
         }
@@ -167,10 +167,10 @@ export default class extends ServerGenerator {
         }
       },
 
-      async customizeMaven({ application: { buildToolMaven, reactive, springBootDependencies }, source }) {
+      async customizeMaven({ application: { buildToolMaven, reactive }, source }) {
         if (!buildToolMaven) return;
 
-        source.addMavenDefinition(mavenDefinition({ reactive, hibernateVersion: springBootDependencies.hibernateVersion }));
+        source.addMavenDefinition(mavenDefinition({ reactive }));
 
         if (reactive) {
           this.editFile('pom.xml', { assertModified: true }, content =>
