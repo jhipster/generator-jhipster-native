@@ -70,35 +70,6 @@ jobs:
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
-      - name: 'SETUP: get date'
-        id: get-date
-        run: echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
-
-      - name: 'SETUP Windows: force npm to use bash'
-        if: runner.os == 'Windows'
-        run: |
-          echo "script-shell=bash" >.npmrc
-          cat .npmrc
-
-      - name: 'SETUP MacOS: load Homebrew cache'
-        uses: actions/cache@v4
-        if: runner.os == 'macOS'
-        with:
-          path: |
-            ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
-          key: brew-actions-setup-docker-1.0.11
-          restore-keys: brew-actions-setup-docker-
-      - name:
-          'SETUP MacOS: install docker'
-          # main branch
-        uses: docker-practice/actions-setup-docker@ccc771627519a0dc44b99c63f3ccf5fab1b1b9b8
-        # alternative solution https://github.com/actions/runner/issues/1456
-        if: runner.os == 'macOS'
-        timeout-minutes: 30
-        with:
-          docker_buildx: false
-      - run: ls ~/Library/Caches/Homebrew/
-        if: runner.os == 'macOS'
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
@@ -113,6 +84,33 @@ jobs:
           cmd: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
+
+      - name: 'SETUP Windows: force npm to use bash'
+        if: runner.os == 'Windows'
+        run: |
+          echo "script-shell=bash" >.npmrc
+          cat .npmrc
+
+      - name: 'SETUP MacOS: load Homebrew cache'
+        uses: actions/cache@v4
+        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+        with:
+          path: |
+            ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
+          key: brew-actions-setup-docker-1.0.11
+          restore-keys: brew-actions-setup-docker-
+      - name:
+          'SETUP MacOS: install docker'
+          # main branch
+        uses: docker-practice/actions-setup-docker@ccc771627519a0dc44b99c63f3ccf5fab1b1b9b8
+        # alternative solution https://github.com/actions/runner/issues/1456
+        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+        timeout-minutes: 30
+        with:
+          docker_buildx: false
+      - run: ls ~/Library/Caches/Homebrew/
+        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+
       - name: 'TESTS: backend tests'
         if: steps.compare.outputs.equals != 'true'
         run: npm run ci:backend:test
