@@ -68,6 +68,13 @@ export default class extends ServerGenerator {
                 templates: ['gradle/native.gradle'],
               },
             ],
+            liquibase: [
+              {
+                condition: ctx => ctx.databaseTypeSql,
+                transform: false,
+                templates: ['src/main/resources/META-INF/native-image/liquibase/resource-config.json'],
+              },
+            ],
           },
           context: application,
         });
