@@ -278,7 +278,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         if (awaitScript) {
           this.packageJson.merge({
             scripts: {
-              'ci:server:await': awaitScript.replaceAll('180', '240'),
+              'ci:server:await': awaitScript.replaceAll('180', '360'),
             },
           });
         }
