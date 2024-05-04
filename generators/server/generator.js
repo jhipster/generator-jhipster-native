@@ -19,7 +19,7 @@ export default class extends ServerGenerator {
     }
   }
 
-  async _postConstruct() {
+  async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
