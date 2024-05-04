@@ -44,8 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-2019]
-        graalvm-version: ['<%= GRAALVM_VERSION %>']
+        os: [ubuntu-latest, macos-latest, windows-latest]
         java-version: ['<%= RECOMMENDED_JAVA_VERSION %>']
         include:
         - os: ubuntu-latest
@@ -54,7 +53,7 @@ jobs:
         - os: macos-latest
           executable-suffix: ''
           native-build-args: --verbose -J-Xmx13g
-        - os: windows-2019
+        - os: windows-latest
           executable-suffix: '.exe'
           # e2e is disabled due to unstable docker step
           e2e: false
@@ -96,8 +95,8 @@ jobs:
       - name: Set up GraalVM (Java ${{ matrix.java-version }})
         uses: <%= githubActions['graalvm/setup-graalvm'] %>
         with:
-          version: '${{ matrix.graalvm-version }}'
           java-version: '${{ matrix.java-version }}'
+          distribution: 'graalvm-community'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Cache Maven dependencies

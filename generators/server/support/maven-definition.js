@@ -1,4 +1,4 @@
-import { NATIVE_BUILDTOOLS_VERSION, GRAALVM_VERSION } from '../../../lib/constants.js';
+import { NATIVE_BUILDTOOLS_VERSION } from '../../../lib/constants.js';
 
 export const mavenDefinition = ({ reactive }) => ({
   properties: [
@@ -53,7 +53,6 @@ export const mavenDefinition = ({ reactive }) => ({
       content: `            <properties>
           <repackage.classifier>exec</repackage.classifier>
           <native-buildtools.version>${NATIVE_BUILDTOOLS_VERSION}</native-buildtools.version>
-          <graalvm.version>${GRAALVM_VERSION}</graalvm.version>
           <modernizer.skip>true</modernizer.skip>
         </properties>
         <dependencies>
@@ -126,7 +125,6 @@ export const mavenDefinition = ({ reactive }) => ({
                         <metadataRepository>
                             <enabled>true</enabled>
                         </metadataRepository>
-                        <requiredVersion>\${graalvm.version}</requiredVersion>
                         <imageName>\${native-image-name}</imageName>
                         <buildArgs>
                             <buildArg>--no-fallback \${native-build-args}</buildArg>
