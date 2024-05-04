@@ -3,7 +3,8 @@ import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jh
 import { fromMatrix } from 'generator-jhipster/testing';
 
 const defaultMatrix = {
-  os: ['ubuntu-latest', 'macos-latest', 'windows-latest'],
+  // macos-14 doesn't support docker https://docs.github.com/en/actions/using-github-hosted-runners/about-larger-runners/about-larger-runners#limitations-for-macos-larger-runners
+  os: ['ubuntu-latest', 'macos-13', 'windows-latest'],
   'build-tool': ['maven', 'gradle'],
   'node-version': [RECOMMENDED_NODE_VERSION],
   'java-version': [RECOMMENDED_JAVA_VERSION],
