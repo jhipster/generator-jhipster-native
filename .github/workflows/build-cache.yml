@@ -44,7 +44,7 @@ jobs:
       - uses: jhipster/actions/save-cache@v0
         if: always()
         with:
-          key: -${{ github.run_id }}
+          key: ${{ github.run_id }}
           npm: true
           maven: true
           gradle: true
