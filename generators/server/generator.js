@@ -1,7 +1,6 @@
 import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
-import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
 
@@ -65,13 +64,6 @@ export default class extends ServerGenerator {
               {
                 condition: ctx => ctx.buildToolGradle,
                 templates: ['gradle/native.gradle'],
-              },
-            ],
-            liquibase: [
-              {
-                condition: ctx => ctx.databaseTypeSql,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/liquibase/resource-config.json'],
               },
             ],
           },
