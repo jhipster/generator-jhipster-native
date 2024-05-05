@@ -1,7 +1,6 @@
 import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
-import chalk from 'chalk';
 import ServerGenerator from 'generator-jhipster/generators/server';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
 
