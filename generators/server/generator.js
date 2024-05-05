@@ -201,17 +201,6 @@ export default class extends ServerGenerator {
         }
       },
 
-      async asyncConfiguration({ application: { authenticationTypeOauth2, srcMainJava, packageFolder } }) {
-        if (authenticationTypeOauth2) return;
-        const asyncConfigurationPath = `${srcMainJava}${packageFolder}/config/AsyncConfiguration.java`;
-        this.editFile(asyncConfigurationPath, { assertModified: true }, content =>
-          content.replace(
-            'return new ExceptionHandlingAsyncTaskExecutor(executor);',
-            'executor.initialize();\nreturn new ExceptionHandlingAsyncTaskExecutor(executor);',
-          ),
-        );
-      },
-
       async logoutResource({ application: { srcMainJava, packageFolder, authenticationTypeOauth2, reactive, generateAuthenticationApi } }) {
         if (!authenticationTypeOauth2 || !generateAuthenticationApi) return;
         const filePath = `${srcMainJava}${packageFolder}/web/rest/LogoutResource.java`;
