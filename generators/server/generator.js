@@ -233,14 +233,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         }
       },
 
-      userRepository({ application: { srcMainJava, packageFolder, reactive, databaseTypeSql, generateBuiltInUserEntity } }) {
-        if (reactive && databaseTypeSql && generateBuiltInUserEntity) {
-          this.editFile(`${srcMainJava}${packageFolder}/repository/UserRepository.java`, { assertModified: true }, contents =>
-            addJavaAnnotation(contents, { package: 'org.springframework.stereotype', annotation: 'Component' }),
-          );
-        }
-      },
-
       cypress({ application: { srcTestJavascript, cypressTests } }) {
         if (!cypressTests) return;
         this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, { assertModified: true }, contents =>
