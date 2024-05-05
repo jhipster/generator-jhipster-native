@@ -251,15 +251,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         );
       },
 
-      restErrors({ application: { javaPackageSrcDir } }) {
-        this.editFile(`${javaPackageSrcDir}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
-          addJavaAnnotation(contents, {
-            package: 'org.springframework.aot.hint.annotation',
-            annotation: 'RegisterReflectionForBinding',
-          }).replace('@RegisterReflectionForBinding\n', '@RegisterReflectionForBinding({ FieldErrorVM.class })\n'),
-        );
-      },
-
       // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
       technicalStructureTest({ application: { buildToolGradle, javaPackageTestDir } }) {
         if (!buildToolGradle) return;
