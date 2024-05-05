@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import CiCdGenerator from 'generator-jhipster/generators/base-application';
 import { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION } from 'generator-jhipster';
-import { GRAALVM_VERSION } from '../../lib/constants.js';
 
 const githubActions = {
   'actions/checkout': 'actions/checkout@v3',
@@ -47,9 +46,8 @@ export default class extends CiCdGenerator {
               ? {
                   RECOMMENDED_NODE_VERSION: 'RECOMMENDED_NODE_VERSION',
                   RECOMMENDED_JAVA_VERSION: 'RECOMMENDED_JAVA_VERSION',
-                  GRAALVM_VERSION: 'GRAALVM_VERSION',
                 }
-              : { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION, GRAALVM_VERSION }),
+              : { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION }),
             githubActions,
           },
         });

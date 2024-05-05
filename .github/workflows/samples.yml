@@ -65,15 +65,27 @@ jobs:
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ matrix.graalvm-version }}
           java-version: ${{ matrix.java-version }}
           distribution: 'graalvm-community'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
-      - name: 'SETUP: get date'
-        id: get-date
-        run: echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
+      #----------------------------------------------------------------------
+      # Install JHipster and generate project+entities
+      #----------------------------------------------------------------------
+      - name: 'PROJECT: generate'
+        run: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
+        env:
+          JHI_PROFILE: ${{ matrix.default-environment }}
+      - uses: jhipster/actions/compare-sample@v0
+        id: compare
+        if: >-
+          github.event.pull_request && !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')
+        with:
+          generator-path: generator-jhipster-native
+          cmd: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
+        env:
+          JHI_PROFILE: ${{ matrix.default-environment }}
 
       - name: 'SETUP Windows: force npm to use bash'
         if: runner.os == 'Windows'
@@ -83,37 +95,24 @@ jobs:
 
       - name: 'SETUP MacOS: load Homebrew cache'
         uses: actions/cache@v4
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
         with:
           path: |
             ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
           key: brew-actions-setup-docker-1.0.11
           restore-keys: brew-actions-setup-docker-
-      - name:
-          'SETUP MacOS: install docker'
-          # v1.0.11 (5d9a5f65f510c01ec5f0bd81d5c95768b1ec032a)
-        uses: docker-practice/actions-setup-docker@fd7ecdac7caf8e2c541a48c9bcc280aae59a8461
-        # alternative solution https://github.com/actions/runner/issues/1456
-        if: runner.os == 'macOS'
-        timeout-minutes: 30
-        with:
-          docker_buildx: false
+      - name: 'SETUP MacOS: install docker'
+        run: |
+          brew install docker colima docker-compose
+          colima start
+          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
+          mkdir -p ~/.docker/cli-plugins
+          ln -sfn $HOMEBREW_PREFIX/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+        timeout-minutes: 10
       - run: ls ~/Library/Caches/Homebrew/
-        if: runner.os == 'macOS'
-      #----------------------------------------------------------------------
-      # Install JHipster and generate project+entities
-      #----------------------------------------------------------------------
-      - name: 'PROJECT: generate'
-        run: 'cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
-        env:
-          JHI_PROFILE: ${{ matrix.default-environment }}
-      - uses: jhipster/actions/compare-sample@v0
-        id: compare
-        with:
-          generator-path: generator-jhipster-native
-          cmd: 'cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install ${{ matrix.jdl-extra-args }}'
-        env:
-          JHI_PROFILE: ${{ matrix.default-environment }}
+        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+
       - name: 'TESTS: backend tests'
         if: steps.compare.outputs.equals != 'true'
         run: npm run ci:backend:test
@@ -126,5 +125,5 @@ jobs:
         run: npm run native-e2e --if-present
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
       - name: Dump docker logs
-        if: always() && matrix.e2e != 'false'
+        if: always() && matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
         uses: jwalton/gh-docker-logs@v2

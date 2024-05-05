@@ -10,16 +10,10 @@ import { mavenDefinition } from './support/index.js';
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { ...features, sbsBlueprint: true });
-
-    if (this.options.help) return;
-
-    if (!this.jhipsterContext) {
-      throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
-    }
+    super(args, opts, { ...features, checkBlueprint: true, sbsBlueprint: true });
   }
 
-  async _postConstruct() {
+  async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
@@ -53,6 +47,8 @@ export default class extends ServerGenerator {
   get [ServerGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application }) {
+        this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+
         await this.writeFiles({
           sections: {
             common: [{ templates: ['README.md.jhi.native'] }],
@@ -60,6 +56,9 @@ export default class extends ServerGenerator {
               javaMainPackageTemplatesBlock({
                 condition: ctx => !ctx.reactive,
                 templates: ['config/JacksonNativeConfiguration.java'],
+              }),
+              javaMainPackageTemplatesBlock({
+                templates: ['config/NativeConfiguration.java'],
               }),
             ],
             gradle: [
@@ -84,6 +83,15 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
+      hints({ application: { mainClass, javaPackageSrcDir, packageName } }) {
+        this.editFile(`${javaPackageSrcDir}${mainClass}.java`, { assertModified: true }, contents =>
+          addJavaAnnotation(contents, { package: 'org.springframework.context.annotation', annotation: 'ImportRuntimeHints' }).replaceAll(
+            '@ImportRuntimeHints\n',
+            `@ImportRuntimeHints({ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class })\n`,
+          ),
+        );
+      },
+
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
         this.packageJson.merge({
           scripts: {
@@ -218,10 +226,19 @@ export default class extends ServerGenerator {
       keycloak({ application }) {
         if (!application.authenticationTypeOauth2) return;
 
-        // Increase wait for macos.
+        // Increase wait for macos. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
         this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content =>
-          content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 40'),
+          content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 60'),
         );
+
+        const awaitScript = this.packageJson.getPath('scripts.ci:server:await');
+        if (awaitScript) {
+          this.packageJson.merge({
+            scripts: {
+              'ci:server:await': awaitScript.replaceAll('180', '360'),
+            },
+          });
+        }
       },
     });
   }
