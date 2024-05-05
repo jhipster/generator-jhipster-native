@@ -241,16 +241,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         }
       },
 
-      cypress({ application: { srcTestJavascript, cypressTests } }) {
-        if (!cypressTests) return;
-        this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, { assertModified: true }, contents =>
-          contents
-            .replace("describe('/metrics'", "describe.skip('/metrics'")
-            .replace("describe('/logs'", "describe.skip('/logs'")
-            .replace("describe('/configuration'", "describe.skip('/configuration'"),
-        );
-      },
-
       restErrors({ application: { javaPackageSrcDir } }) {
         this.editFile(`${javaPackageSrcDir}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
           addJavaAnnotation(contents, {
