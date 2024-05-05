@@ -3,9 +3,8 @@ import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jh
 import { fromMatrix } from 'generator-jhipster/testing';
 
 const defaultMatrix = {
-  // macos-14 is m1 backed https://docs.github.com/pt/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
-  // actions-setup-docker currently does not support arm64 https://github.com/docker-practice/actions-setup-docker/issues/38
-  os: ['ubuntu-latest', 'macos-12', 'windows-latest'],
+  // macos-14 doesn't support docker https://docs.github.com/en/actions/using-github-hosted-runners/about-larger-runners/about-larger-runners#limitations-for-macos-larger-runners
+  os: ['ubuntu-latest', 'macos-13', 'windows-latest'],
   'build-tool': ['maven', 'gradle'],
   'node-version': [RECOMMENDED_NODE_VERSION],
   'java-version': [RECOMMENDED_JAVA_VERSION],

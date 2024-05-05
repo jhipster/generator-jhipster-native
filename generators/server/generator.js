@@ -13,7 +13,7 @@ export default class extends ServerGenerator {
     super(args, opts, { ...features, checkBlueprint: true, sbsBlueprint: true });
   }
 
-  async _postConstruct() {
+  async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
@@ -284,7 +284,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
       keycloak({ application }) {
         if (!application.authenticationTypeOauth2) return;
 
-        // Increase wait for macos.
+        // Increase wait for macos. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
         this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content =>
           content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 60'),
         );

@@ -79,7 +79,8 @@ jobs:
           JHI_PROFILE: ${{ matrix.default-environment }}
       - uses: jhipster/actions/compare-sample@v0
         id: compare
-        if: github.event.pull_request
+        if: >-
+          github.event.pull_request && !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')
         with:
           generator-path: generator-jhipster-native
           cmd: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
