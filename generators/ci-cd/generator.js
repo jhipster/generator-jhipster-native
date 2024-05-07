@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import CiCdGenerator from 'generator-jhipster/generators/base-application';
 import { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION } from 'generator-jhipster';
 
@@ -12,16 +11,10 @@ const githubActions = {
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { ...features, sbsBlueprint: true });
-
-    if (this.options.help) return;
-
-    if (!this.jhipsterContext) {
-      throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints native')}`);
-    }
+    super(args, opts, { ...features, sbsBlueprint: true, checkBlueprint: true });
   }
 
-  async _postConstruct() {
+  async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
