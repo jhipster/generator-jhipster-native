@@ -233,16 +233,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         }
       },
 
-      cypress({ application: { srcTestJavascript, cypressTests } }) {
-        if (!cypressTests) return;
-        this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, { assertModified: true }, contents =>
-          contents
-            .replace("describe('/metrics'", "describe.skip('/metrics'")
-            .replace("describe('/logs'", "describe.skip('/logs'")
-            .replace("describe('/configuration'", "describe.skip('/configuration'"),
-        );
-      },
-
       restErrors({ application: { javaPackageSrcDir } }) {
         this.editFile(`${javaPackageSrcDir}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
           addJavaAnnotation(contents, {
@@ -294,22 +284,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
 
   get [ServerGenerator.POST_WRITING_ENTITIES]() {
     return this.asPostWritingEntitiesTaskGroup({
-      async entities({ application: { srcMainJava, reactive, databaseTypeSql }, entities }) {
-        for (const entity of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
-          if (!entity) {
-            this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
-            continue;
-          }
-
-          if (reactive && databaseTypeSql) {
-            this.editFile(
-              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
-              { assertModified: true },
-              contents => addJavaAnnotation(contents, { package: 'org.springframework.stereotype', annotation: 'Component' }),
-            );
-          }
-        }
-      },
       async jsonFilter({ application, entities }) {
         if (application.reactive) return;
         for (const entity of entities.filter(({ builtIn, builtInUser, embedded }) => builtInUser || (!builtIn && !embedded))) {
