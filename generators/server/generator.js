@@ -89,13 +89,6 @@ export default class extends ServerGenerator {
                 ],
               },
             ],
-            h2: [
-              {
-                condition: ctx => ctx.devDatabaseTypeH2Any,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/h2/reflect-config.json'],
-              },
-            ],
             mysql: [
               {
                 condition: ctx => ctx.prodDatabaseTypeMysql,
