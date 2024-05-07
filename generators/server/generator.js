@@ -1,19 +1,34 @@
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
-import ServerGenerator from 'generator-jhipster/generators/server';
+import ServerGenerator from 'generator-jhipster/generators/base-application';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
+import { lt as semverLessThan } from 'semver';
 
 import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.js';
 import { mavenDefinition } from './support/index.js';
 
 export default class extends ServerGenerator {
+  blueprintVersion;
+
   constructor(args, opts, features) {
     super(args, opts, { ...features, checkBlueprint: true, sbsBlueprint: true });
   }
 
   async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
+  }
+
+  get [ServerGenerator.CONFIGURING]() {
+    return this.asConfiguringTaskGroup({
+      async setVersion() {
+        this.blueprintVersion = this.blueprintStorage.get('version');
+        const { version } = JSON.parse(await readFile(fileURLToPath(new URL('../../package.json', import.meta.url)), 'utf8'));
+        this.blueprintStorage.set('version', version);
+      },
+    });
   }
 
   get [ServerGenerator.DEFAULT]() {
@@ -45,8 +60,10 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.WRITING]() {
     return this.asWritingTaskGroup({
-      async writingTemplateTask({ application }) {
-        this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+      async writingTemplateTask({ application, control }) {
+        if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.0.1'))) {
+          this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+        }
 
         await this.writeFiles({
           sections: {
@@ -318,5 +335,9 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         );
       },
     };
+  }
+
+  isBlueprintVersionLessThan(version) {
+    return this.blueprintVersion ? semverLessThan(this.blueprintVersion, version) : false;
   }
 }
