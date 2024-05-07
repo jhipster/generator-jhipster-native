@@ -300,7 +300,15 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
   get [ServerGenerator.END]() {
     return {
       async checkCompatibility({
-        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngineAny },
+        application: {
+          reactive,
+          databaseTypeNo,
+          prodDatabaseTypePostgres,
+          cacheProviderNo,
+          enableHibernateCache,
+          websocket,
+          searchEngineAny,
+        },
       }) {
         if (!databaseTypeNo && !prodDatabaseTypePostgres) {
           this.log.warn('JHipster Native is only tested with PostgreSQL database');
