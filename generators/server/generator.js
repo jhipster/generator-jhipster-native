@@ -300,12 +300,12 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
   get [ServerGenerator.END]() {
     return {
       async checkCompatibility({
-        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngine },
+        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngineAny },
       }) {
         if (!databaseTypeNo && !prodDatabaseTypePostgres) {
           this.log.warn('JHipster Native is only tested with PostgreSQL database');
         }
-        if (searchEngine) {
+        if (searchEngineAny) {
           this.log.warn('JHipster Native is only tested without a search engine');
         }
         if (!reactive) {
@@ -315,7 +315,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
           if (enableHibernateCache) {
             this.log.warn('JHipster Native is only tested without Hibernate second level cache');
           }
-          if (websocket) {
+          if (websocket && websocket !== 'no') {
             this.log.warn('JHipster Native is only tested without WebSocket support');
           }
         }
