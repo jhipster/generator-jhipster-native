@@ -63,6 +63,7 @@ export default class extends ServerGenerator {
       async writingTemplateTask({ application, control }) {
         if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.0.1'))) {
           this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+          this.removeFile('src/main/resources/META-INF/native-image/caffeine/reflect-config.json');
         }
 
         await this.writeFiles({
@@ -118,13 +119,6 @@ export default class extends ServerGenerator {
                 condition: ctx => ctx.prodDatabaseTypeMysql,
                 transform: false,
                 templates: ['src/main/resources/META-INF/native-image/mysql/reflect-config.json'],
-              },
-            ],
-            caffeine: [
-              {
-                condition: ctx => ctx.authenticationTypeOauth2 || ctx.cacheProviderCaffeine,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/caffeine/reflect-config.json'],
               },
             ],
           },
