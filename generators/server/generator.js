@@ -62,8 +62,16 @@ export default class extends ServerGenerator {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application, control }) {
         if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.0.1'))) {
-          this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
-          this.removeFile('src/main/resources/META-INF/native-image/caffeine/reflect-config.json');
+          if (application.databaseMigrationLiquibase) {
+            this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+          }
+          if (application.authenticationTypeOauth2 || application.cacheProviderCaffeine) {
+            this.removeFile('src/main/resources/META-INF/native-image/caffeine/reflect-config.json');
+          }
+          if (application.databaseTypeSql && !application.reactive) {
+            this.removeFile('src/main/resources/META-INF/native-image/hibernate/proxy-config.json');
+            this.removeFile('src/main/resources/META-INF/native-image/hibernate/reflect-config.json');
+          }
         }
 
         await this.writeFiles({
@@ -95,16 +103,6 @@ export default class extends ServerGenerator {
                 condition: ctx => ctx.databaseTypeSql,
                 transform: false,
                 templates: ['src/main/resources/META-INF/native-image/liquibase/reflect-config.json'],
-              },
-            ],
-            hibernate: [
-              {
-                condition: ctx => ctx.databaseTypeSql && !ctx.reactive,
-                transform: false,
-                templates: [
-                  'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
-                  'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
-                ],
               },
             ],
             h2: [
