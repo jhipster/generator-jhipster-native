@@ -75,6 +75,13 @@ If you've enabled e2e testing with Cypress, you can verify its operation using t
 npm run native-e2e
 ```
 
+## Build errors
+
+GraalVM uses metadata to generate AOT compilation.
+A metadata is designed to support an specific version. Missing library range will be added as best bet and will fall back to latest version.
+
+Refer to [GraalVM Reachability Metadata Repository](https://github.com/oracle/graalvm-reachability-metadata/)
+
 # Pre-release
 
 To use an unreleased version, install it using npm + git repository.

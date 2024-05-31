@@ -4,11 +4,12 @@ import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
 import ServerGenerator from 'generator-jhipster/generators/base-application';
-import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
+import { javaMainPackageTemplatesBlock, addJavaAnnotation, addJavaImport } from 'generator-jhipster/generators/java/support';
 import { lt as semverLessThan } from 'semver';
 
 import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.js';
 import { mavenDefinition } from './support/index.js';
+import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 
 export default class extends ServerGenerator {
   blueprintVersion;
@@ -27,6 +28,33 @@ export default class extends ServerGenerator {
         this.blueprintVersion = this.blueprintStorage.get('version');
         const { version } = JSON.parse(await readFile(fileURLToPath(new URL('../../package.json', import.meta.url)), 'utf8'));
         this.blueprintStorage.set('version', version);
+      },
+    });
+  }
+
+  get [ServerGenerator.PREPARING]() {
+    return this.asPreparingTaskGroup({
+      addNativeHint({ source, application }) {
+        source.addNativeHint = ({ publicConstructors = [], declaredConstructors = [] }) => {
+          this.editFile(
+            `${application.javaPackageSrcDir}config/NativeConfiguration.java`,
+            addJavaImport('org.springframework.aot.hint.MemberCategory'),
+            createNeedleCallback({
+              contentToAdd: [
+                ...publicConstructors.map(
+                  classPath =>
+                    `hints.reflection().registerType(${classPath}, (hint) -> hint.withMembers(MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS));`,
+                ),
+                ...declaredConstructors.map(
+                  classPath =>
+                    `hints.reflection().registerType(${classPath}, (hint) -> hint.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));`,
+                ),
+              ],
+              needle: 'add-native-hints',
+              ignoreWhitespaces: true,
+            }),
+          );
+        };
       },
     });
   }
@@ -128,13 +156,37 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
-      hints({ application: { mainClass, javaPackageSrcDir, packageName } }) {
+      hints({ application, source }) {
+        const { mainClass, javaPackageSrcDir, packageName } = application;
+
         this.editFile(`${javaPackageSrcDir}${mainClass}.java`, { assertModified: true }, contents =>
           addJavaAnnotation(contents, { package: 'org.springframework.context.annotation', annotation: 'ImportRuntimeHints' }).replaceAll(
             '@ImportRuntimeHints\n',
             `@ImportRuntimeHints({ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class })\n`,
           ),
         );
+
+        if (application.databaseMigrationLiquibase) {
+          // Latest liquibase version supported by Reachability Repository is 4.23.0
+          // Hints may be dropped if newer version is supported
+          // https://github.com/oracle/graalvm-reachability-metadata/blob/master/metadata/org.liquibase/liquibase-core/index.json
+          source.addNativeHint({
+            publicConstructors: ['liquibase.ui.LoggerUIService.class'],
+            declaredConstructors: [
+              'liquibase.database.LiquibaseTableNamesFactory.class',
+              'liquibase.report.ShowSummaryGeneratorFactory.class',
+            ],
+          });
+        }
+
+        if (application.databaseTypeSql && !application.reactive) {
+          // Latest hibernate-core version supported by Reachability Repository is 6.5.0.Final
+          // Hints may be dropped if newer version is supported
+          // https://github.com/oracle/graalvm-reachability-metadata/blob/master/metadata/org.hibernate.orm/hibernate-core/index.json
+          source.addNativeHint({
+            publicConstructors: ['org.hibernate.binder.internal.BatchSizeBinder.class'],
+          });
+        }
       },
 
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
@@ -243,16 +295,14 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
       // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
       technicalStructureTest({ application: { buildToolGradle, javaPackageTestDir } }) {
         if (!buildToolGradle) return;
-        this.editFile(`${javaPackageTestDir}/TechnicalStructureTest.java`, { assertModified: true }, contents =>
-          contents.includes('__BeanFactoryRegistrations')
-            ? contents
-            : contents
-                .replace(
-                  'import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;',
-                  `import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;
-                  import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameEndingWith;`,
-                )
-                .replace(
+        this.editFile(
+          `${javaPackageTestDir}/TechnicalStructureTest.java`,
+          { assertModified: true },
+          addJavaImport('com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameEndingWith', { staticImport: true }),
+          contents =>
+            contents.includes('__BeanFactoryRegistrations')
+              ? contents
+              : contents.replace(
                   '.ignoreDependency(belongToAnyOf',
                   `.ignoreDependency(simpleNameEndingWith("_BeanFactoryRegistrations"), alwaysTrue())
         .ignoreDependency(belongToAnyOf`,
