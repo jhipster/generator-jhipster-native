@@ -1,5 +1,6 @@
 package <%=packageName%>.config;
 
+import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
@@ -10,6 +11,11 @@ public class NativeConfiguration {
         public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 <%_ if (databaseMigrationLiquibase) { _%>
             hints.resources().registerPattern("config/liquibase/*");
+            hints.reflection().registerTypeIfPresent(
+                classLoader, 
+                "liquibase.ui.LoggerUIService",
+                (hint) -> hint.withMembers(MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS)
+            );
 <%_ } _%>
         }
     }
