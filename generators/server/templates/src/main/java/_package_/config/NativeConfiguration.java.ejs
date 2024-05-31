@@ -11,10 +11,25 @@ public class NativeConfiguration {
         public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 <%_ if (databaseMigrationLiquibase) { _%>
             hints.resources().registerPattern("config/liquibase/*");
-            hints.reflection().registerTypeIfPresent(
-                classLoader, 
-                "liquibase.ui.LoggerUIService",
+
+            // https://github.com/oracle/graalvm-reachability-metadata/blob/master/metadata/org.liquibase/liquibase-core/index.json
+            hints.reflection().registerType(
+                liquibase.ui.LoggerUIService.class,
                 (hint) -> hint.withMembers(MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS)
+            );
+            hints.reflection().registerType(
+                liquibase.database.LiquibaseTableNamesFactory.class,
+                (hint) -> hint.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
+            );
+            hints.reflection().registerType(
+                liquibase.report.ShowSummaryGeneratorFactory.class,
+                (hint) -> hint.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
+            );
+<%_ } _%>
+<%_ if (databaseTypeSql && !reactive) { _%>
+            hints.reflection().registerType(
+                org.hibernate.binder.internal.BatchSizeBinder.class,
+                (hint) -> hint.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
             );
 <%_ } _%>
         }
