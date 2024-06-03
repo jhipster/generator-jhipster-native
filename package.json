@@ -43,7 +43,7 @@
     "vitest": "vitest"
   },
   "dependencies": {
-    "generator-jhipster": "8.4.0",
+    "generator-jhipster": "8.5.0",
     "semver": "^7.6.0"
   },
   "devDependencies": {
