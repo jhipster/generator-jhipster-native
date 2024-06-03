@@ -121,6 +121,8 @@ jobs:
         if: steps.compare.outputs.equals != 'true'
         timeout-minutes: 60
         run: npm run native-package -- ${{ matrix.native-package-extra-args }}
+      - run: npm run services:up
+        if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
       - name: 'TESTS: run e2e'
         run: npm run native-e2e --if-present
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
