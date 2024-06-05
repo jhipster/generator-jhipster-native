@@ -313,7 +313,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
       keycloak({ application }) {
         if (!application.authenticationTypeOauth2) return;
 
-        // Increase wait for macos. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
+        // Increase wait for macOS. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
         this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content => content.replace('retries: 20', 'retries: 100'));
 
         const awaitScript = this.packageJson.getPath('scripts.ci:server:await');
