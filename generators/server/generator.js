@@ -102,15 +102,13 @@ export default class extends ServerGenerator {
           }
         }
 
+        if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.1.1'))) {
+          this.removeFile('src/main/resources/META-INF/native-image/common/reflect-config.json');
+        }
+
         await this.writeFiles({
           sections: {
-            common: [
-              { templates: ['README.md.jhi.native'] },
-              {
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/common/reflect-config.json'],
-              },
-            ],
+            common: [{ templates: ['README.md.jhi.native'] }],
             config: [
               javaMainPackageTemplatesBlock({
                 condition: ctx => !ctx.reactive,

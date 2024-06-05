@@ -365,9 +365,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -974,9 +971,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -1596,9 +1590,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -2216,9 +2207,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -2756,9 +2744,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -3328,9 +3313,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -3911,9 +3893,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -4492,9 +4471,6 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -4968,9 +4944,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -5420,9 +5393,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -5846,9 +5816,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -6282,9 +6249,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -6657,9 +6621,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -7072,9 +7033,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -7462,9 +7420,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -7860,9 +7815,6 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/errors/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -8372,9 +8324,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -8925,9 +8874,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -9473,9 +9419,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -10003,9 +9946,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -10486,9 +10426,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -10997,9 +10934,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -11506,9 +11440,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
-    "stateCleared": "modified",
-  },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
     "stateCleared": "modified",
   },
@@ -11995,9 +11926,6 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/resources/META-INF/native-image/common/reflect-config.json": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
