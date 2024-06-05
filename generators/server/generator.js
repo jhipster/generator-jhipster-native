@@ -1,19 +1,62 @@
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
-import ServerGenerator from 'generator-jhipster/generators/server';
-import { javaMainPackageTemplatesBlock, addJavaAnnotation } from 'generator-jhipster/generators/java/support';
+import ServerGenerator from 'generator-jhipster/generators/base-application';
+import { javaMainPackageTemplatesBlock, addJavaAnnotation, addJavaImport } from 'generator-jhipster/generators/java/support';
+import { lt as semverLessThan } from 'semver';
 
 import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.js';
 import { mavenDefinition } from './support/index.js';
+import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 
 export default class extends ServerGenerator {
+  blueprintVersion;
+
   constructor(args, opts, features) {
     super(args, opts, { ...features, checkBlueprint: true, sbsBlueprint: true });
   }
 
   async beforeQueue() {
     await this.dependsOnJHipster('bootstrap-application');
+  }
+
+  get [ServerGenerator.CONFIGURING]() {
+    return this.asConfiguringTaskGroup({
+      async setVersion() {
+        this.blueprintVersion = this.blueprintStorage.get('version');
+        const { version } = JSON.parse(await readFile(fileURLToPath(new URL('../../package.json', import.meta.url)), 'utf8'));
+        this.blueprintStorage.set('version', version);
+      },
+    });
+  }
+
+  get [ServerGenerator.PREPARING]() {
+    return this.asPreparingTaskGroup({
+      addNativeHint({ source, application }) {
+        source.addNativeHint = ({ publicConstructors = [], declaredConstructors = [] }) => {
+          this.editFile(
+            `${application.javaPackageSrcDir}config/NativeConfiguration.java`,
+            addJavaImport('org.springframework.aot.hint.MemberCategory'),
+            createNeedleCallback({
+              contentToAdd: [
+                ...publicConstructors.map(
+                  classPath =>
+                    `hints.reflection().registerType(${classPath}, (hint) -> hint.withMembers(MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS));`,
+                ),
+                ...declaredConstructors.map(
+                  classPath =>
+                    `hints.reflection().registerType(${classPath}, (hint) -> hint.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));`,
+                ),
+              ],
+              needle: 'add-native-hints',
+              ignoreWhitespaces: true,
+            }),
+          );
+        };
+      },
+    });
   }
 
   get [ServerGenerator.DEFAULT]() {
@@ -45,8 +88,19 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.WRITING]() {
     return this.asWritingTaskGroup({
-      async writingTemplateTask({ application }) {
-        this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+      async writingTemplateTask({ application, control }) {
+        if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.0.1'))) {
+          if (application.databaseMigrationLiquibase) {
+            this.removeFile('src/main/resources/META-INF/native-image/liquibase/resource-config.json');
+          }
+          if (application.authenticationTypeOauth2 || application.cacheProviderCaffeine) {
+            this.removeFile('src/main/resources/META-INF/native-image/caffeine/reflect-config.json');
+          }
+          if (application.databaseTypeSql && !application.reactive) {
+            this.removeFile('src/main/resources/META-INF/native-image/hibernate/proxy-config.json');
+            this.removeFile('src/main/resources/META-INF/native-image/hibernate/reflect-config.json');
+          }
+        }
 
         await this.writeFiles({
           sections: {
@@ -79,16 +133,6 @@ export default class extends ServerGenerator {
                 templates: ['src/main/resources/META-INF/native-image/liquibase/reflect-config.json'],
               },
             ],
-            hibernate: [
-              {
-                condition: ctx => ctx.databaseTypeSql && !ctx.reactive,
-                transform: false,
-                templates: [
-                  'src/main/resources/META-INF/native-image/hibernate/proxy-config.json',
-                  'src/main/resources/META-INF/native-image/hibernate/reflect-config.json',
-                ],
-              },
-            ],
             h2: [
               {
                 condition: ctx => ctx.devDatabaseTypeH2Any,
@@ -103,13 +147,6 @@ export default class extends ServerGenerator {
                 templates: ['src/main/resources/META-INF/native-image/mysql/reflect-config.json'],
               },
             ],
-            caffeine: [
-              {
-                condition: ctx => ctx.authenticationTypeOauth2 || ctx.cacheProviderCaffeine,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/caffeine/reflect-config.json'],
-              },
-            ],
           },
           context: application,
         });
@@ -119,13 +156,37 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
-      hints({ application: { mainClass, javaPackageSrcDir, packageName } }) {
+      hints({ application, source }) {
+        const { mainClass, javaPackageSrcDir, packageName } = application;
+
         this.editFile(`${javaPackageSrcDir}${mainClass}.java`, { assertModified: true }, contents =>
           addJavaAnnotation(contents, { package: 'org.springframework.context.annotation', annotation: 'ImportRuntimeHints' }).replaceAll(
             '@ImportRuntimeHints\n',
             `@ImportRuntimeHints({ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class })\n`,
           ),
         );
+
+        if (application.databaseMigrationLiquibase) {
+          // Latest liquibase version supported by Reachability Repository is 4.23.0
+          // Hints may be dropped if newer version is supported
+          // https://github.com/oracle/graalvm-reachability-metadata/blob/master/metadata/org.liquibase/liquibase-core/index.json
+          source.addNativeHint({
+            publicConstructors: ['liquibase.ui.LoggerUIService.class'],
+            declaredConstructors: [
+              'liquibase.database.LiquibaseTableNamesFactory.class',
+              'liquibase.report.ShowSummaryGeneratorFactory.class',
+            ],
+          });
+        }
+
+        if (application.databaseTypeSql && !application.reactive) {
+          // Latest hibernate-core version supported by Reachability Repository is 6.5.0.Final
+          // Hints may be dropped if newer version is supported
+          // https://github.com/oracle/graalvm-reachability-metadata/blob/master/metadata/org.hibernate.orm/hibernate-core/index.json
+          source.addNativeHint({
+            publicConstructors: ['org.hibernate.binder.internal.BatchSizeBinder.class'],
+          });
+        }
       },
 
       async packageJson({ application: { buildToolMaven, buildToolGradle } }) {
@@ -201,35 +262,6 @@ export default class extends ServerGenerator {
         }
       },
 
-      async asyncConfiguration({ application: { authenticationTypeOauth2, srcMainJava, packageFolder } }) {
-        if (authenticationTypeOauth2) return;
-        const asyncConfigurationPath = `${srcMainJava}${packageFolder}/config/AsyncConfiguration.java`;
-        this.editFile(asyncConfigurationPath, { assertModified: true }, content =>
-          content.replace(
-            'return new ExceptionHandlingAsyncTaskExecutor(executor);',
-            'executor.initialize();\nreturn new ExceptionHandlingAsyncTaskExecutor(executor);',
-          ),
-        );
-      },
-
-      userRepository({ application: { srcMainJava, packageFolder, reactive, databaseTypeSql, generateBuiltInUserEntity } }) {
-        if (reactive && databaseTypeSql && generateBuiltInUserEntity) {
-          this.editFile(`${srcMainJava}${packageFolder}/repository/UserRepository.java`, { assertModified: true }, contents =>
-            addJavaAnnotation(contents, { package: 'org.springframework.stereotype', annotation: 'Component' }),
-          );
-        }
-      },
-
-      cypress({ application: { srcTestJavascript, cypressTests } }) {
-        if (!cypressTests) return;
-        this.editFile(`${srcTestJavascript}/cypress/e2e/administration/administration.cy.ts`, { assertModified: true }, contents =>
-          contents
-            .replace("describe('/metrics'", "describe.skip('/metrics'")
-            .replace("describe('/logs'", "describe.skip('/logs'")
-            .replace("describe('/configuration'", "describe.skip('/configuration'"),
-        );
-      },
-
       restErrors({ application: { javaPackageSrcDir } }) {
         this.editFile(`${javaPackageSrcDir}/web/rest/errors/FieldErrorVM.java`, { assertModified: true }, contents =>
           addJavaAnnotation(contents, {
@@ -242,16 +274,14 @@ export default class extends ServerGenerator {
       // workaround for arch error in backend:unit:test caused by gradle's org.graalvm.buildtools.native plugin
       technicalStructureTest({ application: { buildToolGradle, javaPackageTestDir } }) {
         if (!buildToolGradle) return;
-        this.editFile(`${javaPackageTestDir}/TechnicalStructureTest.java`, { assertModified: true }, contents =>
-          contents.includes('__BeanFactoryRegistrations')
-            ? contents
-            : contents
-                .replace(
-                  'import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;',
-                  `import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;
-                  import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameEndingWith;`,
-                )
-                .replace(
+        this.editFile(
+          `${javaPackageTestDir}/TechnicalStructureTest.java`,
+          { assertModified: true },
+          addJavaImport('com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameEndingWith', { staticImport: true }),
+          contents =>
+            contents.includes('__BeanFactoryRegistrations')
+              ? contents
+              : contents.replace(
                   '.ignoreDependency(belongToAnyOf',
                   `.ignoreDependency(simpleNameEndingWith("_BeanFactoryRegistrations"), alwaysTrue())
         .ignoreDependency(belongToAnyOf`,
@@ -262,10 +292,8 @@ export default class extends ServerGenerator {
       keycloak({ application }) {
         if (!application.authenticationTypeOauth2) return;
 
-        // Increase wait for macos. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
-        this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content =>
-          content.replace('start_period: 10s', 'start_period: 30s').replace('retries: 20', 'retries: 60'),
-        );
+        // Increase wait for macOS. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
+        this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content => content.replace('retries: 20', 'retries: 100'));
 
         const awaitScript = this.packageJson.getPath('scripts.ci:server:await');
         if (awaitScript) {
@@ -281,22 +309,6 @@ export default class extends ServerGenerator {
 
   get [ServerGenerator.POST_WRITING_ENTITIES]() {
     return this.asPostWritingEntitiesTaskGroup({
-      async entities({ application: { srcMainJava, reactive, databaseTypeSql }, entities }) {
-        for (const entity of entities.filter(({ builtIn, embedded }) => !builtIn && !embedded)) {
-          if (!entity) {
-            this.log.warn(`Skipping entity generation, use '--with-entities' flag`);
-            continue;
-          }
-
-          if (reactive && databaseTypeSql) {
-            this.editFile(
-              `${srcMainJava}${entity.entityAbsoluteFolder}/repository/${entity.entityClass}RepositoryInternalImpl.java`,
-              { assertModified: true },
-              contents => addJavaAnnotation(contents, { package: 'org.springframework.stereotype', annotation: 'Component' }),
-            );
-          }
-        }
-      },
       async jsonFilter({ application, entities }) {
         if (application.reactive) return;
         for (const entity of entities.filter(({ builtIn, builtInUser, embedded }) => builtInUser || (!builtIn && !embedded))) {
@@ -315,12 +327,20 @@ export default class extends ServerGenerator {
   get [ServerGenerator.END]() {
     return {
       async checkCompatibility({
-        application: { reactive, databaseTypeNo, prodDatabaseTypePostgres, cacheProviderNo, enableHibernateCache, websocket, searchEngine },
+        application: {
+          reactive,
+          databaseTypeNo,
+          prodDatabaseTypePostgres,
+          cacheProviderNo,
+          enableHibernateCache,
+          websocket,
+          searchEngineAny,
+        },
       }) {
         if (!databaseTypeNo && !prodDatabaseTypePostgres) {
           this.log.warn('JHipster Native is only tested with PostgreSQL database');
         }
-        if (searchEngine) {
+        if (searchEngineAny) {
           this.log.warn('JHipster Native is only tested without a search engine');
         }
         if (!reactive) {
@@ -330,7 +350,7 @@ export default class extends ServerGenerator {
           if (enableHibernateCache) {
             this.log.warn('JHipster Native is only tested without Hibernate second level cache');
           }
-          if (websocket) {
+          if (websocket && websocket !== 'no') {
             this.log.warn('JHipster Native is only tested without WebSocket support');
           }
         }
@@ -342,5 +362,9 @@ export default class extends ServerGenerator {
         );
       },
     };
+  }
+
+  isBlueprintVersionLessThan(version) {
+    return this.blueprintVersion ? semverLessThan(this.blueprintVersion, version) : false;
   }
 }
