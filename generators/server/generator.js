@@ -160,10 +160,11 @@ export default class extends ServerGenerator {
         const { mainClass, javaPackageSrcDir, packageName } = application;
 
         this.editFile(`${javaPackageSrcDir}${mainClass}.java`, { assertModified: true }, contents =>
-          addJavaAnnotation(contents, { package: 'org.springframework.context.annotation', annotation: 'ImportRuntimeHints' }).replaceAll(
-            '@ImportRuntimeHints\n',
-            `@ImportRuntimeHints({ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class })\n`,
-          ),
+          addJavaAnnotation(contents, {
+            package: 'org.springframework.context.annotation',
+            annotation: 'ImportRuntimeHints',
+            parameters: `{ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class }`,
+          }),
         );
 
         if (application.databaseMigrationLiquibase) {
@@ -288,7 +289,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
           addJavaAnnotation(contents, {
             package: 'org.springframework.aot.hint.annotation',
             annotation: 'RegisterReflectionForBinding',
-          }).replace('@RegisterReflectionForBinding\n', '@RegisterReflectionForBinding({ FieldErrorVM.class })\n'),
+            parameters: '{ FieldErrorVM.class }',
+          }),
         );
       },
 
@@ -335,10 +337,11 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
         for (const entity of entities.filter(({ builtIn, builtInUser, embedded }) => builtInUser || (!builtIn && !embedded))) {
           const entityClassFilePath = `${application.srcMainJava}/${entity.entityAbsoluteFolder}/domain/${entity.entityClass}.java`;
           this.editFile(entityClassFilePath, { assertModified: true }, content =>
-            addJavaAnnotation(content, { package: 'com.fasterxml.jackson.annotation', annotation: 'JsonFilter' }).replace(
-              '@JsonFilter\n',
-              '@JsonFilter("lazyPropertyFilter")\n',
-            ),
+            addJavaAnnotation(content, {
+              package: 'com.fasterxml.jackson.annotation',
+              annotation: 'JsonFilter',
+              parameters: '"lazyPropertyFilter"',
+            }),
           );
         }
       },
