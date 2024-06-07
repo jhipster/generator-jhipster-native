@@ -4,7 +4,7 @@
 
 [![NPM version][npm-image]][npm-url]
 [![Generator][github-generator-image]][github-generator-url]
-[![Integration Test][github-integration-image]][github-integration-url]
+[![Integration Test][github-samples-image]][github-samples-url]
 
 # Introduction
 
@@ -104,5 +104,5 @@ jhipster --blueprints native
 [npm-url]: https://npmjs.org/package/generator-jhipster-native
 [github-generator-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/generator.yml/badge.svg
 [github-generator-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/generator.yml
-[github-integration-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/jdl.yml/badge.svg
-[github-integration-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/jdl.yml
+[github-samples-image]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/samples.yml/badge.svg
+[github-samples-url]: https://github.com/jhipster/generator-jhipster-native/actions/workflows/samples.yml
