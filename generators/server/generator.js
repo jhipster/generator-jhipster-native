@@ -163,7 +163,7 @@ export default class extends ServerGenerator {
           addJavaAnnotation(contents, {
             package: 'org.springframework.context.annotation',
             annotation: 'ImportRuntimeHints',
-            parameters: `{ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class }`,
+            parameters: () => `{ ${packageName}.config.NativeConfiguration.JHipsterNativeRuntimeHints.class }`,
           }),
         );
 
@@ -289,7 +289,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
           addJavaAnnotation(contents, {
             package: 'org.springframework.aot.hint.annotation',
             annotation: 'RegisterReflectionForBinding',
-            parameters: '{ FieldErrorVM.class }',
+            parameters: () => '{ FieldErrorVM.class }',
           }),
         );
       },
@@ -340,7 +340,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
             addJavaAnnotation(content, {
               package: 'com.fasterxml.jackson.annotation',
               annotation: 'JsonFilter',
-              parameters: '"lazyPropertyFilter"',
+              parameters: () => '"lazyPropertyFilter"',
             }),
           );
         }
