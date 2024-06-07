@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
-import ServerGenerator from 'generator-jhipster/generators/base-application';
+import BaseGenerator from 'generator-jhipster/generators/base-application';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation, addJavaImport } from 'generator-jhipster/generators/java/support';
 import { lt as semverLessThan } from 'semver';
 
@@ -11,7 +11,7 @@ import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.js';
 import { mavenDefinition } from './support/index.js';
 import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 
-export default class extends ServerGenerator {
+export default class extends BaseGenerator {
   blueprintVersion;
 
   constructor(args, opts, features) {
@@ -22,7 +22,7 @@ export default class extends ServerGenerator {
     await this.dependsOnJHipster('bootstrap-application');
   }
 
-  get [ServerGenerator.CONFIGURING]() {
+  get [BaseGenerator.CONFIGURING]() {
     return this.asConfiguringTaskGroup({
       async setVersion() {
         this.blueprintVersion = this.blueprintStorage.get('version');
@@ -32,7 +32,7 @@ export default class extends ServerGenerator {
     });
   }
 
-  get [ServerGenerator.PREPARING]() {
+  get [BaseGenerator.PREPARING]() {
     return this.asPreparingTaskGroup({
       addNativeHint({ source, application }) {
         source.addNativeHint = ({ publicConstructors = [], declaredConstructors = [] }) => {
@@ -59,7 +59,7 @@ export default class extends ServerGenerator {
     });
   }
 
-  get [ServerGenerator.DEFAULT]() {
+  get [BaseGenerator.DEFAULT]() {
     return this.asDefaultTaskGroup({
       // workaround for https://github.com/spring-projects/spring-boot/issues/32195
       async disabledInAotModeAnnotation({ application }) {
@@ -86,7 +86,7 @@ export default class extends ServerGenerator {
     });
   }
 
-  get [ServerGenerator.WRITING]() {
+  get [BaseGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application, control }) {
         if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.0.1'))) {
@@ -152,7 +152,7 @@ export default class extends ServerGenerator {
     });
   }
 
-  get [ServerGenerator.POST_WRITING]() {
+  get [BaseGenerator.POST_WRITING]() {
     return this.asPostWritingTaskGroup({
       hints({ application, source }) {
         const { mainClass, javaPackageSrcDir, packageName } = application;
@@ -328,7 +328,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
     });
   }
 
-  get [ServerGenerator.POST_WRITING_ENTITIES]() {
+  get [BaseGenerator.POST_WRITING_ENTITIES]() {
     return this.asPostWritingEntitiesTaskGroup({
       async jsonFilter({ application, entities }) {
         if (application.reactive) return;
@@ -346,7 +346,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
     });
   }
 
-  get [ServerGenerator.END]() {
+  get [BaseGenerator.END]() {
     return {
       async checkCompatibility({
         application: {
