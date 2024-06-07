@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-reactive(false)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-reactive(false)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -635,7 +635,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-reactive(false)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-reactive(false)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -1201,7 +1201,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-reactive(true)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-reactive(true)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -1848,7 +1848,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-reactive(true)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-reactive(true)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -2420,7 +2420,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-gradle-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reactive(false)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-reactive(false)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -3016,7 +3016,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reactive(false)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-reactive(false)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -3543,7 +3543,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reactive(true)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-reactive(true)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -4151,7 +4151,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reactive(true)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-reactive(true)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -4684,7 +4684,7 @@ exports[`SubGenerator server of native JHipster blueprint > gateway-maven-reacti
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-reactive(false)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gradle-reactive(false)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -5124,7 +5124,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-reactive(false)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gradle-reactive(false)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -5561,7 +5561,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-reactive(true)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gradle-reactive(true)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -5983,7 +5983,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-reactive(true)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gradle-reactive(true)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -6402,7 +6402,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-gradle-
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-maven-reactive(false)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-maven-reactive(false)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -6803,7 +6803,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-maven-reactive(false)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-maven-reactive(false)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -7201,7 +7201,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-maven-reactive(true)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-maven-reactive(true)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -7587,7 +7587,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > microservice-maven-reactive(true)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-maven-reactive(true)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -7970,7 +7970,7 @@ exports[`SubGenerator server of native JHipster blueprint > microservice-maven-r
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reactive(false)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle-reactive(false)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -8584,7 +8584,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reactive(false)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle-reactive(false)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -9060,7 +9060,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reactive(true)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle-reactive(true)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -9662,7 +9662,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reactive(true)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle-reactive(true)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -10114,7 +10114,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-gradle-reac
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-maven-reactive(false)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-reactive(false)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -10686,7 +10686,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-maven-reactive(false)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-reactive(false)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -11120,7 +11120,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-maven-reactive(true)-jwt > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-reactive(true)-jwt > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
@@ -11683,7 +11683,7 @@ exports[`SubGenerator server of native JHipster blueprint > monolith-maven-react
 }
 `;
 
-exports[`SubGenerator server of native JHipster blueprint > monolith-maven-reactive(true)-oauth2 > should succeed 1`] = `
+exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-reactive(true)-oauth2 > should succeed 1`] = `
 {
   ".devcontainer/Dockerfile": {
     "stateCleared": "modified",
