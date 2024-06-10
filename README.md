@@ -81,7 +81,7 @@ GraalVM uses metadata to generate AOT compilation.
 
 A metadata is designed to support an specific version. Missing library range will be added as best bet and will fall back to latest version.
 
-Metadata errors are only catch in runtime. It’s recommended to have cypress e2e tests enabled.
+Metadata errors are only caught at runtime. It’s recommended to have Cypress e2e tests enabled to help identify issues during continuous integration.
 
 Refer to [GraalVM Reachability Metadata Repository](https://github.com/oracle/graalvm-reachability-metadata/)
 
