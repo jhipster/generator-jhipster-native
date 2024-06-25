@@ -1,4 +1,4 @@
-import { NATIVE_BUILDTOOLS_VERSION } from '../../../lib/constants.js';
+import { NATIVE_BUILDTOOLS_VERSION } from '../../constants.js';
 
 export const mavenDefinition = ({ reactive }) => ({
   properties: [
