@@ -22,6 +22,8 @@ export const buildMatrix = ({ samples, samplesFolder }) => {
       ...(value.os.startsWith('windows-')
         ? { 'default-environment': 'dev', e2e: 'false' }
         : { 'default-environment': 'prod', e2e: 'true' }),
+      'job-name': sample['sample-name'],
+      'extra-args': `--samples-folder ${samplesFolder}`,
     })),
   };
 };
