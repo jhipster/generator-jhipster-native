@@ -17,9 +17,9 @@ export const buildMatrix = ({ samples, samplesFolder }) => {
         ...defaultMatrix,
         'sample-name': samples.filter(sample => !sample.includes('disabled')),
       }),
-    ).map(value => ({
-      ...value,
-      ...(value.os.startsWith('windows-')
+    ).map(sample => ({
+      ...sample,
+      ...(sample.os.startsWith('windows-')
         ? { 'default-environment': 'dev', e2e: 'false' }
         : { 'default-environment': 'prod', e2e: 'true' }),
       'job-name': sample['sample-name'],
