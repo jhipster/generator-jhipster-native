@@ -7,9 +7,9 @@ import BaseGenerator from 'generator-jhipster/generators/base-application';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation, addJavaImport } from 'generator-jhipster/generators/java/support';
 import { lt as semverLessThan } from 'semver';
 
+import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 import { NATIVE_BUILDTOOLS_VERSION } from '../constants.js';
 import { mavenDefinition } from './support/index.js';
-import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
 
 export default class extends BaseGenerator {
   blueprintVersion;

@@ -1,4 +1,3 @@
-import { readdir } from 'fs/promises';
 import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jhipster';
 import { fromMatrix } from 'generator-jhipster/testing';
 
