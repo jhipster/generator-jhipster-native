@@ -11,8 +11,7 @@ const defaultMatrix = {
   'default-environment': ['prod'],
 };
 
-export const buildMatrix = async samplesFolder => {
-  const samples = await readdir(samplesFolder);
+export const buildMatrix = ({ samples, samplesFolder }) => {
   return {
     include: Object.values(
       fromMatrix({
