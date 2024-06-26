@@ -7,9 +7,9 @@ import BaseGenerator from 'generator-jhipster/generators/base-application';
 import { javaMainPackageTemplatesBlock, addJavaAnnotation, addJavaImport } from 'generator-jhipster/generators/java/support';
 import { lt as semverLessThan } from 'semver';
 
-import { NATIVE_BUILDTOOLS_VERSION } from '../../lib/constants.js';
-import { mavenDefinition } from './support/index.js';
 import { createNeedleCallback } from 'generator-jhipster/generators/base/support';
+import { NATIVE_BUILDTOOLS_VERSION } from '../constants.js';
+import { mavenDefinition } from './support/index.js';
 
 export default class extends BaseGenerator {
   blueprintVersion;
@@ -312,9 +312,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
 
       keycloak({ application }) {
         if (!application.authenticationTypeOauth2) return;
-
-        // Increase wait for macOS. Keyclock container start can take over 3 min. 4 min is not enough to download/start containers/start server.
-        this.editFile('src/main/docker/keycloak.yml', { assertModified: true }, content => content.replace('retries: 20', 'retries: 100'));
 
         const awaitScript = this.packageJson.getPath('scripts.ci:server:await');
         if (awaitScript) {
