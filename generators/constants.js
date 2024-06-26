@@ -1,1 +1,1 @@
-export const NATIVE_BUILDTOOLS_VERSION = '0.10.1';
+export const NATIVE_BUILDTOOLS_VERSION = '0.10.2';
