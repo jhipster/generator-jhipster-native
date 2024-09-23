@@ -30,7 +30,7 @@ export default class extends BaseGenerator {
   get [BaseGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async buildMatrix() {
-        const samples = await getSamples(this.templatePath(`../../generate-sample/templates/${this.samplesFolder}`));
+        const samples = await getSamples(this.templatePath(`../../generate-sample/templates/${this.samplesFolder ?? 'samples'}`));
         const matrix = buildMatrix({ samples, samplesFolder: this.samplesFolder });
         const matrixoutput = `matrix<<EOF${os.EOL}${JSON.stringify(matrix)}${os.EOL}EOF${os.EOL}`;
         const filePath = process.env.GITHUB_OUTPUT;
