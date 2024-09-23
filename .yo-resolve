@@ -1,4 +1,0 @@
-generators/** skip
-README.md skip
-cli/cli.cjs skip
-.blueprint/github-build-matrix/build-matrix.mjs skip

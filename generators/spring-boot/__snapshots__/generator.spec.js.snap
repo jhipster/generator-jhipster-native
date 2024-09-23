@@ -320,6 +320,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/web/rest/AuthorityResource.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/web/rest/GatewayResource.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/web/rest/PublicUserResource.java": {
     "stateCleared": "modified",
   },
@@ -360,6 +363,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/ManagedUserVM.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/web/rest/vm/RouteVM.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
@@ -901,9 +907,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/security/oauth2/CustomClaimConverter.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
     "stateCleared": "modified",
   },
@@ -949,6 +952,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/web/rest/AuthorityResource.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/web/rest/GatewayResource.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/web/rest/LogoutResource.java": {
     "stateCleared": "modified",
   },
@@ -971,6 +977,12 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/web/rest/vm/RouteVM.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -1521,9 +1533,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/service/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/web/filter/SpaWebFilter.java": {
     "stateCleared": "modified",
   },
@@ -1771,9 +1780,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/service/mapper/UserMapperTest.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -2123,9 +2129,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
     "stateCleared": "modified",
   },
@@ -2151,9 +2154,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/service/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilter.java": {
@@ -2358,9 +2358,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -2701,6 +2698,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/main/java/com/mycompany/myapp/web/rest/AuthorityResource.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/web/rest/GatewayResource.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/web/rest/PublicUserResource.java": {
     "stateCleared": "modified",
   },
@@ -2741,6 +2741,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/ManagedUserVM.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/web/rest/vm/RouteVM.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
@@ -3243,9 +3246,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/main/java/com/mycompany/myapp/security/oauth2/CustomClaimConverter.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
     "stateCleared": "modified",
   },
@@ -3291,6 +3291,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/main/java/com/mycompany/myapp/web/rest/AuthorityResource.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/web/rest/GatewayResource.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/web/rest/LogoutResource.java": {
     "stateCleared": "modified",
   },
@@ -3313,6 +3316,12 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/rest/package-info.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/web/rest/vm/RouteVM.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/web/rest/vm/package-info.java": {
     "stateCleared": "modified",
   },
   "src/main/resources/META-INF/native-image/liquibase/reflect-config.json": {
@@ -3824,9 +3833,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/main/java/com/mycompany/myapp/service/package-info.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/web/filter/SpaWebFilter.java": {
     "stateCleared": "modified",
   },
@@ -4074,9 +4080,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/service/mapper/UserMapperTest.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -4387,9 +4390,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
     "stateCleared": "modified",
   },
@@ -4415,9 +4415,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/service/package-info.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilter.java": {
@@ -4622,9 +4619,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/web/filter/ModifyServersOpenApiFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -4894,6 +4888,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/SecurityJwtConfiguration.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
@@ -5342,6 +5339,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
     "stateCleared": "modified",
   },
@@ -5367,9 +5367,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
@@ -5759,6 +5756,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/SecurityJwtConfiguration.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
@@ -6189,6 +6189,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
     "stateCleared": "modified",
   },
@@ -6223,9 +6226,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
@@ -6573,6 +6573,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/SecurityJwtConfiguration.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
@@ -6982,6 +6985,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
     "stateCleared": "modified",
   },
@@ -7007,9 +7013,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
@@ -7363,6 +7366,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/SecurityJwtConfiguration.java": {
+    "stateCleared": "modified",
+  },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
@@ -7757,6 +7763,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/main/java/com/mycompany/myapp/config/SecurityConfiguration.java": {
     "stateCleared": "modified",
   },
+  "src/main/java/com/mycompany/myapp/config/SpringDocConfiguration.java": {
+    "stateCleared": "modified",
+  },
   "src/main/java/com/mycompany/myapp/config/WebConfigurer.java": {
     "stateCleared": "modified",
   },
@@ -7791,9 +7800,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
@@ -8827,9 +8833,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/CustomClaimConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
@@ -9901,9 +9904,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
     "stateCleared": "modified",
   },
@@ -10887,9 +10887,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/CustomClaimConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {
@@ -11881,9 +11878,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/AudienceValidator.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/security/oauth2/JwtGrantedAuthorityConverter.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/security/oauth2/package-info.java": {

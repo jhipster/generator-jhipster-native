@@ -16,7 +16,7 @@ describe('SubGenerator ci-cd of native JHipster blueprint', () => {
         .withArguments(['github'])
         .withOptions({
           ignoreNeedlesError: true,
-          blueprint: 'native',
+          blueprint: ['native'],
         })
         .withJHipsterLookup()
         .withParentBlueprintLookup();
