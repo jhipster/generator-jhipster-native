@@ -23,7 +23,7 @@ const blueprint = packageFolderName.startsWith('jhipster-') ? `generator-${packa
       [blueprint]: version,
     },
     printBlueprintLogo: () => {
-      console.log('===================== JHipster native =====================');
+      console.log('===================== JHipster Native =====================');
       console.log('');
     },
     lookups: [{ packagePaths: [packagePath] }],
