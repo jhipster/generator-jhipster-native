@@ -4,7 +4,7 @@ import { extname } from 'node:path';
 import { passthrough } from '@yeoman/transform';
 import { isFileStateDeleted, isFileStateModified } from 'mem-fs-editor/state';
 import BaseGenerator from 'generator-jhipster/generators/base-application';
-import { javaMainPackageTemplatesBlock, addJavaAnnotation, addJavaImport } from 'generator-jhipster/generators/java/support';
+import { addJavaAnnotation, addJavaImport, javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 import { lt as semverLessThan } from 'semver';
 
 import { createNeedleCallback } from 'generator-jhipster/generators/base/support';

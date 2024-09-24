@@ -11,7 +11,7 @@
         "sbs": true,
         "written": true
       },
-      "server": {
+      "spring-boot": {
         "command": false,
         "priorities": ["writing", "postWriting", "end"],
         "sbs": true,
@@ -19,13 +19,14 @@
       }
     },
     "githubWorkflows": true,
-    "jhipsterVersion": "7.9.3",
+    "jhipsterVersion": "8.7.1",
     "js": true,
     "localBlueprint": false,
+    "packageJsonType": "module",
     "prettierDefaultIndent": 2,
     "projectName": "JHipster SpringBoot Native Blueprint",
     "sampleWritten": true,
     "skipCommitHook": true,
-    "subGenerators": ["ci-cd", "server"]
+    "subGenerators": ["ci-cd", "spring-boot"]
   }
 }

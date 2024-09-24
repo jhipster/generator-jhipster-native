@@ -21,7 +21,7 @@ describe('SubGenerator spring-boot of native JHipster blueprint', () => {
           .withJHipsterConfig()
           .withOptions({
             ignoreNeedlesError: true,
-            blueprint: 'native',
+            blueprint: ['native'],
             experimental: true,
             ...options,
           })

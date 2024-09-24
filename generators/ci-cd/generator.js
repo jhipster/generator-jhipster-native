@@ -1,5 +1,5 @@
 import CiCdGenerator from 'generator-jhipster/generators/base-application';
-import { RECOMMENDED_NODE_VERSION, RECOMMENDED_JAVA_VERSION } from 'generator-jhipster';
+import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jhipster';
 
 const githubActions = {
   'actions/checkout': 'actions/checkout@v4',
