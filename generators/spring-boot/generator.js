@@ -15,7 +15,7 @@ export default class extends BaseGenerator {
   blueprintVersion;
 
   constructor(args, opts, features) {
-    super(args, opts, { ...features, checkBlueprint: true, sbsBlueprint: true });
+    super(args, opts, { ...features, queueCommandTasks: true, checkBlueprint: true, sbsBlueprint: true });
   }
 
   async beforeQueue() {
