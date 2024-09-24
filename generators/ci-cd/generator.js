@@ -11,7 +11,7 @@ const githubActions = {
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { ...features, sbsBlueprint: true, checkBlueprint: true });
+    super(args, opts, { ...features, queueCommandTasks: true, sbsBlueprint: true, checkBlueprint: true });
   }
 
   async beforeQueue() {
