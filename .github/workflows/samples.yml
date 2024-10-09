@@ -101,13 +101,7 @@ jobs:
             ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
           key: brew-actions-setup-docker-1.0.11
           restore-keys: brew-actions-setup-docker-
-      - name: 'SETUP MacOS: install docker'
-        run: |
-          brew install docker colima docker-compose
-          colima start
-          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
-          mkdir -p ~/.docker/cli-plugins
-          ln -sfn $HOMEBREW_PREFIX/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+      - uses: douglascamata/setup-docker-macos-action@8d5fa43892aed7eee4effcdea113fd53e4d4bf83
         if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
         timeout-minutes: 10
       - run: ls ~/Library/Caches/Homebrew/
