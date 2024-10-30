@@ -1,4 +1,3 @@
-import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jhipster';
 import { fromMatrix } from 'generator-jhipster/testing';
 
 const defaultMatrix = {
@@ -7,11 +6,13 @@ const defaultMatrix = {
   'build-tool': ['maven', 'gradle'],
 };
 
-export default Object.fromEntries(Object.entries(fromMatrix(defaultMatrix)).map(([sample, spec]) => [sample, {
-    ...spec,
-    ...(spec.os.startsWith('windows-')
-      ? { 'default-environment': 'dev', e2e: 'false' }
-      : { 'default-environment': 'prod', e2e: 'true' }),
-    'job-name': sample,
-  }]),
+export default Object.fromEntries(
+  Object.entries(fromMatrix(defaultMatrix)).map(([sample, spec]) => [
+    sample,
+    {
+      ...spec,
+      ...(spec.os.startsWith('windows-') ? { 'default-environment': 'dev', e2e: 'false' } : { 'default-environment': 'prod', e2e: 'true' }),
+      'job-name': sample,
+    },
+  ]),
 );
