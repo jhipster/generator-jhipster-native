@@ -32,7 +32,7 @@ jobs:
           npm ci --ignore-scripts
           cli/cli.cjs github-build-matrix native
   applications:
-    name: ${{ matrix.sample-name }} (${{ matrix.os }}, ${{ matrix.build-tool }})
+    name: ${{ matrix.job-name }}
     runs-on: ${{ matrix.os }}
     needs: build-matrix
     defaults:
