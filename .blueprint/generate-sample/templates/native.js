@@ -4,9 +4,9 @@ import { fromMatrix } from 'generator-jhipster/testing';
 
 const defaultMatrix = {
   // macos-14 doesn't support docker https://docs.github.com/en/actions/using-github-hosted-runners/about-larger-runners/about-larger-runners#limitations-for-macos-larger-runners
-  sample: await readdir(fileURLToPath(new URL('./samples', import.meta.url))),
-  'build-tool': ['maven', 'gradle'],
   os: ['ubuntu-latest', 'macos-13', 'windows-latest'],
+  'build-tool': ['maven', 'gradle'],
+  sample: await readdir(fileURLToPath(new URL('./samples', import.meta.url))),
 };
 
 export default Object.fromEntries(
