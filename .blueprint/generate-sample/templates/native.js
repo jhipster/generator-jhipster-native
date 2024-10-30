@@ -15,6 +15,7 @@ export default Object.fromEntries(
     {
       ...spec,
       ...(spec.os.startsWith('windows-') ? { 'default-environment': 'dev', e2e: 'false' } : { 'default-environment': 'prod', e2e: 'true' }),
+      'java-version': '21',
     },
   ]),
 );
