@@ -4728,9 +4728,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "buildSrc/src/main/groovy/jhipster.docker-conventions.gradle": {
     "stateCleared": "modified",
   },
-  "buildSrc/src/main/groovy/jhipster.spring-cache-conventions.gradle": {
-    "stateCleared": "modified",
-  },
   "checkstyle.xml": {
     "stateCleared": "modified",
   },
@@ -4803,9 +4800,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/main/docker/grafana/provisioning/datasources/datasource.yml": {
     "stateCleared": "modified",
   },
-  "src/main/docker/hazelcast-management-center.yml": {
-    "stateCleared": "modified",
-  },
   "src/main/docker/jhipster-control-center.yml": {
     "stateCleared": "modified",
   },
@@ -4852,9 +4846,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
@@ -5171,9 +5162,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "buildSrc/src/main/groovy/jhipster.docker-conventions.gradle": {
     "stateCleared": "modified",
   },
-  "buildSrc/src/main/groovy/jhipster.spring-cache-conventions.gradle": {
-    "stateCleared": "modified",
-  },
   "checkstyle.xml": {
     "stateCleared": "modified",
   },
@@ -5246,9 +5234,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/main/docker/grafana/provisioning/datasources/datasource.yml": {
     "stateCleared": "modified",
   },
-  "src/main/docker/hazelcast-management-center.yml": {
-    "stateCleared": "modified",
-  },
   "src/main/docker/jhipster-control-center.yml": {
     "stateCleared": "modified",
   },
@@ -5304,9 +5289,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
@@ -6488,9 +6470,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/main/docker/grafana/provisioning/datasources/datasource.yml": {
     "stateCleared": "modified",
   },
-  "src/main/docker/hazelcast-management-center.yml": {
-    "stateCleared": "modified",
-  },
   "src/main/docker/jhipster-control-center.yml": {
     "stateCleared": "modified",
   },
@@ -6537,9 +6516,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
@@ -6892,9 +6868,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/main/docker/grafana/provisioning/datasources/datasource.yml": {
     "stateCleared": "modified",
   },
-  "src/main/docker/hazelcast-management-center.yml": {
-    "stateCleared": "modified",
-  },
   "src/main/docker/jhipster-control-center.yml": {
     "stateCleared": "modified",
   },
@@ -6950,9 +6923,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
@@ -8029,9 +7999,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "buildSrc/src/main/groovy/jhipster.node-gradle-conventions.gradle": {
     "stateCleared": "modified",
   },
-  "buildSrc/src/main/groovy/jhipster.spring-cache-conventions.gradle": {
-    "stateCleared": "modified",
-  },
   "checkstyle.xml": {
     "stateCleared": "modified",
   },
@@ -8141,9 +8108,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
@@ -8643,9 +8607,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "buildSrc/src/main/groovy/jhipster.node-gradle-conventions.gradle": {
     "stateCleared": "modified",
   },
-  "buildSrc/src/main/groovy/jhipster.spring-cache-conventions.gradle": {
-    "stateCleared": "modified",
-  },
   "checkstyle.xml": {
     "stateCleared": "modified",
   },
@@ -8764,9 +8725,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
@@ -10239,9 +10197,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
     "stateCleared": "modified",
   },
@@ -10818,9 +10773,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/CRLFLogConverter.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/CacheConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/Constants.java": {
