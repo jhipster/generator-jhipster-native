@@ -75,6 +75,31 @@ export default class extends BaseGenerator {
     });
   }
 
+  get [BaseGenerator.POST_WRITING]() {
+    return this.asPostWritingTaskGroup({
+      async logoutResource({ application: { srcMainJava, packageFolder, authenticationTypeOauth2, reactive, generateAuthenticationApi } }) {
+        if (!authenticationTypeOauth2 || !generateAuthenticationApi) return;
+        const filePath = `${srcMainJava}${packageFolder}/web/rest/LogoutResource.java`;
+
+        this.editFile(filePath, { assertModified: true }, content =>
+          content
+            .replace('@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken', '@AuthenticationPrincipal OidcUser oidcUser')
+            .replace(
+              'import org.springframework.security.oauth2.core.oidc.OidcIdToken;',
+              `import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;`,
+            )
+            .replace('@param idToken the ID token.', '@param oidcUser the OIDC user.'),
+        );
+        if (reactive) {
+          this.editFile(filePath, { assertModified: true }, content => content.replace(', idToken)', ', oidcUser.getIdToken())'));
+        } else {
+          this.editFile(filePath, { assertModified: true }, content => content.replace('(idToken.', `(oidcUser.getIdToken().`));
+        }
+      },
+    });
+  }
+
   get [BaseGenerator.END]() {
     return this.asEndTaskGroup({
       async checkCompatibility({
