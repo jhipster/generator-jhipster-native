@@ -30,9 +30,9 @@ jobs:
       - id: build
         run: |
           npm ci --ignore-scripts
-          cli/cli.cjs github-build-matrix
+          cli/cli.cjs github-build-matrix native
   applications:
-    name: ${{ matrix.sample-name }} (${{ matrix.os }}, ${{ matrix.build-tool }})
+    name: ${{ matrix.job-name }}
     runs-on: ${{ matrix.os }}
     needs: build-matrix
     defaults:
@@ -67,14 +67,13 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: 'graalvm-community'
-          components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
       - name: 'PROJECT: generate'
-        run: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
+        run: cli.cjs generate-sample ${{ matrix.sample }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
       - uses: jhipster/actions/compare-sample@v0
@@ -83,7 +82,7 @@ jobs:
           github.event.pull_request && !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')
         with:
           generator-path: generator-jhipster-native
-          cmd: cli.cjs generate-sample ${{ matrix.sample-name }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
+          cmd: cli.cjs generate-sample ${{ matrix.sample }} --build ${{ matrix.build-tool }} --no-insight --skip-git --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
 
@@ -95,17 +94,17 @@ jobs:
 
       - name: 'SETUP MacOS: load Homebrew cache'
         uses: actions/cache@v4
-        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+        if: matrix.os == 'macos-13' && steps.compare.outputs.equals != 'true'
         with:
           path: |
             ~/Library/Caches/Homebrew/downloads/*--Docker.dmg
           key: brew-actions-setup-docker-1.0.11
           restore-keys: brew-actions-setup-docker-
       - uses: douglascamata/setup-docker-macos-action@8d5fa43892aed7eee4effcdea113fd53e4d4bf83
-        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+        if: matrix.os == 'macos-13' && steps.compare.outputs.equals != 'true'
         timeout-minutes: 10
       - run: ls ~/Library/Caches/Homebrew/
-        if: runner.os == 'macOS' && steps.compare.outputs.equals != 'true'
+        if: matrix.os == 'macos-13' && steps.compare.outputs.equals != 'true'
 
       - run: npm run ci:backend:test
         if: steps.compare.outputs.equals != 'true'

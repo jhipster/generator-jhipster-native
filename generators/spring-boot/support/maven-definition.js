@@ -108,7 +108,7 @@ export const mavenDefinition = ({ reactive }) => ({
                         <execution>
                             <id>build-native</id>
                             <goals>
-                                <goal>build</goal>
+                                <goal>compile-no-fork</goal>
                             </goals>
                             <phase>package</phase>
                         </execution>
@@ -121,14 +121,16 @@ export const mavenDefinition = ({ reactive }) => ({
                         </execution>
                     </executions>
                     <configuration>
+                        <fallback>false</fallback>
                         <classesDirectory>\${project.build.outputDirectory}</classesDirectory>
                         <metadataRepository>
                             <enabled>true</enabled>
                         </metadataRepository>
                         <imageName>\${native-image-name}</imageName>
-                        <buildArgs>
-                            <buildArg>--no-fallback \${native-build-args}</buildArg>
-                        </buildArgs>
+                        <jvmArgs>
+                            <arg>-Xms4g</arg>
+                            <arg>-Xmx10g</arg>
+                        </jvmArgs>
                     </configuration>
                 </plugin>
             </plugins>
