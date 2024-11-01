@@ -27,6 +27,14 @@ export default class extends BaseGenerator {
     });
   }
 
+  get [BaseGenerator.PREPARING]() {
+    return this.asPreparingTaskGroup({
+      fix({ application }) {
+        application.languagesDefinition ??= [];
+      },
+    });
+  }
+
   get [BaseGenerator.WRITING]() {
     return this.asWritingTaskGroup({
       async writingTemplateTask({ application, control }) {
