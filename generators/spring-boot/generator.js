@@ -30,7 +30,7 @@ export default class extends BaseGenerator {
   get [BaseGenerator.PREPARING]() {
     return this.asPreparingTaskGroup({
       fix({ application }) {
-        application.languagesDefinition ??= [];
+        application.languagesDefinition ??= undefined;
       },
     });
   }
