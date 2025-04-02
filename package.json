@@ -1,6 +1,6 @@
 {
   "name": "generator-jhipster-native",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "JHipster SpringBoot Native Blueprint",
   "keywords": [
     "yeoman-generator",
