@@ -1,3 +1,7 @@
 .github/workflows/build-cache.yml
 .github/workflows/samples.yml
 README.md
+generators/spring-boot/generator.spec.js skip
+generators/spring-boot/generator.js skip
+generators/ci-cd/generator.js skip
+generators/ci-cd/generator.spec.js skip

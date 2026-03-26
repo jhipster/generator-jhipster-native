@@ -3,6 +3,7 @@
     "additionalSubGenerators": "",
     "baseName": "native",
     "cli": true,
+    "defaultCommand": "generate-blueprint",
     "entities": [],
     "generators": {
       "ci-cd": {
@@ -14,6 +15,12 @@
       "spring-boot": {
         "command": false,
         "priorities": ["writing", "postWriting", "end"],
+        "sbs": true,
+        "written": true
+      },
+      "spring-boot:data-relational": {
+        "command": false,
+        "priorities": ["writing"],
         "sbs": true,
         "written": true
       }
