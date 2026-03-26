@@ -1,5 +1,5 @@
-import CiCdGenerator from 'generator-jhipster/generators/base-application';
 import { RECOMMENDED_JAVA_VERSION, RECOMMENDED_NODE_VERSION } from 'generator-jhipster';
+import CiCdGenerator from 'generator-jhipster/generators/base-application';
 
 const githubActions = {
   'actions/checkout': 'actions/checkout@v4',
@@ -15,7 +15,8 @@ export default class extends CiCdGenerator {
   }
 
   async beforeQueue() {
-    await this.dependsOnJHipster('bootstrap-application');
+    await this.dependsOnBootstrap('ci-cd');
+    await this.dependsOnBootstrap('java-simple-application');
   }
 
   get [CiCdGenerator.WRITING]() {

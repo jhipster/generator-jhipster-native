@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+
 import BaseGenerator from 'generator-jhipster/generators/base-application';
 import { lt as semverLessThan } from 'semver';
 
@@ -11,7 +12,7 @@ export default class extends BaseGenerator {
   }
 
   async beforeQueue() {
-    await this.dependsOnJHipster('bootstrap-application');
+    await this.dependsOnBootstrap('spring-boot');
   }
 
   get [BaseGenerator.CONFIGURING]() {

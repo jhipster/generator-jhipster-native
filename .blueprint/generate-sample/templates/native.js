@@ -1,5 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+
 import { fromMatrix } from 'generator-jhipster/testing';
 
 const defaultMatrix = {
