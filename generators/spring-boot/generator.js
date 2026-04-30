@@ -29,6 +29,14 @@ export default class extends BaseGenerator {
 
   get [BaseGenerator.PREPARING]() {
     return this.asPreparingTaskGroup({
+      nativeTestScript({ application }) {
+        const { buildToolGradle, packageJsonScripts, skipClient } = application;
+        const skipWebapp = skipClient ? '' : buildToolGradle ? ' -x webapp -x webapp_test' : ' -Dskip.installnodenpm -Dskip.npm';
+
+        packageJsonScripts['native-test'] = buildToolGradle
+          ? `./gradlew nativeTest -Pnative -Pdev${skipWebapp}`
+          : `./mvnw test -B -ntp -Pnative,nativeTest,dev${skipWebapp}`;
+      },
       fix({ application }) {
         application.languagesDefinition ??= undefined;
       },

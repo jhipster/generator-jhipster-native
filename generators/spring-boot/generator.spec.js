@@ -32,6 +32,15 @@ describe('SubGenerator spring-boot of native JHipster blueprint', () => {
       it('should succeed', () => {
         expect(result.getStateSnapshot()).toMatchSnapshot();
       });
+
+      it('should add a native test script', () => {
+        const expectedScript =
+          options.build === 'gradle'
+            ? '"native-test": "./gradlew nativeTest -Pnative -Pdev -x webapp -x webapp_test"'
+            : '"native-test": "./mvnw test -B -ntp -Pnative,nativeTest,dev -Dskip.installnodenpm -Dskip.npm"';
+
+        result.assertFileContent('package.json', expectedScript);
+      });
     });
   }
 });
