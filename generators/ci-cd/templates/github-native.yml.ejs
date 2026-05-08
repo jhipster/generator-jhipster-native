@@ -112,6 +112,8 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
       - name: Install node.js packages
         run: npm install
+      - name: 'TEST: Native'
+        run: npm run native-test
       - name: 'E2E: Package'
         run: npm run native-package -- "-Dnative-build-args=${{ matrix.native-build-args }}"
 <%_ if (cypressTests) { _%>

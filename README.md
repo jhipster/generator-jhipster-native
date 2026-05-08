@@ -61,6 +61,12 @@ To build a native image, execute the following command:
 npm run native-package
 ```
 
+To run the generated application tests in native mode, execute:
+
+```bash
+npm run native-test
+```
+
 After that, set up peripheral services like PostgreSQL using `npm run services:up` and ensure everything is ready.
 
 Lastly, run the Native image and experience its fast startup 😊.
