@@ -75,6 +75,14 @@ If you've enabled e2e testing with Cypress, you can verify its operation using t
 npm run native-e2e
 ```
 
+## How to Run Native Tests
+
+To build and execute the test suite as a native image, execute the following command:
+
+```bash
+npm run native-test
+```
+
 ## Native binary runtime errors
 
 GraalVM uses metadata to generate AOT compilation.

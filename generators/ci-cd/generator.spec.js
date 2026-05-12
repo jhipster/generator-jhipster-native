@@ -30,6 +30,18 @@ describe('SubGenerator ci-cd of native JHipster blueprint', () => {
       expect(result.getSnapshot('**/.github/workflows/native.yml')).toMatchSnapshot();
     });
 
+    it('native.yml should run native tests before native packaging', () => {
+      const snapshot = result.getSnapshot('**/.github/workflows/native.yml');
+      const nativeWorkflow = snapshot['.github/workflows/native.yml'].contents;
+      const nativeTestCommandIndex = nativeWorkflow.indexOf('run: npm run native-test');
+      const nativePackageCommandIndex = nativeWorkflow.indexOf('run: npm run native-package');
+
+      expect(nativeWorkflow).toContain("      - name: 'TEST: Native'");
+      expect(nativeTestCommandIndex).toBeGreaterThan(-1);
+      expect(nativePackageCommandIndex).toBeGreaterThan(-1);
+      expect(nativeTestCommandIndex).toBeLessThan(nativePackageCommandIndex);
+    });
+
     it('native-artifact.yml should match snapshot', () => {
       expect(result.getSnapshot('**/.github/workflows/native-artifact.yml')).toMatchSnapshot();
     });
