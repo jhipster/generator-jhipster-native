@@ -32,6 +32,13 @@ export default class extends BaseGenerator {
       fix({ application }) {
         application.languagesDefinition ??= undefined;
       },
+      nativeTestScript({ application }) {
+        const { buildToolGradle, packageJsonScripts } = application;
+
+        Object.assign(packageJsonScripts, {
+          'native-test': buildToolGradle ? './gradlew nativeTest' : './mvnw -PnativeTest test -B -ntp',
+        });
+      },
     });
   }
 
