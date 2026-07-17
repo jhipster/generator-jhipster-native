@@ -16,7 +16,7 @@ describe('SubGenerator spring-boot:data-relational of native JHipster blueprint'
         })
         .withJHipsterGenerators()
         .withConfiguredBlueprint()
-        .withBlueprintConfig();
+        .withBlueprintConfig({});
     });
 
     it('should succeed', () => {

@@ -3,6 +3,7 @@
     "additionalSubGenerators": "",
     "baseName": "native",
     "cli": true,
+    "creationTimestamp": 1784320640074,
     "defaultCommand": "generate-blueprint",
     "entities": [],
     "generators": {
@@ -26,7 +27,8 @@
       }
     },
     "githubWorkflows": true,
-    "jhipsterVersion": "9.0.0",
+    "javascriptBlueprint": true,
+    "jhipsterVersion": "9.2.0",
     "js": true,
     "localBlueprint": false,
     "packageJsonType": "module",
