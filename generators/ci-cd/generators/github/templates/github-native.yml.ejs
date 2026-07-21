@@ -35,7 +35,7 @@ jobs:
       SPRING_JPA_SHOW_SQL: false
 <%_ } _%>
       JHI_DISABLE_WEBPACK_LOGS: true
-<%_ if (clientFrameworkAngular) { _%>
+<%_ if (locals.clientFrameworkAngular) { _%>
       NG_CLI_ANALYTICS: false
 <%_ } _%>
     defaults:
