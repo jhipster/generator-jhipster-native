@@ -36,6 +36,6 @@
     "projectName": "JHipster SpringBoot Native Blueprint",
     "sampleWritten": true,
     "skipCommitHook": true,
-    "subGenerators": ["ci-cd", "spring-boot"]
+    "subGenerators": ["ci-cd:github", "spring-boot"]
   }
 }

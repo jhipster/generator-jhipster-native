@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 
 import { defaultHelpers as helpers, result } from 'generator-jhipster/testing';
 
-const SUB_GENERATOR = 'ci-cd';
+const SUB_GENERATOR = 'ci-cd:github';
 const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
 
 describe('SubGenerator ci-cd of native JHipster blueprint', () => {
@@ -13,13 +13,12 @@ describe('SubGenerator ci-cd of native JHipster blueprint', () => {
         .withJHipsterConfig({
           testFrameworks: ['cypress'],
         })
-        .withArguments(['github'])
         .withOptions({
           ignoreNeedlesError: true,
         })
         .withJHipsterGenerators()
         .withConfiguredBlueprint()
-        .withBlueprintConfig();
+        .withBlueprintConfig({});
     });
 
     it('should succeed', () => {

@@ -11,12 +11,7 @@ const githubActions = {
 
 export default class extends CiCdGenerator {
   constructor(args, opts, features) {
-    super(args, opts, { ...features, queueCommandTasks: true, sbsBlueprint: true, checkBlueprint: true });
-  }
-
-  async beforeQueue() {
-    await this.dependsOnBootstrap('ci-cd');
-    await this.dependsOnBootstrap('java-simple-application');
+    super(args, opts, { ...features, sbsBlueprint: true, checkBlueprint: true });
   }
 
   get [CiCdGenerator.WRITING]() {
