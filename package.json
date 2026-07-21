@@ -42,7 +42,7 @@
     "vitest": "vitest"
   },
   "dependencies": {
-    "generator-jhipster": "9.2.0",
+    "generator-jhipster": "github:mshima/generator-jhipster#ci-cd",
     "semver": "^7.6.0"
   },
   "devDependencies": {

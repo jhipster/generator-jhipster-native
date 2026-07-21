@@ -14,15 +14,6 @@ export default class extends CiCdGenerator {
     super(args, opts, { ...features, sbsBlueprint: true, checkBlueprint: true });
   }
 
-  get [CiCdGenerator.COMPOSING_BOOTSTRAP]() {
-    return {
-      async composingBootstrap() {
-        await this.dependsOnBootstrap('client');
-        await this.dependsOnBootstrap('java');
-      },
-    };
-  }
-
   get [CiCdGenerator.WRITING]() {
     return {
       async writingTemplateTask({ application }) {
