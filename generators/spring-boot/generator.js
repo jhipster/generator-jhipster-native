@@ -12,7 +12,7 @@ export default class extends BaseGenerator {
   }
 
   async beforeQueue() {
-    await this.dependsOnJHipster('jhipster:spring-boot');
+    await this.dependsOnBootstrap('spring-boot');
   }
 
   get [BaseGenerator.CONFIGURING]() {

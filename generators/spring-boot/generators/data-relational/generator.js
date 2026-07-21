@@ -1,5 +1,4 @@
 import BaseApplicationGenerator from 'generator-jhipster/generators/base-application';
-import { javaMainPackageTemplatesBlock } from 'generator-jhipster/generators/java/support';
 
 export default class extends BaseApplicationGenerator {
   constructor(args, opts, features) {
