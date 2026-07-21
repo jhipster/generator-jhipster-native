@@ -8,7 +8,7 @@ export default class extends BaseGenerator {
   blueprintVersion;
 
   constructor(args, opts, features) {
-    super(args, opts, { ...features, queueCommandTasks: true, checkBlueprint: true, sbsBlueprint: true });
+    super(args, opts, { ...features, checkBlueprint: true, sbsBlueprint: true });
   }
 
   async beforeQueue() {
@@ -59,19 +59,6 @@ export default class extends BaseGenerator {
         if (control.existingProject && (this.blueprintVersion === undefined || this.isBlueprintVersionLessThan('2.4.1'))) {
           this.removeFile('src/main/resources/META-INF/native-image/h2/reflect-config.json');
         }
-
-        await this.writeFiles({
-          sections: {
-            mysql: [
-              {
-                condition: ctx => ctx.prodDatabaseTypeMysql,
-                transform: false,
-                templates: ['src/main/resources/META-INF/native-image/mysql/reflect-config.json'],
-              },
-            ],
-          },
-          context: application,
-        });
       },
     });
   }

@@ -19,11 +19,12 @@ export default class extends BaseApplicationGenerator {
       async writingTemplateTask({ application }) {
         await this.writeFiles({
           sections: {
-            graalvm: [
-              javaMainPackageTemplatesBlock({
-                condition: ctx => !ctx.reactive && ctx.graalvmSupport,
-                templates: ['config/JacksonNativeConfiguration.java'],
-              }),
+            mysql: [
+              {
+                condition: ctx => ctx.prodDatabaseTypeMysql,
+                transform: false,
+                templates: ['src/main/resources/META-INF/native-image/mysql/reflect-config.json'],
+              },
             ],
           },
           context: application,
