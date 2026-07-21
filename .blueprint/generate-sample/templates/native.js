@@ -16,7 +16,7 @@ export default Object.fromEntries(
     {
       ...spec,
       ...(!spec.os.startsWith('ubuntu-') ? { 'default-environment': 'dev', e2e: 'false' } : { 'default-environment': 'prod', e2e: 'true' }),
-      'java-version': '21',
+      'java-version': '25',
     },
   ]),
 );
