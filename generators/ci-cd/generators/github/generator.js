@@ -16,12 +16,12 @@ export default class extends CiCdGenerator {
 
   get [CiCdGenerator.COMPOSING_BOOTSTRAP]() {
     return {
-      async composingBootstrap({ application }) {
+      async composingBootstrap() {
         await this.dependsOnBootstrap('client');
         await this.dependsOnBootstrap('java');
-      }
-    }
-  };
+      },
+    };
+  }
 
   get [CiCdGenerator.WRITING]() {
     return {
