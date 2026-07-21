@@ -53,7 +53,7 @@ jobs:
         with:
           path: generator-jhipster-native
           fetch-depth: 2
-      - uses: jhipster/actions/setup-runner@v0
+      - uses: jhipster/actions/setup-runner@v1
         with:
           node-version: ${{ matrix.node-version }}
           maven-cache: true
@@ -76,7 +76,7 @@ jobs:
         run: cli.cjs generate-sample ${{ matrix.sample }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
-      - uses: jhipster/actions/compare-sample@v0
+      - uses: jhipster/actions/compare-sample@v1
         id: compare
         if: >-
           github.event.pull_request && !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')

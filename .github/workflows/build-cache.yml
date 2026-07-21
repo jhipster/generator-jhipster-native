@@ -14,7 +14,7 @@ jobs:
         with:
           path: generator-jhipster-native
           fetch-depth: 1
-      - uses: jhipster/actions/setup-runner@v0
+      - uses: jhipster/actions/setup-runner@v1
         with:
           node-version: 20
           binary-dir: ${{ github.workspace }}/generator-jhipster-native/cli/
@@ -24,7 +24,7 @@ jobs:
           distribution: 'graalvm-community'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: jhipster/actions/cache-npm-dependencies@v0
+      - uses: jhipster/actions/cache-npm-dependencies@v1
         with:
           generator-path: generator-jhipster-native
         if: always()
@@ -34,21 +34,21 @@ jobs:
         continue-on-error: true
       - run: npm run backend:build-cache --workspaces
         continue-on-error: true
-      - uses: jhipster/actions/create-app-path@v0
+      - uses: jhipster/actions/create-app-path@v1
       - run: cli.cjs generate-sample --all --build gradle
         continue-on-error: true
       - run: cd mvcJwt && ./npmw
         continue-on-error: true
       - run: npm run backend:build-cache --workspaces
         continue-on-error: true
-      - uses: jhipster/actions/save-cache@v0
+      - uses: jhipster/actions/save-cache@v1
         if: always()
         with:
           key: ${{ github.run_id }}
           npm: true
           maven: true
           gradle: true
-      - uses: jhipster/actions/restore-cache@v0
+      - uses: jhipster/actions/restore-cache@v1
         with:
           npm: true
           maven: true
