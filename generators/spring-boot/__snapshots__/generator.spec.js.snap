@@ -149,9 +149,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -393,6 +390,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -688,9 +688,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -836,6 +833,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -1072,9 +1072,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -1329,25 +1326,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
@@ -1428,9 +1419,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -1444,6 +1432,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
   "src/test/resources/templates/mail/activationEmail.html": {
@@ -1616,9 +1607,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -1766,25 +1754,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/TestSecurityConfiguration.java": {
@@ -1800,6 +1782,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -1829,9 +1814,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -1845,6 +1827,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-gradle-
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
 }
@@ -1955,9 +1940,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
@@ -2201,6 +2183,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -2454,9 +2439,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -2602,6 +2584,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -2796,9 +2781,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -3053,25 +3035,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
@@ -3152,9 +3128,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -3168,6 +3141,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
   "src/test/resources/templates/mail/activationEmail.html": {
@@ -3296,9 +3272,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -3448,25 +3421,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/TestSecurityConfiguration.java": {
@@ -3482,6 +3449,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -3511,9 +3481,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -3527,6 +3494,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > gateway-maven-r
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
 }
@@ -3679,9 +3649,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
@@ -3925,6 +3892,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -4220,9 +4190,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -4368,6 +4335,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -4604,9 +4574,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -4861,25 +4828,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
@@ -4960,9 +4921,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -4976,6 +4934,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
   "src/test/resources/templates/mail/activationEmail.html": {
@@ -5148,9 +5109,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -5298,25 +5256,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/TestSecurityConfiguration.java": {
@@ -5332,6 +5284,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -5361,9 +5316,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -5377,6 +5329,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-gr
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
 }
@@ -5487,9 +5442,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
@@ -5733,6 +5685,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -5986,9 +5941,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -6134,6 +6086,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -6328,9 +6283,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -6585,25 +6537,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
@@ -6684,9 +6630,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -6700,6 +6643,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
   "src/test/resources/templates/mail/activationEmail.html": {
@@ -6828,9 +6774,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -6980,25 +6923,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/TestSecurityConfiguration.java": {
@@ -7014,6 +6951,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -7043,9 +6983,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -7059,6 +6996,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > microservice-ma
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
 }
@@ -7211,9 +7151,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
@@ -7457,6 +7394,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -7752,9 +7692,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -7900,6 +7837,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -8136,9 +8076,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -8393,25 +8330,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
@@ -8492,9 +8423,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -8508,6 +8436,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
   "src/test/resources/templates/mail/activationEmail.html": {
@@ -8680,9 +8611,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -8830,25 +8758,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/TestSecurityConfiguration.java": {
@@ -8864,6 +8786,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -8893,9 +8818,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -8909,6 +8831,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-gradle
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
 }
@@ -9019,9 +8944,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
@@ -9265,6 +9187,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -9518,9 +9443,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
     "stateCleared": "modified",
   },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
-    "stateCleared": "modified",
-  },
   "src/main/java/com/mycompany/myapp/config/JacksonHibernateConfiguration.java": {
     "stateCleared": "modified",
   },
@@ -9666,6 +9588,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
@@ -9860,9 +9785,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -10117,25 +10039,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/domain/AssertUtils.java": {
@@ -10216,9 +10132,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -10232,6 +10145,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
   "src/test/resources/templates/mail/activationEmail.html": {
@@ -10360,9 +10276,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/DateTimeFormatConfiguration.java": {
-    "stateCleared": "modified",
-  },
-  "src/main/java/com/mycompany/myapp/config/JacksonConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/main/java/com/mycompany/myapp/config/LiquibaseConfiguration.java": {
@@ -10512,25 +10425,19 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
   "src/test/java/com/mycompany/myapp/TechnicalStructureTest.java": {
     "stateCleared": "modified",
   },
+  "src/test/java/com/mycompany/myapp/aop/logging/LoggingAspectTest.java": {
+    "stateCleared": "modified",
+  },
   "src/test/java/com/mycompany/myapp/config/AsyncSyncConfiguration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/DatabaseTestcontainer.java": {
     "stateCleared": "modified",
   },
-  "src/test/java/com/mycompany/myapp/config/EmbeddedSQL.java": {
-    "stateCleared": "modified",
-  },
   "src/test/java/com/mycompany/myapp/config/JHipsterBlockHoundIntegration.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/SpringBootTestClassOrderer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainer.java": {
-    "stateCleared": "modified",
-  },
-  "src/test/java/com/mycompany/myapp/config/SqlTestContainersSpringContextCustomizerFactory.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/config/TestSecurityConfiguration.java": {
@@ -10546,6 +10453,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/test/util/OAuth2TestUtil.java": {
+    "stateCleared": "modified",
+  },
+  "src/test/java/com/mycompany/myapp/web/filter/OAuth2ReactiveRefreshTokensWebFilterTest.java": {
     "stateCleared": "modified",
   },
   "src/test/java/com/mycompany/myapp/web/filter/SpaWebFilterIT.java": {
@@ -10575,9 +10485,6 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
   "src/test/resources/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration": {
     "stateCleared": "modified",
   },
-  "src/test/resources/META-INF/spring.factories": {
-    "stateCleared": "modified",
-  },
   "src/test/resources/config/application-testdev.yml": {
     "stateCleared": "modified",
   },
@@ -10591,6 +10498,9 @@ exports[`SubGenerator spring-boot of native JHipster blueprint > monolith-maven-
     "stateCleared": "modified",
   },
   "src/test/resources/logback.xml": {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/static/test-resource.txt": {
     "stateCleared": "modified",
   },
 }
