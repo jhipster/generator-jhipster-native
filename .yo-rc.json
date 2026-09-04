@@ -13,6 +13,12 @@
         "sbs": true,
         "written": true
       },
+      "ci-cd:github": {
+        "command": false,
+        "priorities": [],
+        "sbs": true,
+        "written": true
+      },
       "spring-boot": {
         "command": false,
         "priorities": ["writing", "postWriting", "end"],
@@ -28,7 +34,7 @@
     },
     "githubWorkflows": true,
     "javascriptBlueprint": true,
-    "jhipsterVersion": "9.2.0",
+    "jhipsterVersion": "9.3.0",
     "js": true,
     "localBlueprint": false,
     "packageJsonType": "module",
