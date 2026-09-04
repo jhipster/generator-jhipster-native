@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SubGenerator ci-cd of native JHipster blueprint > run > should succeed 1`] = `
+{
+  ".github/workflows/main.yml": {
+    "stateCleared": "modified",
+  },
+  ".github/workflows/native-artifact.yml": {
+    "stateCleared": "modified",
+  },
+  ".github/workflows/native.yml": {
+    "stateCleared": "modified",
+  },
+  ".yo-rc.json": {
+    "stateCleared": "modified",
+  },
+}
+`;

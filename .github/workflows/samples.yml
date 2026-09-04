@@ -23,10 +23,10 @@ jobs:
     outputs:
       matrix: ${{ steps.build.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: 22
       - id: build
         run: |
           npm ci --ignore-scripts
@@ -40,7 +40,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/app
     if: github.event.action != 'closed'
-    timeout-minutes: 90
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.build-matrix.outputs.matrix)}}
@@ -53,7 +53,7 @@ jobs:
         with:
           path: generator-jhipster-native
           fetch-depth: 2
-      - uses: jhipster/actions/setup-runner@v0
+      - uses: jhipster/actions/setup-runner@v1
         with:
           node-version: ${{ matrix.node-version }}
           maven-cache: true
@@ -65,6 +65,9 @@ jobs:
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
+          # GraalVM CE releases before 25.3 (JDK 25.0.2 and older) fail to set boolean fields through MethodHandles in native images,
+          # which breaks Spring Data R2DBC entity reads (https://github.com/oracle/graal/issues/12596).
+          version: '25.3'
           java-version: ${{ matrix.java-version }}
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +79,7 @@ jobs:
         run: cli.cjs generate-sample ${{ matrix.sample }} --build ${{ matrix.build-tool }} --no-insight --skip-commit-hook --skip-jhipster-dependencies --no-cypress-audit --skip-install
         env:
           JHI_PROFILE: ${{ matrix.default-environment }}
-      - uses: jhipster/actions/compare-sample@v0
+      - uses: jhipster/actions/compare-sample@v2
         id: compare
         if: >-
           github.event.pull_request && !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')
@@ -111,11 +114,14 @@ jobs:
       # Native build is memory intensive, containers should not be started.
       - run: npm run native-package -- ${{ matrix.native-package-extra-args }}
         if: steps.compare.outputs.equals != 'true'
-        timeout-minutes: 60
+        timeout-minutes: 90
       - run: npm run services:up
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
       - run: npm run native-e2e --if-present
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
+        env:
+          # ExceptionTranslator logs the cause of unexpected 500 responses at debug level only.
+          LOGGING_LEVEL_COM_MYCOMPANY_MYAPP_WEB_REST_ERRORS: DEBUG
       - name: Dump docker logs
         if: always() && matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
         uses: jwalton/gh-docker-logs@v2

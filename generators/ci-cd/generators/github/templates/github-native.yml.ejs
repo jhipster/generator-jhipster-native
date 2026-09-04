@@ -35,7 +35,7 @@ jobs:
       SPRING_JPA_SHOW_SQL: false
 <%_ } _%>
       JHI_DISABLE_WEBPACK_LOGS: true
-<%_ if (clientFrameworkAngular) { _%>
+<%_ if (locals.clientFrameworkAngular) { _%>
       NG_CLI_ANALYTICS: false
 <%_ } _%>
     defaults:
@@ -45,7 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        java-version: ['<%= RECOMMENDED_JAVA_VERSION %>']
+        java-version: ['<%= GRAALVM_JAVA_VERSION %>']
         include:
         - os: ubuntu-latest
           executable-suffix: ''
@@ -95,6 +95,7 @@ jobs:
       - name: Set up GraalVM (Java ${{ matrix.java-version }})
         uses: <%= githubActions['graalvm/setup-graalvm'] %>
         with:
+          version: '<%= GRAALVM_VERSION %>'
           java-version: '${{ matrix.java-version }}'
           distribution: 'graalvm-community'
           components: 'native-image'

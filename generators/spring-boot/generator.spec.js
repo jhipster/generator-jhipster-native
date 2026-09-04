@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { fromMatrix, defaultHelpers as helpers, result } from 'generator-jhipster/testing';
+import { defaultHelpers as helpers, fromMatrix, result } from 'generator-jhipster/testing';
 
 const SUB_GENERATOR = 'spring-boot';
 const BLUEPRINT_NAMESPACE = `jhipster:${SUB_GENERATOR}`;
@@ -21,12 +21,12 @@ describe('SubGenerator spring-boot of native JHipster blueprint', () => {
           .withJHipsterConfig()
           .withOptions({
             ignoreNeedlesError: true,
-            blueprint: ['native'],
             experimental: true,
             ...options,
           })
-          .withJHipsterLookup()
-          .withParentBlueprintLookup();
+          .withJHipsterGenerators()
+          .withConfiguredBlueprint()
+          .withBlueprintConfig();
       });
 
       it('should succeed', () => {
