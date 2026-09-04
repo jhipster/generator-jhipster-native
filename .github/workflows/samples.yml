@@ -40,7 +40,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/app
     if: github.event.action != 'closed'
-    timeout-minutes: 90
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.build-matrix.outputs.matrix)}}
@@ -111,11 +111,14 @@ jobs:
       # Native build is memory intensive, containers should not be started.
       - run: npm run native-package -- ${{ matrix.native-package-extra-args }}
         if: steps.compare.outputs.equals != 'true'
-        timeout-minutes: 60
+        timeout-minutes: 90
       - run: npm run services:up
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
       - run: npm run native-e2e --if-present
         if: matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
+        env:
+          # ExceptionTranslator logs the cause of unexpected 500 responses at debug level only.
+          LOGGING_LEVEL_COM_MYCOMPANY_MYAPP_WEB_REST_ERRORS: DEBUG
       - name: Dump docker logs
         if: always() && matrix.e2e != 'false' && steps.compare.outputs.equals != 'true'
         uses: jwalton/gh-docker-logs@v2
