@@ -65,6 +65,9 @@ jobs:
       - name: 'SETUP: setup graalvm'
         uses: graalvm/setup-graalvm@v1
         with:
+          # GraalVM CE releases before 25.3 (JDK 25.0.2 and older) fail to set boolean fields through MethodHandles in native images,
+          # which breaks Spring Data R2DBC entity reads (https://github.com/oracle/graal/issues/12596).
+          version: '25.3'
           java-version: ${{ matrix.java-version }}
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}

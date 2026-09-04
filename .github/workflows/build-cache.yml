@@ -16,11 +16,12 @@ jobs:
           fetch-depth: 1
       - uses: jhipster/actions/setup-runner@v1
         with:
-          node-version: 20
+          node-version: 22
           binary-dir: ${{ github.workspace }}/generator-jhipster-native/cli/
       - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: 17
+          version: '25.3'
+          java-version: 25
           distribution: 'graalvm-community'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
